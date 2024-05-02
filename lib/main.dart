@@ -4,8 +4,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'app_theme.dart';
+import 'core/app_routes.dart';
+import 'core/utils/services/injections.dart';
+
 void main() async {
-  // setup();
+  setup();
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
@@ -25,10 +29,10 @@ class MyApp extends StatelessWidget {
       child:  ScreenUtilInit(
         designSize: const Size(428, 926),
         builder: (context, child) => MaterialApp.router(
-          title: 'MyAsa',
+          title: 'Quiz\'ko',
           debugShowCheckedModeBanner: false,
-          // theme: AppTheme.dark(),
-          // routerConfig: AppRoutes.configuration,
+          theme: AppTheme.light(),
+          routerConfig: AppRoutes.configuration,
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,

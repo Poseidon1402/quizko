@@ -34,8 +34,9 @@ abstract class AppTheme {
       )
   );
 
-  static ThemeData dark() {
+  static ThemeData light() {
     return ThemeData(
+      brightness: Brightness.light,
       textTheme: darkTextTheme,
       colorScheme: const ColorScheme.dark(
         background: AppColor.black1,
