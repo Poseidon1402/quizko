@@ -29,7 +29,7 @@ class CustomTextFormField extends StatelessWidget {
 
   const CustomTextFormField({
     super.key,
-    this.backgroundColor,
+    this.backgroundColor = AppColor.white2,
     this.hintTextColor,
     this.contentPadding,
     this.readOnly = false,

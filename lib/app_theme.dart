@@ -37,11 +37,13 @@ abstract class AppTheme {
   static ThemeData light() {
     return ThemeData(
       textTheme: textTheme,
-      colorScheme: const ColorScheme.dark(
+      colorScheme: const ColorScheme.light(
         background: AppColor.white1,
-        primary: AppColor.purple2,
+        primary: AppColor.purple3,
         onPrimary: AppColor.white1,
         surface: AppColor.white1,
+        error: AppColor.red1,
+        onError: AppColor.white1,
       ),
       dividerTheme: const DividerThemeData(
         color: Colors.transparent,
