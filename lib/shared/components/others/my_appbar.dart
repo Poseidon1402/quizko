@@ -30,11 +30,11 @@ AppBar myAppBar(BuildContext context, {GlobalKey<ScaffoldState>? key}) {
       borderRadius: 32,
       contentPadding: const EdgeInsets.symmetric(horizontal: 10),
       hintTextStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: AppColor.black4,
+            //color: AppColor.black4,
           ),
       prefixIcon: const Icon(
         Icons.search,
-        color: AppColor.black4,
+        // color: AppColor.black4,
       ),
     ),
     actions: [

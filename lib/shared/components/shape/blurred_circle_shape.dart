@@ -15,10 +15,10 @@ class BlurredCircleShape extends StatelessWidget {
         sigmaY: 130,
         tileMode: TileMode.decal,
       ),
-      child: CircleAvatar(
-        backgroundColor: AppColor.yellow1.withOpacity(0.8),
+      /*child: CircleAvatar(
+        //backgroundColor: AppColor.yellow1.withOpacity(0.8),
         radius: 150,
-      ),
+      ),*/
     );
   }
 }

@@ -32,7 +32,7 @@ void deleteConfirmationDialog({required BuildContext context, required VoidCallb
                   child: CustomElevatedButton(
                     onPressed: onDeleteButtonTapped,
                     borderRadius: 12,
-                    backgroundColor: AppColor.yellow1,
+                    backgroundColor: AppColor.purple1,
                     child: Text(
                       'Supprimer',
                       style: Theme.of(context).textTheme.bodyMedium,
@@ -45,10 +45,10 @@ void deleteConfirmationDialog({required BuildContext context, required VoidCallb
                   child: CustomElevatedButton(
                     onPressed: () => context.pop(),
                     borderRadius: 12,
-                    backgroundColor: AppColor.yellow1.withOpacity(0.1),
+                    backgroundColor: AppColor.purple1.withOpacity(0.1),
                     child: Text(
                       'Annuler',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColor.yellow1),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColor.purple1),
                     ),
                   ),
                 ),

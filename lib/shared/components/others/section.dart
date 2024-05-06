@@ -34,17 +34,17 @@ class Section extends StatelessWidget {
           vertical: 12,
         ),
         decoration: BoxDecoration(
-          color: selected ? AppColor.yellow1 : AppColor.black3,
+          // color: selected ? AppColor.yellow1 : AppColor.black3,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(radiusTopLeft),
             topRight: Radius.circular(radiusTopRight),
             bottomLeft: Radius.circular(radiusBottomLeft),
             bottomRight: Radius.circular(radiusBottomRight),
           ),
-          border: Border(
-            left: showBorder ? const BorderSide(color: AppColor.black5) : BorderSide.none,
-            right: showBorder ? const BorderSide(color: AppColor.black5) : BorderSide.none,
-          )
+          /*border: Border(
+            // left: showBorder ? const BorderSide(color: AppColor.black5) : BorderSide.none,
+            // right: showBorder ? const BorderSide(color: AppColor.black5) : BorderSide.none,
+          )*/
         ),
         child: Text(
           label,

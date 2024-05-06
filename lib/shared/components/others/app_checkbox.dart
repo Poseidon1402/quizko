@@ -30,7 +30,7 @@ class AppCheckbox extends StatelessWidget {
           value: checked,
           onChanged: onChanged,
           checkColor: checkColor,
-          activeColor: AppColor.orange1,
+          activeColor: AppColor.purple1,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(3),
           ),

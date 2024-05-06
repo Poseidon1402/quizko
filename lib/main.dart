@@ -24,25 +24,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: const [],
-      child:  ScreenUtilInit(
-        designSize: const Size(428, 926),
-        builder: (context, child) => MaterialApp.router(
-          title: 'Quiz\'ko',
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.light(),
-          routerConfig: AppRoutes.configuration,
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            // AppLocalizations.delegate,
-          ],
-          supportedLocales: const [
-            Locale('fr'),
-          ],
-        ),
+    return ScreenUtilInit(
+      designSize: const Size(428, 926),
+      builder: (context, child) => MaterialApp.router(
+        title: 'Quiz\'ko',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.light(),
+        routerConfig: AppRoutes.configuration,
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          // AppLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('fr'),
+        ],
       ),
     );
   }
