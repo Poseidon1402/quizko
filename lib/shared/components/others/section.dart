@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/utils/colors/app_color.dart';
-
 class Section extends StatelessWidget {
   final String label;
   final double radiusTopRight;

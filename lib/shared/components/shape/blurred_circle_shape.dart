@@ -2,8 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import '../../../core/utils/colors/app_color.dart';
-
 class BlurredCircleShape extends StatelessWidget {
   const BlurredCircleShape({super.key});
 
