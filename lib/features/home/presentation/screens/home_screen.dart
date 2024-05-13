@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/utils/colors/app_color.dart';
+import '../clip/header_painter.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -43,27 +43,9 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          Container(
-            height: MediaQuery.sizeOf(context).height * 0.4,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColor.purple3,
-                  AppColor.blue2
-                ],
-                begin: Alignment.center,
-                end: Alignment.bottomLeft,
-              ),
-            ),
-            /*child: Column(
-              children: [
-                const SizedBox(height: 20.0),
-                Text(
-                  'Welcome to the Home Screen',
-                  style: Theme.of(context).textTheme.headline1,
-                ),
-              ],
-            ),*/
+          CustomPaint(
+            painter: HeaderPainter(),
+            size: Size.fromHeight(MediaQuery.sizeOf(context).height * 0.4),
           ),
         ],
       ),
