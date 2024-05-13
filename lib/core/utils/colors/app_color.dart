@@ -9,6 +9,7 @@ abstract class AppColor {
   // Blue
   static const blue1 = Color.fromRGBO(110, 164, 191, 1);
   static const blue2 = Color.fromRGBO(9, 3, 33, 1);
+  static const blue3 = Color.fromRGBO(21, 10, 68, 1);
 
   // White
   static const white1 = Color.fromRGBO(247, 247, 247, 1);
