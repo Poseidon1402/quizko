@@ -85,7 +85,7 @@ class SignInScreen extends StatelessWidget {
                           ),
                           const Gap(10),
                           CustomElevatedButton(
-                            onPressed: () => context.push(Routes.home),
+                            onPressed: () => context.go(Routes.home),
                             borderRadius: 24.0,
                             backgroundColor:
                                 Theme.of(context).colorScheme.primary,
