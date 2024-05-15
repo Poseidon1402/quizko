@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../features/account/presentation/screens/account_screen.dart';
 import '../features/auth/presentation/screens/create_new_password_screen.dart';
 import '../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../features/auth/presentation/screens/sign_in_screen.dart';
 import '../features/home/presentation/screens/home_screen.dart';
 import '../features/main/presentation/screens/main_screen.dart';
+import '../features/result/presentation/screens/result_screen.dart';
+import '../features/settings/presentation/screens/setting_screen.dart';
 import 'utils/constants/routes.dart';
 
 abstract class AppRoutes {
@@ -79,6 +82,69 @@ abstract class AppRoutes {
                     return FadeTransition(
                       opacity:
                           CurveTween(curve: Curves.linear).animate(animation),
+                      child: child,
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: Routes.result,
+                pageBuilder: (context, state) => CustomTransitionPage(
+                  transitionDuration: const Duration(seconds: 1),
+                  reverseTransitionDuration: const Duration(seconds: 1),
+                  key: state.pageKey,
+                  child: const ResultScreen(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity:
+                      CurveTween(curve: Curves.linear).animate(animation),
+                      child: child,
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: Routes.setting,
+                pageBuilder: (context, state) => CustomTransitionPage(
+                  transitionDuration: const Duration(seconds: 1),
+                  reverseTransitionDuration: const Duration(seconds: 1),
+                  key: state.pageKey,
+                  child: const SettingScreen(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity:
+                      CurveTween(curve: Curves.linear).animate(animation),
+                      child: child,
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: Routes.account,
+                pageBuilder: (context, state) => CustomTransitionPage(
+                  transitionDuration: const Duration(seconds: 1),
+                  reverseTransitionDuration: const Duration(seconds: 1),
+                  key: state.pageKey,
+                  child: const AccountScreen(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity:
+                      CurveTween(curve: Curves.linear).animate(animation),
                       child: child,
                     );
                   },

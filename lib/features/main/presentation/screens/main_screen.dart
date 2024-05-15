@@ -40,25 +40,37 @@ class _MainScreenState extends State<MainScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             BottomAppBarItem(
-              onTap: () => setState(() => currentIndex = MainTab.home),
+              onTap: () {
+                setState(() => currentIndex = MainTab.home);
+                widget.navigationShell.goBranch(MainTab.home);
+              },
               icon: 'home',
               isSelected: currentIndex == MainTab.home,
               label: 'Home',
             ),
             BottomAppBarItem(
-              onTap: () => setState(() => currentIndex = MainTab.result),
+                onTap: () {
+                  setState(() => currentIndex = MainTab.result);
+                  widget.navigationShell.goBranch(MainTab.result);
+                },
               icon: 'results',
               isSelected: currentIndex == MainTab.result,
               label: 'Result',
             ),
             BottomAppBarItem(
-              onTap: () => setState(() => currentIndex = MainTab.setting),
+              onTap: () {
+                setState(() => currentIndex = MainTab.setting);
+                widget.navigationShell.goBranch(MainTab.setting);
+              },
               icon: 'setting',
               isSelected: currentIndex == MainTab.setting,
               label: 'Settings',
             ),
             BottomAppBarItem(
-              onTap: () => setState(() => currentIndex = MainTab.account),
+              onTap: () {
+                setState(() => currentIndex = MainTab.account);
+                widget.navigationShell.goBranch(MainTab.account);
+              },
               icon: 'user',
               isSelected: currentIndex == MainTab.account,
               label: 'Account',
