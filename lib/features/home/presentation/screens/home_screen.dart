@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
-import '../../../../core/utils/colors/app_color.dart';
-import '../clip/header_painter.dart';
+import '../components/header.dart';
+import '../components/quiz.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -46,80 +46,55 @@ class HomeScreen extends StatelessWidget {
       ),
       body: ConstrainedBox(
         constraints: const BoxConstraints.expand(),
-        child: Stack(
+        child: Column(
           children: [
-            CustomPaint(
-              painter: HeaderPainter(),
-              size: Size.fromHeight(MediaQuery.sizeOf(context).height * 0.4),
-            ),
-            Positioned(
-              top: 100,
-              child: SizedBox(
-                width: MediaQuery.sizeOf(context).width,
+            const Expanded(child: Header()),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      width: MediaQuery.sizeOf(context).width * 0.95,
-                      height: 400.h,
-                      decoration: BoxDecoration(
-                        color: AppColor.blue3,
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset('assets/images/Stars.png', width: 51.w, height: 51.w,),
-                                const Gap(20),
-                                Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: '150\n',
-                                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                          color: Theme.of(context).colorScheme.onPrimary
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: 'Total points',
-                                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                            color: Theme.of(context).colorScheme.onPrimary
-                                        ),
-                                      ),
-                                    ],
+                    Row(
+                      children: [
+                        Text(
+                          'Discover Quiz',
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    color: Colors.black,
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: FractionallySizedBox(
-                              widthFactor: 1,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(24),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      'Today’s Quiz on',
-                                      style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        const Spacer(),
+                        TextButton(
+                          onPressed: () {},
+                          child: Row(
+                            children: [
+                              Text(
+                                'See all',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                     ),
-                                    Text(
-                                      'Global Knowledge',
-                                      style: Theme.of(context).textTheme.titleMedium,
-                                    )
-                                  ],
-                                ),
                               ),
-                            ),
+                              const Gap(10),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 18.sp,
+                              )
+                            ],
                           ),
-                        ],
+                        ),
+                      ],
+                    ),
+                    const Gap(10),
+                    Expanded(
+                      child: ListView.separated(
+                        padding: const EdgeInsets.all(0),
+                        itemCount: 3,
+                        separatorBuilder: (context, index) => const Gap(10),
+                        itemBuilder: (context, index) => const Quiz(),
                       ),
                     ),
                   ],
