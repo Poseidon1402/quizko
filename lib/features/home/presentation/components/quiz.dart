@@ -98,7 +98,8 @@ class Quiz extends StatelessWidget {
                             ),
                       ),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24)),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
                       side: BorderSide.none,
                       elevation: 0.0,
                     ),

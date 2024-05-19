@@ -42,6 +42,7 @@ abstract class AppTheme {
         primary: AppColor.purple3,
         onPrimary: AppColor.white1,
         surface: AppColor.white1,
+        secondary: Colors.black,
         error: AppColor.red1,
         onError: AppColor.white1,
       ),

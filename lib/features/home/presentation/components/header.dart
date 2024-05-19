@@ -153,7 +153,7 @@ class Header extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      // Image.asset('assets/images/coins.png', width: 100,),
+                                      SvgPicture.asset('assets/icons/pts.svg', width: 30, height: 30,),
                                       Text(
                                         'Earn 120 Points',
                                         style: Theme.of(context)
