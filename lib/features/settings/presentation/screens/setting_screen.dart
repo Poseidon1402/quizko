@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../../core/utils/constants/routes.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
@@ -26,6 +29,7 @@ class SettingScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ListTile(
+                onTap: () => context.push(Routes.updatePassword),
                 leading: SvgPicture.asset('assets/icons/security.svg'),
                 title: Text('Security & Password', style: Theme.of(context).textTheme.bodyMedium,),
               ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/account/presentation/screens/account_screen.dart';
+import '../features/account/presentation/screens/update_password_screen.dart';
 import '../features/auth/presentation/screens/create_new_password_screen.dart';
 import '../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../features/auth/presentation/screens/sign_in_screen.dart';
@@ -41,6 +42,22 @@ abstract class AppRoutes {
           reverseTransitionDuration: const Duration(seconds: 1),
           key: state.pageKey,
           child: const ForgotPasswordScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: CurveTween(curve: Curves.linear).animate(animation),
+              child: child,
+            );
+          },
+        ),
+      ),
+      GoRoute(
+        parentNavigatorKey: _rootNavigatorKey,
+        path: Routes.updatePassword,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          transitionDuration: const Duration(seconds: 1),
+          reverseTransitionDuration: const Duration(seconds: 1),
+          key: state.pageKey,
+          child: const UpdatePasswordScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: CurveTween(curve: Curves.linear).animate(animation),
