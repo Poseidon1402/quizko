@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
         leading: const Padding(
           padding: EdgeInsets.all(8.0),
           child: CircleAvatar(
-            backgroundImage: AssetImage('assets/logo/logo_white1.png'),
+            backgroundImage: AssetImage('assets/images/avatar.png'),
             backgroundColor: Colors.red,
             radius: 15.0,
           ),
