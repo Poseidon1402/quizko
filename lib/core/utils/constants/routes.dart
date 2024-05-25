@@ -8,4 +8,5 @@ abstract class Routes {
   static const account = '/account';
   static const updatePassword = '/update/password';
   static const quiz = '/quiz';
+  static const mark = '/mark';
 }

@@ -8,6 +8,7 @@ import '../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../features/auth/presentation/screens/sign_in_screen.dart';
 import '../features/home/presentation/screens/home_screen.dart';
 import '../features/main/presentation/screens/main_screen.dart';
+import '../features/quiz/presentation/screens/mark_screen.dart';
 import '../features/quiz/presentation/screens/quiz_screen.dart';
 import '../features/result/presentation/screens/result_screen.dart';
 import '../features/settings/presentation/screens/setting_screen.dart';
@@ -44,6 +45,22 @@ abstract class AppRoutes {
           reverseTransitionDuration: const Duration(seconds: 1),
           key: state.pageKey,
           child: const QuizScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: CurveTween(curve: Curves.linear).animate(animation),
+              child: child,
+            );
+          },
+        ),
+      ),
+      GoRoute(
+        parentNavigatorKey: _rootNavigatorKey,
+        path: Routes.mark,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          transitionDuration: const Duration(seconds: 1),
+          reverseTransitionDuration: const Duration(seconds: 1),
+          key: state.pageKey,
+          child: const MarkScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: CurveTween(curve: Curves.linear).animate(animation),

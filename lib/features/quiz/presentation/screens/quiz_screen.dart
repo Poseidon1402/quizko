@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/utils/colors/app_color.dart';
+import '../../../../core/utils/constants/routes.dart';
 import '../../../../shared/components/buttons/custom_elevated_button.dart';
 import '../../../../shared/components/others/grdient_progress_bar.dart';
 import '../partials/question_body.dart';
@@ -17,9 +19,16 @@ class QuizScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         scrolledUnderElevation: 0.0,
-        leading: const Icon(
-          Icons.arrow_back_ios,
-          color: AppColor.white1,
+        leading: IconButton.outlined(
+          onPressed: () => context.pop(),
+          style: IconButton.styleFrom(
+              side: BorderSide(color: Colors.white.withOpacity(0.18)),
+              padding: const EdgeInsets.all(10)),
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            size: 20,
+            color: Colors.white,
+          ),
         ),
         actions: [
           Chip(
@@ -97,14 +106,14 @@ class QuizScreen extends StatelessWidget {
               FractionallySizedBox(
                 widthFactor: 1,
                 child: CustomElevatedButton(
-                  onPressed: () {},
+                  onPressed: () => context.push(Routes.mark),
                   borderRadius: 24,
                   backgroundColor: AppColor.white1.withOpacity(0.1),
                   child: Text(
                     'Next',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
                   ),
                 ),
               ),
