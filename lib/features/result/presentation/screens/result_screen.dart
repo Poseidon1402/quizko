@@ -14,6 +14,7 @@ class ResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0.0,
         title: Text(
           'Result',
           style: Theme.of(context)
@@ -108,7 +109,7 @@ class ResultScreen extends StatelessWidget {
                       ),
                       const Gap(10),
                       Expanded(
-                        flex: 10,
+                        flex: 12,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -130,7 +131,7 @@ class ResultScreen extends StatelessWidget {
                               ),
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Chip(
                                   elevation: 0.0,
@@ -198,7 +199,6 @@ class ResultScreen extends StatelessWidget {
                         ),
                       ),
                       Expanded(
-                        flex: 2,
                         child: Align(
                           alignment: Alignment.topRight,
                           child: Icon(
