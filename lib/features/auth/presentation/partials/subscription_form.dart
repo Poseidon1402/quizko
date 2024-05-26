@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
@@ -11,7 +10,6 @@ import '../../../../core/utils/constants/routes.dart';
 import '../../../../core/validator/form_validators.dart';
 import '../../../../shared/components/buttons/custom_elevated_button.dart';
 import '../../../../shared/components/input/custom_text_form_field.dart';
-import '../../../../shared/components/input/select_field.dart';
 import '../../../../shared/components/others/app_snackbar.dart';
 import '../../data/models/user_model.dart';
 import '../bloc/authentication_bloc.dart';
@@ -83,7 +81,7 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
               controller: _passwordController,
               hintText: 'Password',
               keyboardType: TextInputType.visiblePassword,
-              validator: isRequired,
+              validator: (value) => length(value, min: 6, max: 50),
               obscureText: _isObscure,
               textInputAction: TextInputAction.done,
               borderRadius: 24.0,

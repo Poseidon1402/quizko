@@ -7,9 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:quizko/core/utils/colors/app_color.dart';
 
 import '../../../../core/utils/constants/routes.dart';
-import '../../../../core/validator/form_validators.dart';
-import '../../../../shared/components/buttons/custom_elevated_button.dart';
-import '../../../../shared/components/input/custom_text_form_field.dart';
+import '../partials/login_form.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
@@ -38,7 +36,7 @@ class SignInScreen extends StatelessWidget {
                         ),
                       ),
                       child: ListView(
-                        padding: const EdgeInsets.symmetric(horizontal: 40),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         children: [
                           SvgPicture.asset('assets/logo/logo_2.svg'),
                           const Gap(50),
@@ -56,53 +54,7 @@ class SignInScreen extends StatelessWidget {
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           const Gap(30),
-                          const CustomTextFormField(
-                            hintText: 'Registration number or email',
-                            keyboardType: TextInputType.emailAddress,
-                            validator: isEmail,
-                            textInputAction: TextInputAction.done,
-                            borderRadius: 24.0,
-                          ),
-                          const Gap(20),
-                          const CustomTextFormField(
-                            hintText: 'Password',
-                            keyboardType: TextInputType.visiblePassword,
-                            validator: isRequired,
-                            textInputAction: TextInputAction.done,
-                            borderRadius: 24.0,
-                          ),
-                          const Gap(10),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: TextButton(
-                              onPressed: () =>
-                                  context.push(Routes.forgotPassword),
-                              child: Text(
-                                'Forgot password ?',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(color: AppColor.purple1),
-                              ),
-                            ),
-                          ),
-                          const Gap(10),
-                          CustomElevatedButton(
-                            onPressed: () => context.go(Routes.home),
-                            borderRadius: 24.0,
-                            backgroundColor:
-                            Theme.of(context).colorScheme.primary,
-                            child: Text(
-                              'Login',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(
-                                color:
-                                Theme.of(context).colorScheme.onPrimary,
-                              ),
-                            ),
-                          ),
+                          const LoginForm(),
                         ],
                       ),
                     ),

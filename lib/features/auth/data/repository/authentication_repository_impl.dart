@@ -32,4 +32,20 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return const Left(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, UserEntity>> authenticate(String email, String password) async {
+    try {
+      final data = await source.authenticate(email, password);
+      secureStorage.write(key: 'token', value: data.token);
+
+      return Right(data);
+    } on UnauthorizedException {
+      return const Left(ServerFailure(message: 'Email or password invalid'));
+    } on InternetConnectionException {
+      return const Left(NotConnectedFailure());
+    } on ServerException {
+      return const Left(ServerFailure());
+    }
+  }
 }
