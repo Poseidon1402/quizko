@@ -8,6 +8,11 @@ import '../../../features/auth/domain/repository/authentication_repository.dart'
 import '../../../features/auth/domain/usecases/sign_in.dart';
 import '../../../features/auth/domain/usecases/subscribe_user.dart';
 import '../../../features/auth/presentation/bloc/authentication_bloc.dart';
+import '../../../features/home/data/repository/interview_repository_impl.dart';
+import '../../../features/home/data/source/interview_source.dart';
+import '../../../features/home/domain/repository/interview_repository.dart';
+import '../../../features/home/domain/usecases/fetch_interviews.dart';
+import '../../../features/home/presentation/bloc/interview_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -19,6 +24,9 @@ void setup() {
       signIn: sl(),
     ),
   );
+  sl.registerFactory(
+    () => InterviewBloc(fetchInterviews: sl()),
+  );
 
   // Use cases
   sl.registerLazySingleton<SubscribeUser>(
@@ -26,6 +34,9 @@ void setup() {
   );
   sl.registerLazySingleton<SignIn>(
     () => SignInImpl(repository: sl()),
+  );
+  sl.registerLazySingleton<FetchInterviews>(
+    () => FetchInterviewsImpl(repository: sl()),
   );
 
   // Repositories
@@ -35,10 +46,16 @@ void setup() {
       secureStorage: sl(),
     ),
   );
+  sl.registerLazySingleton<InterviewRepository>(
+    () => InterviewRepositoryImpl(source: sl(), secureStorage: sl()),
+  );
 
   // Data Sources
   sl.registerLazySingleton<AuthenticationSource>(
     () => AuthenticationSourceImpl(client: sl()),
+  );
+  sl.registerLazySingleton<InterviewSource>(
+    () => InterviewSourceImpl(client: sl()),
   );
 
   // Other Services

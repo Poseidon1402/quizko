@@ -36,7 +36,7 @@ class SignUpScreen extends StatelessWidget {
                         ),
                       ),
                       child: ListView(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         children: [
                           SvgPicture.asset('assets/logo/logo_2.svg'),
                           const Gap(50),

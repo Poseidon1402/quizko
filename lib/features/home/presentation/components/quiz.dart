@@ -6,9 +6,15 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/utils/colors/app_color.dart';
 import '../../../../core/utils/constants/routes.dart';
+import '../../domain/entity/interview_entity.dart';
 
 class Quiz extends StatelessWidget {
-  const Quiz({super.key});
+  final InterviewEntity interview;
+
+  const Quiz({
+    super.key,
+    required this.interview,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -56,17 +62,19 @@ class Quiz extends StatelessWidget {
                     TextSpan(
                       children: [
                         TextSpan(
-                          text: 'Quiz 1\n',
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w700,
-                              ),
+                          text: '${interview.name}\n',
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                         ),
                         TextSpan(
                           text: '20 Questions  |  Quiz',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Colors.black.withOpacity(0.45),
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: Colors.black.withOpacity(0.45),
+                                  ),
                         ),
                       ],
                     ),
@@ -78,7 +86,7 @@ class Quiz extends StatelessWidget {
                         backgroundColor: Colors.white,
                         avatar: SvgPicture.asset('assets/icons/clock.svg'),
                         label: Text(
-                          '01:20',
+                          '${interview.duration.inMinutes} : 00',
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall
@@ -96,7 +104,10 @@ class Quiz extends StatelessWidget {
                         ),
                         label: Text(
                           'Completed',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(
                                 color: Theme.of(context).colorScheme.onPrimary,
                                 fontWeight: FontWeight.w700,
                               ),
