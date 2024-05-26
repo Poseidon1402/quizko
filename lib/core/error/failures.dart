@@ -13,21 +13,21 @@ abstract class Failure extends Equatable {
 }
 
 class ServerFailure extends Failure {
-  const ServerFailure({super.message = 'Une erreur est survenue', super.type = ErrorType.serverError});
+  const ServerFailure({super.message = 'An error occured', super.type = ErrorType.serverError});
 }
 
 class NotConnectedFailure extends Failure {
-  const NotConnectedFailure({super.message = 'Vous n\'êtes pas connecté à internet', super.type = ErrorType.notConnectedError});
+  const NotConnectedFailure({super.message = 'Please, check your network', super.type = ErrorType.notConnectedError});
 }
 
 class MissingFileFailure extends Failure {
-  const MissingFileFailure({super.message = 'Fichier manquant', super.type = ErrorType.missingFileError});
+  const MissingFileFailure({super.message = 'File is missing', super.type = ErrorType.missingFileError});
 }
 
 class AccessTokenMissingFailure extends Failure {
-  const AccessTokenMissingFailure({super.message = 'Token absent', super.type = ErrorType.tokenMissing});
+  const AccessTokenMissingFailure({super.message = 'Token is missing', super.type = ErrorType.tokenMissing});
 }
 
 class TokenExpiredFailure extends Failure {
-  const TokenExpiredFailure({super.message = 'Token expiré', super.type = ErrorType.expiredToken});
+  const TokenExpiredFailure({super.message = 'Expired token', super.type = ErrorType.expiredToken});
 }
