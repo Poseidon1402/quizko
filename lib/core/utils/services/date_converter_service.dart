@@ -7,4 +7,8 @@ abstract class DateConverterService {
 
     return Duration(hours: hours, minutes: minutes, seconds: seconds);
   }
+
+  static String formatDuration(Duration duration) {
+    return '${duration.inHours.toString().padLeft(2, '0')}:${(duration.inMinutes % 60).toString().padLeft(2, '0')}';
+  }
 }

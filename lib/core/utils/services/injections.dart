@@ -13,6 +13,7 @@ import '../../../features/home/data/source/interview_source.dart';
 import '../../../features/home/domain/repository/interview_repository.dart';
 import '../../../features/home/domain/usecases/fetch_interviews.dart';
 import '../../../features/home/presentation/bloc/interview_bloc.dart';
+import '../../../features/quiz/presentation/bloc/quiz_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -26,6 +27,9 @@ void setup() {
   );
   sl.registerFactory(
     () => InterviewBloc(fetchInterviews: sl()),
+  );
+  sl.registerFactory(
+    () => QuizBloc(),
   );
 
   // Use cases

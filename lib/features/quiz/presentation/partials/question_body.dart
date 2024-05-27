@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../core/utils/colors/app_color.dart';
 import '../../../../shared/components/others/app_checkbox.dart';
+import '../../../home/domain/entity/interview_entity.dart';
+import '../../../home/domain/entity/question_entity.dart';
+import '../bloc/quiz_bloc.dart';
 
 class QuestionBody extends StatelessWidget {
-  const QuestionBody({super.key});
+  final InterviewEntity interview;
+
+  const QuestionBody({
+    super.key,
+    required this.interview,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,47 +41,52 @@ class QuestionBody extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
                 color: Colors.white,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'General Knowledge\n\n',
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: AppColor.grey3,
-                                  ),
+              child: BlocBuilder<QuizBloc, QuizState>(
+                builder: (context, state) {
+                  final currentIndex = (state as QuizStateLoaded).currentQuestionIndex;
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: '${interview.name}\n\n',
+                              style:
+                                  Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                        color: AppColor.grey3,
+                                      ),
+                            ),
+                            TextSpan(
+                              text: interview.subject.questions[currentIndex].label,
+                              style:
+                                  Theme.of(context).textTheme.titleMedium?.copyWith(
+                                        color: Colors.black,
+                                      ),
+                            ),
+                          ],
                         ),
-                        TextSpan(
-                          text:
-                              'What is the purpose of a firewall in network security ?',
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: Colors.black,
-                                  ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Gap(10),
-                  AppCheckbox(
-                    label: 'To protect a network from attacks',
-                    checked: true,
-                    onChanged: (value) {},
-                  ),
-                  AppCheckbox(
-                    label: 'To protect a network from attacks',
-                    checked: false,
-                    onChanged: (value) {},
-                  ),
-                  AppCheckbox(
-                    label: 'To protect a network from attacks',
-                    checked: false,
-                    onChanged: (value) {},
-                  ),
-                ],
+                      ),
+                      const Gap(10),
+                      ...interview.subject.questions[currentIndex].answers
+                          .map(
+                            (answer) => AppCheckbox(
+                              label: answer.label,
+                              onChanged: (value) {
+                                context.read<QuizBloc>().add(
+                                      QuizEventAnswered(
+                                        questionIndex: currentIndex,
+                                        answerIndex: interview.subject.questions[currentIndex].answers.indexOf(answer),
+                                      ),
+                                    );
+                              },
+                            ),
+                          )
+                          .toList(),
+                    ],
+                  );
+                }
               ),
             ),
           ),

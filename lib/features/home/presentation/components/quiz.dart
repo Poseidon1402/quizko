@@ -19,7 +19,7 @@ class Quiz extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.push(Routes.quiz),
+      onTap: () => context.push(Routes.quiz, extra: interview),
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
@@ -70,7 +70,7 @@ class Quiz extends StatelessWidget {
                                   ),
                         ),
                         TextSpan(
-                          text: '20 Questions  |  Quiz',
+                          text: '${interview.subject.questions.length} Questions  |  Quiz',
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: Colors.black.withOpacity(0.45),
