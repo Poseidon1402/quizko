@@ -15,6 +15,20 @@ class InterviewEntity extends Equatable {
     required this.subject,
   });
 
+  InterviewEntity copyWith({
+    int? id,
+    String? name,
+    Duration? duration,
+    SubjectEntity? subject,
+  }) {
+    return InterviewEntity(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      duration: duration ?? this.duration,
+      subject: subject ?? this.subject,
+    );
+  }
+
   @override
   List<Object?> get props => [
         id,
