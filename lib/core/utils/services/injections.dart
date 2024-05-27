@@ -12,6 +12,7 @@ import '../../../features/home/data/repository/interview_repository_impl.dart';
 import '../../../features/home/data/source/interview_source.dart';
 import '../../../features/home/domain/repository/interview_repository.dart';
 import '../../../features/home/domain/usecases/fetch_interviews.dart';
+import '../../../features/home/domain/usecases/fetch_marks.dart';
 import '../../../features/home/presentation/bloc/interview_bloc.dart';
 import '../../../features/quiz/presentation/bloc/quiz_bloc.dart';
 
@@ -29,7 +30,7 @@ void setup() {
     () => InterviewBloc(fetchInterviews: sl()),
   );
   sl.registerFactory(
-    () => QuizBloc(),
+    () => QuizBloc(fetchMark: sl()),
   );
 
   // Use cases
@@ -41,6 +42,9 @@ void setup() {
   );
   sl.registerLazySingleton<FetchInterviews>(
     () => FetchInterviewsImpl(repository: sl()),
+  );
+  sl.registerLazySingleton<FetchMarks>(
+    () => FetchMarksImpl(repository: sl()),
   );
 
   // Repositories

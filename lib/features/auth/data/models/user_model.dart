@@ -5,6 +5,7 @@ class UserModel extends UserEntity {
   final String? token;
 
   const UserModel({
+    super.candidateId = 0,
     required super.registrationNumber,
     required super.email,
     required super.gender,
@@ -16,6 +17,7 @@ class UserModel extends UserEntity {
 
   factory UserModel.fromJson(Map<String, dynamic> json, String? token) =>
       UserModel(
+        candidateId: json['candidate']['id'],
         registrationNumber: json['candidate']['registration_number'],
         fullName: json['name'],
         email: json['email'],

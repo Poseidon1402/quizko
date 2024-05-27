@@ -8,18 +8,29 @@ abstract class QuizEvent extends Equatable {
 class QuizEventStarted extends QuizEvent {}
 
 class QuizEventAnswered extends QuizEvent {
-  final int questionIndex;
-  final int answerIndex;
+  final int answerId;
 
   QuizEventAnswered({
-    required this.questionIndex,
-    required this.answerIndex,
+    required this.answerId,
   });
 
   @override
-  List<Object?> get props => [questionIndex, answerIndex];
+  List<Object?> get props => [answerId];
 }
 
 class QuizEventNextQuestion extends QuizEvent {}
 
-class QuizEventFinished extends QuizEvent {}
+class QuizEventFinished extends QuizEvent {
+  final int candidateId;
+  final int interviewId;
+  final List<Map<String, int>> answers;
+
+  QuizEventFinished({
+    required this.answers,
+    required this.interviewId,
+    required this.candidateId,
+  });
+
+  @override
+  List<Object?> get props => [answers, interviewId, candidateId];
+}

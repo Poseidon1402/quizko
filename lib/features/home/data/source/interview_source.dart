@@ -15,6 +15,12 @@ abstract class InterviewSource {
     required String token,
     required int subjectId,
   });
+  Future<int> submitQuiz({
+    required String token,
+    required int interviewId,
+    required int candidateId,
+    required List<Map<String, int>> answers,
+  });
 }
 
 class InterviewSourceImpl implements InterviewSource {
@@ -60,6 +66,40 @@ class InterviewSourceImpl implements InterviewSource {
         return (decodedJson['data']['questions'] as List<dynamic>)
             .map((question) => QuestionModel.fromJson(question))
             .toList();
+      } else {
+        throw ServerException();
+      }
+    } on http.ClientException {
+      throw InternetConnectionException();
+    } on SocketException {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<int> submitQuiz({
+    required String token,
+    required int interviewId,
+    required int candidateId,
+    required List<Map<String, int>> answers,
+  }) async {
+    try {
+      http.Response response =
+          await client.post(Uri.http(ApiConfig.baseUrl, '/api/answer'),
+              body: json.encode({
+                'candidate_id': candidateId,
+                'interview_id': interviewId,
+                'candidate_answers': answers,
+              }),
+              headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader: 'Bearer $token',
+          });
+
+      if (isSuccess(response.statusCode)) {
+        final mark = json.decode(response.body);
+
+        return mark['total_points'];
       } else {
         throw ServerException();
       }

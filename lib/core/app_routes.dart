@@ -77,7 +77,7 @@ abstract class AppRoutes {
           transitionDuration: const Duration(seconds: 1),
           reverseTransitionDuration: const Duration(seconds: 1),
           key: state.pageKey,
-          child: const MarkScreen(),
+          child: MarkScreen(mark: state.extra as int,),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: CurveTween(curve: Curves.linear).animate(animation),

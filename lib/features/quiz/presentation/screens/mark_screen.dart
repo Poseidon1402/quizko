@@ -8,7 +8,12 @@ import '../../../../core/utils/constants/routes.dart';
 import '../../../../shared/components/buttons/custom_elevated_button.dart';
 
 class MarkScreen extends StatelessWidget {
-  const MarkScreen({super.key});
+  final int mark;
+
+  const MarkScreen({
+    super.key,
+    required this.mark,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +86,7 @@ class MarkScreen extends StatelessWidget {
                                 ),
                           ),
                           TextSpan(
-                            text: "+80 ",
+                            text: "+$mark ",
                             style:
                                 Theme.of(context).textTheme.bodyLarge?.copyWith(
                                       color: AppColor.green2,
@@ -106,7 +111,7 @@ class MarkScreen extends StatelessWidget {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: '18',
+                                text: '$mark',
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleLarge

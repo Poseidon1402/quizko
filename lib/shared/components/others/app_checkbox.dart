@@ -23,36 +23,39 @@ class AppCheckbox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      decoration: BoxDecoration(
-        color: checked ? Colors.transparent : AppColor.white2,
-        border: checked ? Border.all(
-          color: AppColor.purple3.withOpacity(0.53),
-          width: 1,
-        ) : null,
-        borderRadius: BorderRadius.circular(49),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: text ?? Text(
-              label,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: fontColor ?? Colors.black,
-                fontWeight: FontWeight.w500,
+    return GestureDetector(
+      onTap: () => onChanged!(!checked),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        margin: const EdgeInsets.symmetric(vertical: 5),
+        decoration: BoxDecoration(
+          color: checked ? Colors.transparent : AppColor.white2,
+          border: checked ? Border.all(
+            color: AppColor.purple3.withOpacity(0.53),
+            width: 1,
+          ) : null,
+          borderRadius: BorderRadius.circular(49),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: text ?? Text(
+                label,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: fontColor ?? Colors.black,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-          ),
-          Checkbox(
-            value: checked,
-            onChanged: onChanged,
-            checkColor: checkColor,
-            activeColor: AppColor.purple3,
-            shape: const CircleBorder(),
-          ),
-        ],
+            Checkbox(
+              value: checked,
+              onChanged: onChanged,
+              checkColor: checkColor,
+              activeColor: AppColor.purple3,
+              shape: const CircleBorder(),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -10,9 +10,11 @@ import '../../../../core/utils/colors/app_color.dart';
 import '../../../../core/utils/constants/routes.dart';
 import '../../../../core/utils/services/date_converter_service.dart';
 import '../../../../core/utils/services/injections.dart';
-import '../../../../shared/components/buttons/custom_elevated_button.dart';
+import '../../../../shared/components/others/app_snackbar.dart';
 import '../../../../shared/components/others/grdient_progress_bar.dart';
+import '../../../auth/presentation/bloc/authentication_bloc.dart';
 import '../../../home/domain/entity/interview_entity.dart';
+import '../bloc/answer_cubit.dart';
 import '../bloc/quiz_bloc.dart';
 import '../partials/question_body.dart';
 
@@ -30,6 +32,7 @@ class QuizScreen extends StatefulWidget {
 
 class _QuizScreenState extends State<QuizScreen> {
   late Duration currentDuration;
+  int currentIndex = 0;
   late Timer timer;
 
   @override
@@ -47,10 +50,32 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<QuizBloc>(),
-      child: BlocBuilder<QuizBloc, QuizState>(builder: (context, state) {
-        if (state is QuizStateLoaded) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<QuizBloc>(
+          create: (context) => QuizBloc(
+            fetchMark: sl(),
+          ),
+        ),
+        BlocProvider(create: (context) => AnswerCubit()),
+      ],
+      child: BlocConsumer<QuizBloc, QuizState>(
+        listener: (context, state) {
+          if (state is QuizStateFinished) {
+            context.pushReplacement(Routes.mark, extra: state.mark);
+          } else if (state is QuizStateLoaded) {
+            setState(() => currentIndex = state.currentQuestionIndex);
+          } else if (state is QuizStateError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              myAppSnackBar(
+                context: context,
+                message: state.failure.message,
+                backgroundColor: AppColor.red1,
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
           return Scaffold(
             backgroundColor: Theme.of(context).colorScheme.primary,
             appBar: AppBar(
@@ -119,9 +144,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                         .onPrimary),
                           ),
                           TextSpan(
-                            text: (state.currentQuestionIndex + 1)
-                                .toString()
-                                .padLeft(2, '0'),
+                            text: (currentIndex + 1).toString().padLeft(2, '0'),
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge
@@ -145,54 +168,39 @@ class _QuizScreenState extends State<QuizScreen> {
                     ),
                     const Gap(10),
                     GradientProgressBar(
-                      percentage: (state.currentQuestionIndex + 1) /
+                      percentage: (currentIndex + 1) /
                           widget.interview.subject.questions.length,
                     ),
                     const Gap(20),
                     Expanded(
                       child: QuestionBody(
                         interview: widget.interview,
+                        currentIndex: currentIndex,
                       ),
                     ),
-                    const Gap(20),
-                    FractionallySizedBox(
-                      widthFactor: 1,
-                      child: CustomElevatedButton(
-                        onPressed: () => _onNextButtonTapped(context),
-                        borderRadius: 24,
-                        backgroundColor: AppColor.white1.withOpacity(0.1),
-                        child: Text(
-                          'Next',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              ),
-                        ),
-                      ),
-                    ),
-                    const Gap(30),
                   ],
                 ),
               ),
             ),
           );
-        } else {
-          return const SizedBox();
-        }
-      }),
+        },
+      ),
     );
-  }
-
-  void _onNextButtonTapped(BuildContext context) {
-    context.read<QuizBloc>().add(QuizEventNextQuestion());
   }
 
   void _decrementTimer(timer) {
     if (currentDuration.inMinutes == 0) {
       timer.cancel();
-      context.pushReplacement(Routes.mark);
+      context.read<QuizBloc>().add(
+            QuizEventFinished(
+              answers: context.read<AnswerCubit>().state,
+              interviewId: widget.interview.id,
+              candidateId: (context.read<AuthenticationBloc>().state
+                      as AuthenticatedState)
+                  .currentUser
+                  .candidateId,
+            ),
+          );
     } else {
       setState(() {
         currentDuration -= const Duration(minutes: 1);
