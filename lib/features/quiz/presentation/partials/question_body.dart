@@ -5,7 +5,6 @@ import 'package:gap/gap.dart';
 import '../../../../core/utils/colors/app_color.dart';
 import '../../../../shared/components/others/app_checkbox.dart';
 import '../../../home/domain/entity/interview_entity.dart';
-import '../../../home/domain/entity/question_entity.dart';
 import '../bloc/quiz_bloc.dart';
 
 class QuestionBody extends StatelessWidget {
