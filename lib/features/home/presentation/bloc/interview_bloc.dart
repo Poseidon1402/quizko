@@ -13,6 +13,7 @@ class InterviewBloc extends Bloc<InterviewEvent, InterviewState> {
 
   InterviewBloc({required this.fetchInterviews}) : super(InitialState()) {
     on<FetchInterviewsEvent>(_handleFetchInterviewsEvent);
+    on<InterviewCompletedEvent>(_handleInterviewCompletedEvent);
   }
 
   void _handleFetchInterviewsEvent(
@@ -22,6 +23,20 @@ class InterviewBloc extends Bloc<InterviewEvent, InterviewState> {
     result.fold(
       (failure) => emit(ErrorState(error: failure)),
       (interviews) => emit(InterviewsLoaded(interviews: interviews)),
+    );
+  }
+
+  void _handleInterviewCompletedEvent(
+      InterviewCompletedEvent event, Emitter<InterviewState> emit) {
+    emit(
+      InterviewsLoaded(
+        interviews: (state as InterviewsLoaded)
+            .interviews
+            .map((interview) => interview.id == event.id
+                ? interview.copyWith(isCompleted: true)
+                : interview)
+            .toList(),
+      ),
     );
   }
 }

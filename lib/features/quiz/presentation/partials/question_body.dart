@@ -8,6 +8,7 @@ import '../../../../shared/components/buttons/custom_elevated_button.dart';
 import '../../../../shared/components/others/app_checkbox.dart';
 import '../../../auth/presentation/bloc/authentication_bloc.dart';
 import '../../../home/domain/entity/interview_entity.dart';
+import '../../../home/presentation/bloc/interview_bloc.dart';
 import '../bloc/answer_cubit.dart';
 import '../bloc/quiz_bloc.dart';
 
@@ -117,7 +118,6 @@ class _QuestionBodyState extends State<QuestionBody> {
                   if (widget.currentIndex ==
                       widget.interview.subject.questions.length - 1) {
                     _onFinishButtonTapped(context);
-                    return;
                   } else {
                     _onNextButtonTapped(context);
                   }
@@ -156,6 +156,7 @@ class _QuestionBodyState extends State<QuestionBody> {
 
   void _onFinishButtonTapped(BuildContext context) {
     context.read<AnswerCubit>().setAnswer({'answer_id': _picked});
+    context.read<InterviewBloc>().add(InterviewCompletedEvent(id: widget.interview.id));
     context.read<QuizBloc>().add(
           QuizEventFinished(
             answers: context.read<AnswerCubit>().state,

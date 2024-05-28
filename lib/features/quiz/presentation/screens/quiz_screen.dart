@@ -14,6 +14,7 @@ import '../../../../shared/components/others/app_snackbar.dart';
 import '../../../../shared/components/others/grdient_progress_bar.dart';
 import '../../../auth/presentation/bloc/authentication_bloc.dart';
 import '../../../home/domain/entity/interview_entity.dart';
+import '../../../home/presentation/bloc/interview_bloc.dart';
 import '../bloc/answer_cubit.dart';
 import '../bloc/quiz_bloc.dart';
 import '../partials/question_body.dart';
@@ -82,7 +83,10 @@ class _QuizScreenState extends State<QuizScreen> {
               backgroundColor: Colors.transparent,
               scrolledUnderElevation: 0.0,
               leading: IconButton.outlined(
-                onPressed: () => context.pop(),
+                onPressed: () {
+                  context.read<InterviewBloc>().add(InterviewCompletedEvent(id: widget.interview.id));
+                  context.pop();
+                },
                 style: IconButton.styleFrom(
                     side: BorderSide(color: Colors.white.withOpacity(0.18)),
                     padding: const EdgeInsets.all(10)),
@@ -191,6 +195,7 @@ class _QuizScreenState extends State<QuizScreen> {
   void _decrementTimer(timer) {
     if (currentDuration.inMinutes == 0) {
       timer.cancel();
+      context.read<InterviewBloc>().add(InterviewCompletedEvent(id: widget.interview.id));
       context.read<QuizBloc>().add(
             QuizEventFinished(
               answers: context.read<AnswerCubit>().state,

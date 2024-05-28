@@ -8,6 +8,7 @@ import 'app_theme.dart';
 import 'core/app_routes.dart';
 import 'core/utils/services/injections.dart';
 import 'features/auth/presentation/bloc/authentication_bloc.dart';
+import 'features/home/presentation/bloc/interview_bloc.dart';
 
 void main() async {
   setup();
@@ -25,8 +26,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<AuthenticationBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => sl<AuthenticationBloc>()),
+        BlocProvider(create: (_) => sl<InterviewBloc>()),
+      ],
       child: ScreenUtilInit(
         designSize: const Size(428, 926),
         builder: (context, child) => MaterialApp.router(
