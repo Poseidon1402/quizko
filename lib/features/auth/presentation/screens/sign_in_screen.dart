@@ -6,17 +6,89 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quizko/core/utils/colors/app_color.dart';
 
+import '../../../../core/config/api_config.dart';
 import '../../../../core/utils/constants/routes.dart';
+import '../../../../shared/components/buttons/custom_elevated_button.dart';
+import '../../../../shared/components/input/custom_text_form_field.dart';
 import '../partials/login_form.dart';
 
-class SignInScreen extends StatelessWidget {
+class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
+
+  @override
+  State<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
+  @override
+  initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) => _showIpInputDialog());
+    super.initState();
+  }
+
+  Future<void> _showIpInputDialog() async {
+    final TextEditingController ipAddressController = TextEditingController();
+
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog.adaptive(
+          title: Text(
+            'Enter IP Address',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          content: Wrap(
+            children: [
+              SizedBox(
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.wifi,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 50.sp,
+                    ),
+                    const Gap(10),
+                    CustomTextFormField(
+                      controller: ipAddressController,
+                      keyboardType: TextInputType.number,
+                      hintText: 'IP Address',
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            FractionallySizedBox(
+              widthFactor: 1,
+              child: CustomElevatedButton(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                child: Text(
+                  'OK',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                ),
+                onPressed: () {
+                  ApiConfig.baseUrl = ipAddressController.text;
+                  context.pop();
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(automaticallyImplyLeading: false,),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+      ),
       backgroundColor: AppColor.purple3,
       body: ConstrainedBox(
         constraints: const BoxConstraints.expand(),
@@ -70,9 +142,9 @@ class SignInScreen extends StatelessWidget {
                                   .textTheme
                                   .bodyMedium
                                   ?.copyWith(
-                                color:
-                                Theme.of(context).colorScheme.onPrimary,
-                              ),
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                  ),
                             ),
                             TextSpan(
                               text: 'Sign up',
@@ -82,8 +154,8 @@ class SignInScreen extends StatelessWidget {
                                   .textTheme
                                   .bodyMedium
                                   ?.copyWith(
-                                color: AppColor.purple2,
-                              ),
+                                    color: AppColor.purple2,
+                                  ),
                             ),
                           ],
                         ),

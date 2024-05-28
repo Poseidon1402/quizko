@@ -18,17 +18,17 @@ abstract class AppTheme {
         color: AppColor.grey1,
       ),
       bodyLarge: GoogleFonts.manrope(
-        fontSize: 14.sp,
+        fontSize: 16.sp,
         fontWeight: FontWeight.w500,
         color: AppColor.grey1,
       ),
       bodyMedium: GoogleFonts.manrope(
-        fontSize: 12.sp,
+        fontSize: 14.sp,
         fontWeight: FontWeight.w500,
         color: AppColor.grey1,
       ),
       bodySmall: GoogleFonts.manrope(
-        fontSize: 10.sp,
+        fontSize: 12.sp,
         fontWeight: FontWeight.w400,
         color: AppColor.grey1,
       )
