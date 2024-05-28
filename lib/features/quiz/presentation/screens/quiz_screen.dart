@@ -83,10 +83,7 @@ class _QuizScreenState extends State<QuizScreen> {
               backgroundColor: Colors.transparent,
               scrolledUnderElevation: 0.0,
               leading: IconButton.outlined(
-                onPressed: () {
-                  context.read<InterviewBloc>().add(InterviewCompletedEvent(id: widget.interview.id));
-                  context.pop();
-                },
+                onPressed: _onPop,
                 style: IconButton.styleFrom(
                     side: BorderSide(color: Colors.white.withOpacity(0.18)),
                     padding: const EdgeInsets.all(10)),
@@ -192,20 +189,24 @@ class _QuizScreenState extends State<QuizScreen> {
     );
   }
 
+  void _onPop() {
+    context.read<InterviewBloc>().add(InterviewCompletedEvent(id: widget.interview.id));
+    context.read<QuizBloc>().add(
+      QuizEventFinished(
+        answers: context.read<AnswerCubit>().state,
+        interviewId: widget.interview.id,
+        candidateId: (context.read<AuthenticationBloc>().state
+        as AuthenticatedState)
+            .currentUser
+            .candidateId,
+      ),
+    );
+  }
+
   void _decrementTimer(timer) {
     if (currentDuration.inMinutes == 0) {
       timer.cancel();
-      context.read<InterviewBloc>().add(InterviewCompletedEvent(id: widget.interview.id));
-      context.read<QuizBloc>().add(
-            QuizEventFinished(
-              answers: context.read<AnswerCubit>().state,
-              interviewId: widget.interview.id,
-              candidateId: (context.read<AuthenticationBloc>().state
-                      as AuthenticatedState)
-                  .currentUser
-                  .candidateId,
-            ),
-          );
+      _onPop();
     } else {
       setState(() {
         currentDuration -= const Duration(minutes: 1);
