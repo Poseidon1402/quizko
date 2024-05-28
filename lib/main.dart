@@ -9,6 +9,8 @@ import 'core/app_routes.dart';
 import 'core/utils/services/injections.dart';
 import 'features/auth/presentation/bloc/authentication_bloc.dart';
 import 'features/home/presentation/bloc/interview_bloc.dart';
+import 'features/quiz/presentation/bloc/answer_cubit.dart';
+import 'features/quiz/presentation/bloc/quiz_bloc.dart';
 
 void main() async {
   setup();
@@ -41,6 +43,10 @@ class _MyAppState extends State<MyApp> {
       providers: [
         BlocProvider(create: (_) => sl<AuthenticationBloc>()),
         BlocProvider(create: (_) => sl<InterviewBloc>()),
+        BlocProvider(
+          create: (_) => sl<QuizBloc>(),
+        ),
+        BlocProvider(create: (context) => AnswerCubit()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(428, 926),

@@ -48,7 +48,7 @@ class MarkScreen extends StatelessWidget {
                   width: MediaQuery.sizeOf(context).width * 0.95,
                   height: MediaQuery.sizeOf(context).height * 0.5,
                 ),
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(30),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(24),
                   gradient: const LinearGradient(
@@ -155,7 +155,14 @@ class MarkScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Image.asset('assets/images/trophy.png'),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Image.asset(
+                'assets/images/trophy.png',
+                width: 300.w,
+                height: 300.h,
+              ),
+            ),
           ],
         ),
       ),

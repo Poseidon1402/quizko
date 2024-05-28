@@ -14,7 +14,6 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
       : super(
           QuizStateLoaded(
             currentQuestionIndex: 0,
-            userAnswers: const [],
           ),
         ) {
     on<QuizEventNextQuestion>(_handleNextQuestionEvent);
@@ -28,31 +27,25 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     emit(
       QuizStateLoaded(
         currentQuestionIndex: currentState.currentQuestionIndex + 1,
-        userAnswers: currentState.userAnswers,
       ),
     );
   }
 
   void _handleAnswerEvent(QuizEventAnswered event, Emitter<QuizState> emit) {
     final currentState = state as QuizStateLoaded;
-    final userAnswers = currentState.userAnswers;
+
     emit(
       QuizStateLoaded(
         currentQuestionIndex: currentState.currentQuestionIndex,
-        userAnswers: [
-          ...userAnswers,
-          {
-            'question_id': currentState.currentQuestionIndex,
-            'answer_id': event.answerId
-          }
-        ],
       ),
     );
   }
 
   void _handleFinishEvent(
       QuizEventFinished event, Emitter<QuizState> emit) async {
+    final currentIndex = (state as QuizStateLoaded).currentQuestionIndex;
     emit(QuizStateLoading());
+
     final result = await fetchMark(
       answers: event.answers,
       candidateId: event.candidateId,
@@ -60,8 +53,22 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     );
 
     result.fold(
-      (failure) => emit(QuizStateError(failure: failure)),
-      (mark) => emit(QuizStateFinished(mark: mark)),
+      (failure) {
+        emit(QuizStateError(failure: failure));
+        emit(
+          QuizStateLoaded(
+            currentQuestionIndex: currentIndex,
+          ),
+        );
+      },
+      (mark) {
+        emit(QuizStateFinished(mark: mark));
+        emit(
+          QuizStateLoaded(
+            currentQuestionIndex: 0,
+          ),
+        );
+      },
     );
   }
 }

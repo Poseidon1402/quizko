@@ -89,17 +89,18 @@ class InterviewSourceImpl implements InterviewSource {
     required List<Map<String, int>> answers,
   }) async {
     try {
-      http.Response response =
-          await client.post(Uri.http(ApiConfig.baseUrl, '/api/answer'),
-              body: json.encode({
-                'candidate_id': candidateId,
-                'interview_id': interviewId,
-                'candidate_answers': answers,
-              }),
-              headers: {
-            HttpHeaders.contentTypeHeader: 'application/json',
-            HttpHeaders.authorizationHeader: 'Bearer $token',
-          });
+      http.Response response = await client.post(
+        Uri.http(ApiConfig.baseUrl, '/api/answer'),
+        body: json.encode({
+          'candidate_id': candidateId,
+          'interview_id': interviewId,
+          'candidate_answers': answers,
+        }),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
 
       if (isSuccess(response.statusCode)) {
         final mark = json.decode(response.body);

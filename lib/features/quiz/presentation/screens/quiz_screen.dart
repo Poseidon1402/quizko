@@ -39,7 +39,7 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void initState() {
     currentDuration = widget.interview.duration;
-    timer = Timer.periodic(const Duration(minutes: 1), _decrementTimer);
+    timer = Timer.periodic(const Duration(seconds: 1), _decrementTimer);
     super.initState();
   }
 
@@ -51,146 +51,136 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<QuizBloc>(
-          create: (context) => QuizBloc(
-            fetchMark: sl(),
-          ),
-        ),
-        BlocProvider(create: (context) => AnswerCubit()),
-      ],
-      child: BlocConsumer<QuizBloc, QuizState>(
-        listener: (context, state) {
-          if (state is QuizStateFinished) {
-            context.pushReplacement(Routes.mark, extra: state.mark);
-          } else if (state is QuizStateLoaded) {
-            setState(() => currentIndex = state.currentQuestionIndex);
-          } else if (state is QuizStateError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              myAppSnackBar(
-                context: context,
-                message: state.failure.message,
-                backgroundColor: AppColor.red1,
-              ),
-            );
-          }
-        },
-        builder: (context, state) {
-          return Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              scrolledUnderElevation: 0.0,
-              leading: IconButton.outlined(
-                onPressed: _onPop,
-                style: IconButton.styleFrom(
-                    side: BorderSide(color: Colors.white.withOpacity(0.18)),
-                    padding: const EdgeInsets.all(10)),
-                icon: const Icon(
-                  Icons.arrow_back_ios_new,
-                  size: 20,
-                  color: Colors.white,
-                ),
-              ),
-              actions: [
-                Chip(
-                  elevation: 0.0,
-                  backgroundColor: AppColor.blue4,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(49)),
-                  avatar: SvgPicture.asset('assets/icons/timer.svg'),
-                  label: Text(
-                    DateConverterService.formatDuration(currentDuration),
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary),
-                  ),
-                  side: BorderSide.none,
-                ),
-                const Gap(10),
-                Chip(
-                  elevation: 0.0,
-                  backgroundColor: AppColor.blue4,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(49)),
-                  avatar: SvgPicture.asset('assets/icons/timer.svg'),
-                  label: Text(
-                    '20',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary),
-                  ),
-                  side: BorderSide.none,
-                ),
-                const Gap(10),
-              ],
-            ),
-            body: ConstrainedBox(
-              constraints: const BoxConstraints.expand(),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Question ',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onPrimary),
-                          ),
-                          TextSpan(
-                            text: (currentIndex + 1).toString().padLeft(2, '0'),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge
-                                ?.copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                          ),
-                          TextSpan(
-                            text: '/20',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  color: AppColor.purple5,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Gap(10),
-                    GradientProgressBar(
-                      percentage: (currentIndex + 1) /
-                          widget.interview.subject.questions.length,
-                    ),
-                    const Gap(20),
-                    Expanded(
-                      child: QuestionBody(
-                        interview: widget.interview,
-                        currentIndex: currentIndex,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+    return BlocConsumer<QuizBloc, QuizState>(
+      listener: (context, state) {
+        if (state is QuizStateFinished) {
+          context.read<AnswerCubit>().reinitializeAnswer();
+          context.pushReplacement(Routes.mark, extra: state.mark);
+        } else if (state is QuizStateLoaded) {
+          setState(() => currentIndex = state.currentQuestionIndex);
+        } else if (state is QuizStateError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            myAppSnackBar(
+              context: context,
+              message: state.failure.message,
+              backgroundColor: AppColor.red1,
             ),
           );
-        },
-      ),
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            scrolledUnderElevation: 0.0,
+            leading: IconButton.outlined(
+              onPressed: _onPop,
+              style: IconButton.styleFrom(
+                  side: BorderSide(color: Colors.white.withOpacity(0.18)),
+                  padding: const EdgeInsets.all(10)),
+              icon: const Icon(
+                Icons.arrow_back_ios_new,
+                size: 20,
+                color: Colors.white,
+              ),
+            ),
+            actions: [
+              Chip(
+                elevation: 0.0,
+                backgroundColor: AppColor.blue4,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(49)),
+                avatar: SvgPicture.asset('assets/icons/timer.svg'),
+                label: Text(
+                  DateConverterService.formatDuration(currentDuration),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary),
+                ),
+                side: BorderSide.none,
+              ),
+              const Gap(10),
+              Chip(
+                elevation: 0.0,
+                backgroundColor: AppColor.blue4,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(49)),
+                avatar: SvgPicture.asset('assets/icons/timer.svg'),
+                label: Text(
+                  '${widget.interview.subject.questions.length}',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary),
+                ),
+                side: BorderSide.none,
+              ),
+              const Gap(10),
+            ],
+          ),
+          body: ConstrainedBox(
+            constraints: const BoxConstraints.expand(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Question ',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimary),
+                        ),
+                        TextSpan(
+                          text: (currentIndex + 1).toString().padLeft(2, '0'),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(
+                                color:
+                                    Theme.of(context).colorScheme.onPrimary,
+                                fontWeight: FontWeight.w700,
+                              ),
+                        ),
+                        TextSpan(
+                          text: '/20',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                color: AppColor.purple5,
+                              ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Gap(10),
+                  GradientProgressBar(
+                    percentage: (currentIndex + 1) /
+                        widget.interview.subject.questions.length,
+                  ),
+                  const Gap(20),
+                  Expanded(
+                    child: QuestionBody(
+                      interview: widget.interview,
+                      currentIndex: currentIndex,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
   void _onPop() {
-    context.pop();
     context.read<InterviewBloc>().add(InterviewCompletedEvent(id: widget.interview.id));
     context.read<QuizBloc>().add(
       QuizEventFinished(

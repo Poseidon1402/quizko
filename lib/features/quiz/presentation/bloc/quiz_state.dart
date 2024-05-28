@@ -9,11 +9,9 @@ class QuizStateLoading extends QuizState {}
 
 class QuizStateLoaded extends QuizState {
   final int currentQuestionIndex;
-  final List<Map<String, int>> userAnswers;
 
   QuizStateLoaded({
     required this.currentQuestionIndex,
-    this.userAnswers = const [],
   });
 
   QuizStateLoaded copyWith({
@@ -22,12 +20,11 @@ class QuizStateLoaded extends QuizState {
   }) {
     return QuizStateLoaded(
       currentQuestionIndex: currentQuestionIndex ?? this.currentQuestionIndex,
-      userAnswers: userAnswers ?? this.userAnswers,
     );
   }
 
   @override
-  List<Object?> get props => [currentQuestionIndex, userAnswers];
+  List<Object?> get props => [currentQuestionIndex];
 }
 
 class QuizStateError extends QuizState {
