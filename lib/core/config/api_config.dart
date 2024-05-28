@@ -1,3 +1,3 @@
 abstract class ApiConfig {
-  static const String baseUrl = '192.168.1.103:3001';
+  static String baseUrl = '192.168.43.49:3001';
 }

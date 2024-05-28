@@ -190,6 +190,7 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   void _onPop() {
+    context.pop();
     context.read<InterviewBloc>().add(InterviewCompletedEvent(id: widget.interview.id));
     context.read<QuizBloc>().add(
       QuizEventFinished(
