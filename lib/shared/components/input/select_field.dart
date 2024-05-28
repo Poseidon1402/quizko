@@ -17,6 +17,7 @@ class SelectField extends StatelessWidget {
   final Color dropdownColor;
   final String? Function(dynamic)? validator;
   final String? hintText;
+  final bool enabled;
   final Color fontColor;
   final EdgeInsetsGeometry? contentPadding;
 
@@ -29,6 +30,7 @@ class SelectField extends StatelessWidget {
     this.iconColor = AppColor.grey1,
     this.filledColor = AppColor.white2,
     this.iconSize,
+    this.enabled = true,
     this.borderRadius = 16,
     this.textColor = AppColor.grey1,
     this.dropdownBorderRadius = 16,
@@ -58,6 +60,7 @@ class SelectField extends StatelessWidget {
         hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
           color: fontColor,
         ),
+        enabled: enabled,
         contentPadding: contentPadding,
         filled: true,
         fillColor: filledColor,

@@ -1,14 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../core/utils/colors/app_color.dart';
 import '../../../../shared/components/buttons/custom_elevated_button.dart';
 import '../../../../shared/components/input/custom_text_form_field.dart';
 import '../../../../shared/components/input/select_field.dart';
+import '../../../auth/presentation/bloc/authentication_bloc.dart';
 
-class AccountScreen extends StatelessWidget {
+class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
+
+  @override
+  State<AccountScreen> createState() => _AccountScreenState();
+}
+
+class _AccountScreenState extends State<AccountScreen> {
+  late final TextEditingController _registrationNumberController;
+  late final TextEditingController _nameController;
+  late final TextEditingController _emailController;
+  late String _gender;
+
+  initForm() {
+    final currentUser = (context.read<AuthenticationBloc>().state as AuthenticatedState).currentUser;
+    _registrationNumberController = TextEditingController(text: currentUser.registrationNumber);
+    _nameController = TextEditingController(text: currentUser.fullName);
+    _emailController = TextEditingController(text: currentUser.email);
+    print(currentUser.gender);
+    _gender = currentUser.gender;
+  }
+
+  @override
+  void initState() {
+    initForm();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,37 +85,42 @@ class AccountScreen extends StatelessWidget {
                       ),
                     ),
                     const Gap(20),
-                    const CustomTextFormField(
-                      label: 'First Name',
+                    CustomTextFormField(
+                      controller: _registrationNumberController,
+                      readOnly: true,
+                      showCursor: false,
+                      label: 'Registration Number',
                     ),
                     const Gap(20),
-                    const CustomTextFormField(
-                      label: 'Last Name',
+                    CustomTextFormField(
+                      controller: _nameController,
+                      keyboardType: TextInputType.name,
+                      readOnly: true,
+                      showCursor: false,
+                      label: 'Full Name',
                     ),
                     const Gap(20),
-                    const CustomTextFormField(
-                      label: 'Number',
-                    ),
-                    const Gap(20),
-                    const CustomTextFormField(
+                    CustomTextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      readOnly: true,
+                      showCursor: false,
                       label: 'Email',
                     ),
                     const Gap(20),
-                    const CustomTextFormField(
-                      label: 'Phone Number',
-                    ),
-                    const Gap(20),
                     SelectField(
+                      value: _gender,
+                      contentPadding: const EdgeInsets.all(10),
                       onChanged: (value) {},
                       hintText: 'Gender',
                       icon: Icons.keyboard_arrow_down,
                       items: const [
                         DropdownMenuItem(
-                          value: 'Male',
+                          value: 'masculine',
                           child: Text('Male'),
                         ),
                         DropdownMenuItem(
-                          value: 'Female',
+                          value: 'feminine',
                           child: Text('Female'),
                         ),
                       ],

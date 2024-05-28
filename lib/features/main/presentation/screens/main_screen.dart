@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/utils/colors/app_color.dart';
 import '../../../../core/utils/constants/main_tab.dart';
 import '../../../../core/utils/services/injections.dart';
+import '../../../auth/presentation/bloc/authentication_bloc.dart';
 import '../../../home/presentation/bloc/interview_bloc.dart';
 import '../components/bottom_app_bar_item.dart';
 
@@ -31,8 +32,13 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final id = (context.read<AuthenticationBloc>().state as AuthenticatedState)
+        .currentUser
+        .candidateId;
+
     return BlocProvider(
-      create: (_) => sl<InterviewBloc>()..add(FetchInterviewsEvent()),
+      create: (_) =>
+          sl<InterviewBloc>()..add(FetchInterviewsEvent(candidateId: id)),
       child: Scaffold(
         body: widget.navigationShell,
         extendBody: true,
@@ -54,10 +60,10 @@ class _MainScreenState extends State<MainScreen> {
                 label: 'Home',
               ),
               BottomAppBarItem(
-                  onTap: () {
-                    setState(() => currentIndex = MainTab.result);
-                    widget.navigationShell.goBranch(MainTab.result);
-                  },
+                onTap: () {
+                  setState(() => currentIndex = MainTab.result);
+                  widget.navigationShell.goBranch(MainTab.result);
+                },
                 icon: 'results',
                 isSelected: currentIndex == MainTab.result,
                 label: 'Result',

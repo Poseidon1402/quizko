@@ -138,10 +138,10 @@ class MarkScreen extends StatelessWidget {
                     FractionallySizedBox(
                       widthFactor: 0.95,
                       child: CustomElevatedButton(
-                        onPressed: () {},
+                        onPressed: () => context.go(Routes.home),
                         borderRadius: 24,
                         child: Text(
-                          'Finish',
+                          'Done',
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium

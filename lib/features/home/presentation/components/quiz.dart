@@ -96,14 +96,14 @@ class Quiz extends StatelessWidget {
                       ),
                       const Gap(10),
                       Chip(
-                        backgroundColor: AppColor.green1,
-                        avatar: const Icon(
+                        backgroundColor: interview.isCompleted ? AppColor.green1 : AppColor.purple3,
+                        avatar: interview.isCompleted ? const Icon(
                           Icons.check,
                           size: 16,
                           color: AppColor.white1,
-                        ),
+                        ) : SvgPicture.asset('assets/icons/new_quiz.svg'),
                         label: Text(
-                          'Completed',
+                          interview.isCompleted ? 'Completed' : 'New',
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall

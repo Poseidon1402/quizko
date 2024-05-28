@@ -7,6 +7,7 @@ class InterviewModel extends InterviewEntity {
     required super.id,
     required super.name,
     required super.duration,
+    super.isCompleted = false,
     required super.subject,
   });
 

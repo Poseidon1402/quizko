@@ -17,18 +17,19 @@ class InterviewRepositoryImpl implements InterviewRepository {
   });
 
   @override
-  Future<Either<Failure, List<InterviewEntity>>> fetchInterviews() async {
+  Future<Either<Failure, List<InterviewEntity>>> fetchInterviews({required int candidateId}) async {
     try {
       final token = await secureStorage.read(key: 'token');
       final data = await source.fetchInterviews(token!);
       List<InterviewEntity> interviews = [];
 
       for (InterviewEntity interview in data) {
-        final questions = await source.fetchRelatedQuestions(
-            token: token, subjectId: interview.subject.id);
+        final questions = await source.fetchRelatedQuestions(token: token, subjectId: interview.subject.id);
+        final isCompleted = await source.isAlreadyCompleted(token: token, interviewId: interview.id, candidateId: candidateId);
         interviews.add(
           interview.copyWith(
             subject: interview.subject.copyWith(questions: questions),
+            isCompleted: isCompleted,
           ),
         );
       }

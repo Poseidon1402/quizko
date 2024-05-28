@@ -4,7 +4,7 @@ import '../../../../core/error/failures.dart';
 import '../entity/interview_entity.dart';
 
 abstract class InterviewRepository {
-  Future<Either<Failure, List<InterviewEntity>>> fetchInterviews();
+  Future<Either<Failure, List<InterviewEntity>>> fetchInterviews({required int candidateId});
   Future<Either<Failure, int>> getMarks({
     required int interviewId,
     required int candidateId,

@@ -5,7 +5,7 @@ import '../entity/interview_entity.dart';
 import '../repository/interview_repository.dart';
 
 abstract class FetchInterviews {
-  Future<Either<Failure, List<InterviewEntity>>> call();
+  Future<Either<Failure, List<InterviewEntity>>> call({required int candidateId});
 }
 
 class FetchInterviewsImpl implements FetchInterviews {
@@ -14,7 +14,7 @@ class FetchInterviewsImpl implements FetchInterviews {
   FetchInterviewsImpl({required this.repository});
 
   @override
-  Future<Either<Failure, List<InterviewEntity>>> call() {
-    return repository.fetchInterviews();
+  Future<Either<Failure, List<InterviewEntity>>> call({required int candidateId}) {
+    return repository.fetchInterviews(candidateId: candidateId);
   }
 }

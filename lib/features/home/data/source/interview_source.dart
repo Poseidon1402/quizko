@@ -21,6 +21,11 @@ abstract class InterviewSource {
     required int candidateId,
     required List<Map<String, int>> answers,
   });
+  Future<bool> isAlreadyCompleted({
+    required String token,
+    required int interviewId,
+    required int candidateId,
+  });
 }
 
 class InterviewSourceImpl implements InterviewSource {
@@ -100,6 +105,37 @@ class InterviewSourceImpl implements InterviewSource {
         final mark = json.decode(response.body);
 
         return mark['total_points'];
+      } else {
+        throw ServerException();
+      }
+    } on http.ClientException {
+      throw InternetConnectionException();
+    } on SocketException {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<bool> isAlreadyCompleted({
+    required String token,
+    required int interviewId,
+    required int candidateId,
+  }) async {
+    try {
+      http.Response response = await client.get(
+        Uri.http(
+          ApiConfig.baseUrl,
+          '/api/is-student-passed/$interviewId/$candidateId',
+        ),
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+
+      if (isSuccess(response.statusCode)) {
+        final data = json.decode(response.body);
+
+        return data['exists'];
       } else {
         throw ServerException();
       }
