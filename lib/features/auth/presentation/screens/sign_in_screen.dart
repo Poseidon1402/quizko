@@ -51,7 +51,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     const Gap(10),
                     CustomTextFormField(
                       controller: ipAddressController,
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.text,
                       hintText: 'IP Address',
                     ),
                   ],

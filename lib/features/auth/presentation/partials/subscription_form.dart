@@ -10,6 +10,7 @@ import '../../../../core/utils/constants/routes.dart';
 import '../../../../core/validator/form_validators.dart';
 import '../../../../shared/components/buttons/custom_elevated_button.dart';
 import '../../../../shared/components/input/custom_text_form_field.dart';
+import '../../../../shared/components/input/select_field.dart';
 import '../../../../shared/components/others/app_snackbar.dart';
 import '../../data/models/user_model.dart';
 import '../bloc/authentication_bloc.dart';
@@ -22,13 +23,15 @@ class SubscriptionForm extends StatefulWidget {
 }
 
 class _SubscriptionFormState extends State<SubscriptionForm> {
+  final List<String> _registrationId = [
+    'HF',
+  ];
+  String? _regId = null;
   final _formKey = GlobalKey<FormState>();
   final _registrationNumberController = TextEditingController();
   final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  bool _isObscure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +53,39 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
         key: _formKey,
         child: Column(
           children: [
-            CustomTextFormField(
-              controller: _registrationNumberController,
-              hintText: 'Registration number',
-              validator: isFourDigitNumber,
-              keyboardType: const TextInputType.numberWithOptions(),
-              textInputAction: TextInputAction.done,
-              borderRadius: 24.0,
+            Row(
+              children: [
+                Expanded(
+                  child: CustomTextFormField(
+                    controller: _registrationNumberController,
+                    hintText: 'Registration number',
+                    keyboardType: const TextInputType.numberWithOptions(),
+                    textInputAction: TextInputAction.done,
+                    borderRadius: 24.0,
+                  ),
+                ),
+                const Gap(10),
+                Expanded(
+                  child: SelectField(
+                    value: _regId,
+                    contentPadding: const EdgeInsets.all(15),
+                    borderRadius: 24.0,
+                    onChanged: (value) => _regId = value,
+                    dropdownColor: AppColor.white2,
+                    items: _registrationId
+                        .map(
+                          (id) => DropdownMenuItem(
+                            value: id,
+                            child: Text(
+                              id,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ],
             ),
             const Gap(20),
             CustomTextFormField(
@@ -82,7 +111,6 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
               hintText: 'Password',
               keyboardType: TextInputType.visiblePassword,
               validator: (value) => length(value, min: 6, max: 50),
-              obscureText: _isObscure,
               textInputAction: TextInputAction.done,
               borderRadius: 24.0,
             ),
@@ -124,7 +152,7 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
       context.read<AuthenticationBloc>().add(
             SubscribeUserEvent(
               newUser: UserModel(
-                registrationNumber: _registrationNumberController.text,
+                registrationNumber: '${_regId != null ? '${_regId}_' : ''}${_registrationNumberController.text}',
                 fullName: _fullNameController.text,
                 email: _emailController.text,
                 password: _passwordController.text,
