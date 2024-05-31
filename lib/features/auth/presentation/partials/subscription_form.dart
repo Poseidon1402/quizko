@@ -23,8 +23,10 @@ class SubscriptionForm extends StatefulWidget {
 }
 
 class _SubscriptionFormState extends State<SubscriptionForm> {
-  final List<String> _registrationId = [
+  final List<String?> _registrationId = [
     'HF',
+    'H-Tol',
+    null
   ];
   String? _regId = null;
   final _formKey = GlobalKey<FormState>();
@@ -77,7 +79,7 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
                           (id) => DropdownMenuItem(
                             value: id,
                             child: Text(
-                              id,
+                              id ?? 'None',
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ),
