@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
-import '../../../../core/utils/colors/app_color.dart';
 import '../../../../shared/components/buttons/custom_elevated_button.dart';
 import '../../../../shared/components/input/select_field.dart';
-import '../../components/quiz.dart';
 
 class ResultScreen extends StatelessWidget {
   const ResultScreen({super.key});
