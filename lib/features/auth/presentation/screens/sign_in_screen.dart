@@ -86,9 +86,6 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-      ),
       backgroundColor: AppColor.purple3,
       body: ConstrainedBox(
         constraints: const BoxConstraints.expand(),
@@ -110,6 +107,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       child: ListView(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         children: [
+                          const Gap(75),
                           SvgPicture.asset('assets/logo/logo_2.svg'),
                           const Gap(50),
                           Text(
