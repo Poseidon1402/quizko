@@ -5,12 +5,14 @@ class QuestionModel extends QuestionEntity {
   const QuestionModel({
     required super.id,
     required super.label,
+    required super.point,
     required super.answers,
   });
 
   factory QuestionModel.fromJson(Map<String, dynamic> json) => QuestionModel(
         id: json['id'],
         label: json['question'],
+        point: json['point'],
         answers: (json['answers'] as List<dynamic>)
             .map((answer) => AnswerModel.fromJson(answer))
             .toList(),

@@ -9,7 +9,6 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/utils/colors/app_color.dart';
 import '../../../../core/utils/constants/routes.dart';
 import '../../../../core/utils/services/date_converter_service.dart';
-import '../../../../core/utils/services/injections.dart';
 import '../../../../shared/components/others/app_snackbar.dart';
 import '../../../../shared/components/others/grdient_progress_bar.dart';
 import '../../../auth/presentation/bloc/authentication_bloc.dart';
@@ -31,7 +30,7 @@ class QuizScreen extends StatefulWidget {
   State<QuizScreen> createState() => _QuizScreenState();
 }
 
-class _QuizScreenState extends State<QuizScreen> {
+class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
   late Duration currentDuration;
   int currentIndex = 0;
   late Timer timer;
@@ -39,45 +38,49 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void initState() {
     currentDuration = widget.interview.duration;
-    timer = Timer.periodic(const Duration(minutes: 1), _decrementTimer);
+    timer = Timer.periodic(const Duration(seconds: 1), _decrementTimer);
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
   @override
   void dispose() {
     timer.cancel();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.inactive) {
+      _onPop();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<QuizBloc>(
-          create: (context) => QuizBloc(
-            fetchMark: sl(),
-          ),
-        ),
-        BlocProvider(create: (context) => AnswerCubit()),
-      ],
-      child: BlocConsumer<QuizBloc, QuizState>(
-        listener: (context, state) {
-          if (state is QuizStateFinished) {
-            context.pushReplacement(Routes.mark, extra: state.mark);
-          } else if (state is QuizStateLoaded) {
-            setState(() => currentIndex = state.currentQuestionIndex);
-          } else if (state is QuizStateError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              myAppSnackBar(
-                context: context,
-                message: state.failure.message,
-                backgroundColor: AppColor.red1,
-              ),
-            );
-          }
-        },
-        builder: (context, state) {
-          return Scaffold(
+    return BlocConsumer<QuizBloc, QuizState>(
+      listener: (context, state) {
+        if (state is QuizStateFinished) {
+          context.read<AnswerCubit>().reinitializeAnswer();
+          context.pushReplacement(Routes.mark, extra: state.mark);
+        } else if (state is QuizStateLoaded) {
+          setState(() => currentIndex = state.currentQuestionIndex);
+        } else if (state is QuizStateError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            myAppSnackBar(
+              context: context,
+              message: state.failure.message,
+              backgroundColor: AppColor.red1,
+            ),
+          );
+        }
+      },
+      builder: (context, state) {
+        return PopScope(
+          canPop: false,
+          child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.primary,
             appBar: AppBar(
               backgroundColor: Colors.transparent,
@@ -115,7 +118,7 @@ class _QuizScreenState extends State<QuizScreen> {
                       borderRadius: BorderRadius.circular(49)),
                   avatar: SvgPicture.asset('assets/icons/timer.svg'),
                   label: Text(
-                    '20',
+                    '${widget.interview.subject.questions.length}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Theme.of(context).colorScheme.onPrimary),
                   ),
@@ -183,14 +186,13 @@ class _QuizScreenState extends State<QuizScreen> {
                 ),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
   void _onPop() {
-    context.pop();
     context.read<InterviewBloc>().add(InterviewCompletedEvent(id: widget.interview.id));
     context.read<QuizBloc>().add(
       QuizEventFinished(
@@ -205,12 +207,12 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   void _decrementTimer(timer) {
-    if (currentDuration.inMinutes == 0) {
+    if (currentDuration.inMinutes == 0 && currentDuration.inSeconds == 0) {
       timer.cancel();
       _onPop();
     } else {
       setState(() {
-        currentDuration -= const Duration(minutes: 1);
+        currentDuration -= const Duration(seconds: 1);
       });
     }
   }
