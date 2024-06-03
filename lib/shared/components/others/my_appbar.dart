@@ -2,9 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../../core/utils/colors/app_color.dart';
 import '../input/custom_text_form_field.dart';
 
 AppBar myAppBar(BuildContext context, {GlobalKey<ScaffoldState>? key}) {

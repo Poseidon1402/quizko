@@ -20,6 +20,8 @@ class CustomTextFormField extends StatelessWidget {
   final bool showCursor;
   final int? maxLines;
   final int? minLines;
+  final String? label;
+  final Color? labelColor;
   final BorderSide? focusedBorderSide;
   final EdgeInsetsGeometry? contentPadding;
   final FocusNode? focusNode;
@@ -29,7 +31,7 @@ class CustomTextFormField extends StatelessWidget {
 
   const CustomTextFormField({
     super.key,
-    this.backgroundColor,
+    this.backgroundColor = AppColor.white2,
     this.hintTextColor,
     this.contentPadding,
     this.readOnly = false,
@@ -47,6 +49,8 @@ class CustomTextFormField extends StatelessWidget {
     this.validator,
     this.maxLines = 1,
     this.minLines,
+    this.label,
+    this.labelColor = AppColor.purple3,
     this.filled = true,
     this.focusedBorderSide,
     this.focusNode,
@@ -73,10 +77,15 @@ class CustomTextFormField extends StatelessWidget {
       onChanged: onChanged,
       textInputAction: textInputAction,
       decoration: InputDecoration(
+        labelText: label,
+        labelStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: labelColor,
+        ),
         hintStyle: hintTextStyle ?? Theme.of(context)
             .textTheme
             .bodySmall
             ?.copyWith(color: hintTextColor),
+        alignLabelWithHint: true,
         hintText: hintText,
         filled: filled,
         fillColor: backgroundColor,
