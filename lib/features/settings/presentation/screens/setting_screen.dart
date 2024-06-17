@@ -38,8 +38,9 @@ class SettingScreen extends StatelessWidget {
                 title: Text('Rate App', style: Theme.of(context).textTheme.bodyMedium,),
               ),
               ListTile(
-                leading: const Icon(Icons.lock_outline),
-                title: Text('Privacy Policy', style: Theme.of(context).textTheme.bodyMedium,),
+                onTap: () => context.push(Routes.about),
+                leading: const Icon(Icons.info_outline),
+                title: Text('About', style: Theme.of(context).textTheme.bodyMedium,),
               ),
               const Gap(10),
               Text(

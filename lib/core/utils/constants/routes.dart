@@ -10,4 +10,5 @@ abstract class Routes {
   static const updatePassword = '/update/password';
   static const quiz = '/quiz';
   static const mark = '/mark';
+  static const about = '/about';
 }
