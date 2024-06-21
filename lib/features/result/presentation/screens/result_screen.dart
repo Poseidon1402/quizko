@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../shared/components/buttons/custom_elevated_button.dart';
 import '../../../../shared/components/input/select_field.dart';
+import '../../../home/presentation/bloc/interview_bloc.dart';
+import '../../components/quiz.dart';
 
 class ResultScreen extends StatelessWidget {
   const ResultScreen({super.key});
@@ -82,13 +85,23 @@ class ResultScreen extends StatelessWidget {
               ],
             ),
             const Gap(20),
-            /*Expanded(
-              child: ListView.separated(
-                itemBuilder: (context, index) => const Quiz(),
-                separatorBuilder: (context, index) => const Gap(15),
-                itemCount: 5,
+            Expanded(
+              child: BlocBuilder<InterviewBloc, InterviewState>(
+                builder: (context, state) {
+                  if (state is LoadingState || state is InitialState) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if(state is InterviewsLoaded) {
+                    return ListView.separated(
+                      itemBuilder: (_, index) => const Quiz(),
+                      itemCount: state.interviews.length,
+                      separatorBuilder: (_, index) => const Gap(15),
+                    );
+                  } else {
+                    return const SizedBox();
+                  }
+                },
               ),
-            ),*/
+            ),
           ],
         ),
       ),
