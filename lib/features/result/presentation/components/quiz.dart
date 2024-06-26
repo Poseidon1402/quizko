@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/utils/colors/app_color.dart';
-import '../../../core/utils/constants/routes.dart';
+import '../../../../core/utils/colors/app_color.dart';
+import '../../../../core/utils/constants/routes.dart';
+import '../../../auth/presentation/bloc/authentication_bloc.dart';
+import '../../../home/domain/entity/interview_entity.dart';
+import '../../../home/presentation/bloc/interview_bloc.dart';
 
 class Quiz extends StatelessWidget {
-  const Quiz({super.key});
+  final InterviewEntity interview;
+
+  const Quiz({
+    super.key,
+    required this.interview,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.push(Routes.userAnswer),
+      onTap: () => _onTapped(context),
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Row(
@@ -45,14 +54,17 @@ class Quiz extends StatelessWidget {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: 'Information Technology\n',
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          text: '${interview.name}\n',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontWeight: FontWeight.w700,
+                              ),
                         ),
                         TextSpan(
-                          text: '20 Questions | Quiz',
+                          text: '${interview.subject.questions.length} Questions | Quiz',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -66,7 +78,7 @@ class Quiz extends StatelessWidget {
                         backgroundColor: Colors.transparent,
                         avatar: SvgPicture.asset('assets/icons/clock.svg'),
                         label: Text(
-                          '01:20',
+                          '${interview.duration.inMinutes} : 00',
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall
@@ -83,10 +95,13 @@ class Quiz extends StatelessWidget {
                         ),
                         label: Text(
                           '10',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                fontWeight: FontWeight.w700,
+                              ),
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(24),
@@ -103,10 +118,13 @@ class Quiz extends StatelessWidget {
                         ),
                         label: Text(
                           '4',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                fontWeight: FontWeight.w700,
+                              ),
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(24),
@@ -118,8 +136,7 @@ class Quiz extends StatelessWidget {
                         '50 pts',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: AppColor.green1,
-                            fontWeight: FontWeight.w700
-                        ),
+                            fontWeight: FontWeight.w700),
                       ),
                     ],
                   ),
@@ -140,5 +157,19 @@ class Quiz extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onTapped(BuildContext context) {
+    final candidateId =
+        (context.read<AuthenticationBloc>().state as AuthenticatedState)
+            .currentUser
+            .candidateId;
+    context.read<InterviewBloc>().add(
+          FetchInterviewCorrectionEvent(
+            candidateId: candidateId,
+            interviewId: interview.id,
+          ),
+        );
+    context.push('${Routes.userAnswer}?interview=${interview.id}');
   }
 }

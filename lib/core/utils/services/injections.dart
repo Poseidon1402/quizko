@@ -15,6 +15,8 @@ import '../../../features/home/domain/usecases/fetch_interviews.dart';
 import '../../../features/home/domain/usecases/fetch_marks.dart';
 import '../../../features/home/presentation/bloc/interview_bloc.dart';
 import '../../../features/quiz/presentation/bloc/quiz_bloc.dart';
+import '../../../features/result/data/source/result_source.dart';
+import '../../../features/result/domain/usecases/fetch_corrections.dart';
 
 final sl = GetIt.instance;
 
@@ -27,7 +29,10 @@ void setup() {
     ),
   );
   sl.registerFactory(
-    () => InterviewBloc(fetchInterviews: sl()),
+    () => InterviewBloc(
+      fetchInterviews: sl(),
+      fetchCorrections: sl(),
+    ),
   );
   sl.registerFactory(
     () => QuizBloc(fetchMark: sl()),
@@ -46,6 +51,9 @@ void setup() {
   sl.registerLazySingleton<FetchMarks>(
     () => FetchMarksImpl(repository: sl()),
   );
+  sl.registerLazySingleton<FetchCorrections>(
+    () => FetchCorrectionsImpl(repository: sl()),
+  );
 
   // Repositories
   sl.registerLazySingleton<AuthenticationRepository>(
@@ -55,7 +63,8 @@ void setup() {
     ),
   );
   sl.registerLazySingleton<InterviewRepository>(
-    () => InterviewRepositoryImpl(source: sl(), secureStorage: sl()),
+    () => InterviewRepositoryImpl(
+        interviewSource: sl(), resultSource: sl(), secureStorage: sl()),
   );
 
   // Data Sources
@@ -64,6 +73,9 @@ void setup() {
   );
   sl.registerLazySingleton<InterviewSource>(
     () => InterviewSourceImpl(client: sl()),
+  );
+  sl.registerLazySingleton<ResultSource>(
+    () => ResultSourceImpl(client: sl()),
   );
 
   // Other Services

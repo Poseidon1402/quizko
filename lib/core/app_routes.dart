@@ -156,7 +156,7 @@ abstract class AppRoutes {
           transitionDuration: const Duration(seconds: 1),
           reverseTransitionDuration: const Duration(seconds: 1),
           key: state.pageKey,
-          child: const AnswerScreen(),
+          child: AnswerScreen(interviewId: state.queryParameters['interview'] ?? '',),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: CurveTween(curve: Curves.linear).animate(animation),

@@ -6,7 +6,7 @@ import 'package:gap/gap.dart';
 import '../../../../shared/components/buttons/custom_elevated_button.dart';
 import '../../../../shared/components/input/select_field.dart';
 import '../../../home/presentation/bloc/interview_bloc.dart';
-import '../../components/quiz.dart';
+import '../components/quiz.dart';
 
 class ResultScreen extends StatelessWidget {
   const ResultScreen({super.key});
@@ -90,10 +90,16 @@ class ResultScreen extends StatelessWidget {
                 builder: (context, state) {
                   if (state is LoadingState || state is InitialState) {
                     return const Center(child: CircularProgressIndicator());
-                  } else if(state is InterviewsLoaded) {
+                  } else if (state is InterviewsLoaded) {
                     return ListView.separated(
-                      itemBuilder: (_, index) => const Quiz(),
-                      itemCount: state.interviews.length,
+                      itemBuilder: (_, index) => Quiz(
+                        interview: state.interviews
+                            .where((interview) => interview.isCompleted)
+                            .toList()[index],
+                      ),
+                      itemCount: state.interviews
+                          .where((interview) => interview.isCompleted)
+                          .length,
                       separatorBuilder: (_, index) => const Gap(15),
                     );
                   } else {

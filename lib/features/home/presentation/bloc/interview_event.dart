@@ -22,3 +22,16 @@ class InterviewCompletedEvent extends InterviewEvent {
   @override
   List<Object?> get props => [id];
 }
+
+class FetchInterviewCorrectionEvent extends InterviewEvent {
+  final int candidateId;
+  final int interviewId;
+
+  FetchInterviewCorrectionEvent({
+    required this.candidateId,
+    required this.interviewId,
+  });
+
+  @override
+  List<Object?> get props => [candidateId, interviewId];
+}

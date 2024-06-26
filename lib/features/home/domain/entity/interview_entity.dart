@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../result/domain/entity/result_question_entity.dart';
 import 'subject_entity.dart';
 
 class InterviewEntity extends Equatable {
@@ -8,6 +9,7 @@ class InterviewEntity extends Equatable {
   final Duration duration;
   final bool isCompleted;
   final SubjectEntity subject;
+  final List<ResultQuestionEntity> corrections;
 
   const InterviewEntity({
     required this.id,
@@ -15,6 +17,7 @@ class InterviewEntity extends Equatable {
     required this.duration,
     required this.isCompleted,
     required this.subject,
+    this.corrections = const [],
   });
 
   InterviewEntity copyWith({
@@ -23,6 +26,7 @@ class InterviewEntity extends Equatable {
     Duration? duration,
     bool? isCompleted,
     SubjectEntity? subject,
+    List<ResultQuestionEntity>? corrections,
   }) {
     return InterviewEntity(
       id: id ?? this.id,
@@ -30,6 +34,7 @@ class InterviewEntity extends Equatable {
       isCompleted: isCompleted ?? this.isCompleted,
       duration: duration ?? this.duration,
       subject: subject ?? this.subject,
+      corrections: corrections ?? this.corrections,
     );
   }
 
@@ -40,5 +45,6 @@ class InterviewEntity extends Equatable {
         duration,
         isCompleted,
         subject,
+        corrections,
       ];
 }
