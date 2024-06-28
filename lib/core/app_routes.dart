@@ -63,7 +63,9 @@ abstract class AppRoutes {
           transitionDuration: const Duration(seconds: 1),
           reverseTransitionDuration: const Duration(seconds: 1),
           key: state.pageKey,
-          child: QuizScreen(interview: state.extra as InterviewEntity,),
+          child: QuizScreen(
+            interview: state.extra as InterviewEntity,
+          ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: CurveTween(curve: Curves.linear).animate(animation),
@@ -79,7 +81,9 @@ abstract class AppRoutes {
           transitionDuration: const Duration(seconds: 1),
           reverseTransitionDuration: const Duration(seconds: 1),
           key: state.pageKey,
-          child: MarkScreen(mark: state.extra as int,),
+          child: MarkScreen(
+            mark: state.extra as int,
+          ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: CurveTween(curve: Curves.linear).animate(animation),
@@ -141,7 +145,8 @@ abstract class AppRoutes {
           transitionDuration: const Duration(seconds: 1),
           reverseTransitionDuration: const Duration(seconds: 1),
           key: state.pageKey,
-          child: ForgotPasswordVerificationCodeScreen(email: state.queryParameters['email'] ?? ''),
+          child: ForgotPasswordVerificationCodeScreen(
+              email: state.queryParameters['email'] ?? ''),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: CurveTween(curve: Curves.linear).animate(animation),
@@ -156,7 +161,10 @@ abstract class AppRoutes {
           transitionDuration: const Duration(seconds: 1),
           reverseTransitionDuration: const Duration(seconds: 1),
           key: state.pageKey,
-          child: const CreateNewPasswordScreen(),
+          child: CreateNewPasswordScreen(
+            email: state.queryParameters['email'] ?? '',
+            token: state.queryParameters['token'] ?? '',
+          ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: CurveTween(curve: Curves.linear).animate(animation),
@@ -172,7 +180,9 @@ abstract class AppRoutes {
           transitionDuration: const Duration(seconds: 1),
           reverseTransitionDuration: const Duration(seconds: 1),
           key: state.pageKey,
-          child: AnswerScreen(interviewId: state.queryParameters['interview'] ?? '',),
+          child: AnswerScreen(
+            interviewId: state.queryParameters['interview'] ?? '',
+          ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: CurveTween(curve: Curves.linear).animate(animation),
@@ -219,7 +229,7 @@ abstract class AppRoutes {
                       (context, animation, secondaryAnimation, child) {
                     return FadeTransition(
                       opacity:
-                      CurveTween(curve: Curves.linear).animate(animation),
+                          CurveTween(curve: Curves.linear).animate(animation),
                       child: child,
                     );
                   },
@@ -240,7 +250,7 @@ abstract class AppRoutes {
                       (context, animation, secondaryAnimation, child) {
                     return FadeTransition(
                       opacity:
-                      CurveTween(curve: Curves.linear).animate(animation),
+                          CurveTween(curve: Curves.linear).animate(animation),
                       child: child,
                     );
                   },
@@ -261,7 +271,7 @@ abstract class AppRoutes {
                       (context, animation, secondaryAnimation, child) {
                     return FadeTransition(
                       opacity:
-                      CurveTween(curve: Curves.linear).animate(animation),
+                          CurveTween(curve: Curves.linear).animate(animation),
                       child: child,
                     );
                   },

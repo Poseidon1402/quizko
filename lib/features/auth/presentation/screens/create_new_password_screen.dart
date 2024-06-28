@@ -1,20 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/utils/colors/app_color.dart';
+import '../../../../core/utils/constants/routes.dart';
+import '../../../../core/utils/services/injections.dart';
 import '../../../../core/validator/form_validators.dart';
 import '../../../../shared/components/buttons/custom_elevated_button.dart';
 import '../../../../shared/components/input/custom_text_form_field.dart';
+import '../../../../shared/components/others/app_snackbar.dart';
+import '../../domain/usecases/reset_password.dart';
 
-class CreateNewPasswordScreen extends StatelessWidget {
-  const CreateNewPasswordScreen({super.key});
+class CreateNewPasswordScreen extends StatefulWidget {
+  final String email;
+  final String token;
+
+  const CreateNewPasswordScreen({
+    super.key,
+    required this.email,
+    required this.token,
+  });
+
+  @override
+  State<CreateNewPasswordScreen> createState() =>
+      _CreateNewPasswordScreenState();
+}
+
+class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
+  bool _isLoading = false;
+  final _formKey = GlobalKey<FormState>();
+  final _passwordController = TextEditingController();
+  final _passwordConfirmationController = TextEditingController();
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    _passwordConfirmationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         automaticallyImplyLeading: false,
       ),
@@ -22,6 +53,7 @@ class CreateNewPasswordScreen extends StatelessWidget {
       body: ConstrainedBox(
         constraints: const BoxConstraints.expand(),
         child: Form(
+          key: _formKey,
           child: Stack(
             children: [
               Column(
@@ -52,7 +84,8 @@ class CreateNewPasswordScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                      color: AppColor.purple1.withOpacity(0.18)),
+                                      color:
+                                          AppColor.purple1.withOpacity(0.18)),
                                 ),
                                 child: const Icon(Icons.arrow_back_ios_rounded),
                               ),
@@ -73,25 +106,31 @@ class CreateNewPasswordScreen extends StatelessWidget {
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                           const Gap(30),
-                          const CustomTextFormField(
-                            prefixIcon: Icon(
+                          CustomTextFormField(
+                            controller: _passwordController,
+                            prefixIcon: const Icon(
                               Icons.lock_outline,
                               color: AppColor.grey1,
                             ),
                             obscureText: true,
                             hintText: 'New password',
                             keyboardType: TextInputType.emailAddress,
-                            validator: isRequired,
+                            validator: (value) => length(value, min: 6),
                             textInputAction: TextInputAction.done,
                             borderRadius: 24.0,
                           ),
                           const Gap(20),
-                          const CustomTextFormField(
-                            prefixIcon: Icon(
+                          CustomTextFormField(
+                            controller: _passwordConfirmationController,
+                            prefixIcon: const Icon(
                               Icons.lock_outline,
                               color: AppColor.grey1,
                             ),
                             obscureText: true,
+                            validator: (value) => isTheSamePassword(
+                              _passwordController.text,
+                              value ?? '',
+                            ),
                             hintText: 'Confirm new password',
                             keyboardType: TextInputType.emailAddress,
                             textInputAction: TextInputAction.done,
@@ -99,20 +138,26 @@ class CreateNewPasswordScreen extends StatelessWidget {
                           ),
                           Gap(100.h),
                           CustomElevatedButton(
-                            onPressed: () {},
+                            onPressed: _onButtonTapped,
                             borderRadius: 24.0,
                             backgroundColor:
                                 Theme.of(context).colorScheme.primary,
-                            child: Text(
-                              'Confirm',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.onPrimary,
+                            child: _isLoading
+                                ? const SpinKitWave(
+                                    size: 20,
+                                    color: AppColor.white1,
+                                  )
+                                : Text(
+                                    'Confirm',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary,
+                                        ),
                                   ),
-                            ),
                           ),
                         ],
                       ),
@@ -145,5 +190,29 @@ class CreateNewPasswordScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onButtonTapped() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() => _isLoading = true);
+      final result = await sl<ResetPassword>().call(
+        widget.email,
+        widget.token,
+        _passwordController.text,
+      );
+
+      result.fold(
+        (failure) => ScaffoldMessenger.of(context).showSnackBar(
+          myAppSnackBar(
+            context: context,
+            message: failure.message,
+            backgroundColor: AppColor.red1,
+          ),
+        ),
+        (success) => context.go(Routes.login),
+      );
+
+      setState(() => _isLoading = false);
+    }
   }
 }

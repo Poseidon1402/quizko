@@ -101,15 +101,15 @@ class _ForgotPasswordVerificationCodeScreenState
                               padding: const EdgeInsets.symmetric(vertical: 5),
                               child: PinCodeTextField(
                                 appContext: context,
-                                pastedTextStyle: Theme.of(context).textTheme.bodyLarge,
+                                pastedTextStyle:
+                                    Theme.of(context).textTheme.bodyLarge,
                                 length: 6,
                                 blinkWhenObscuring: true,
                                 animationType: AnimationType.fade,
                                 validator: (value) => length(value, min: 6),
                                 pinTheme: PinTheme(
-                                  shape: PinCodeFieldShape.underline,
-                                  selectedColor: AppColor.purple1
-                                ),
+                                    shape: PinCodeFieldShape.underline,
+                                    selectedColor: AppColor.purple1),
                                 cursorColor: Colors.black,
                                 animationDuration:
                                     const Duration(milliseconds: 300),
@@ -185,7 +185,8 @@ class _ForgotPasswordVerificationCodeScreenState
   void _onButtonTapped() async {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
-      final result = await sl<VerifyResetCode>().call(widget.email, _codeController.text);
+      final result =
+          await sl<VerifyResetCode>().call(widget.email, _codeController.text);
 
       result.fold(
         (failure) => ScaffoldMessenger.of(context).showSnackBar(
@@ -195,7 +196,9 @@ class _ForgotPasswordVerificationCodeScreenState
             backgroundColor: AppColor.red1,
           ),
         ),
-        (success) => context.pushReplacement(Routes.createNewPassword),
+        (success) => context.pushReplacement(
+          '${Routes.createNewPassword}?email=${widget.email}&token=${_codeController.text}',
+        ),
       );
 
       setState(() => _isLoading = false);

@@ -13,6 +13,7 @@ abstract class AuthenticationSource {
   Future<UserModel> authenticate(String email, String password);
   Future<String> forgotPassword(String email);
   Future<String> verifyResetCode(String email, String token);
+  Future<String> resetPassword(String email, String token, String password);
   Future<bool> logout(String token);
 }
 
@@ -101,6 +102,31 @@ class AuthenticationSourceImpl implements AuthenticationSource {
 
       if (isSuccess(response.statusCode)) {
         return 'Valid reset code';
+      } else {
+        throw ServerException();
+      }
+    } on http.ClientException {
+      throw InternetConnectionException();
+    } on SocketException {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<String> resetPassword(String email, String token, String password) async {
+    try {
+      http.Response response = await client.post(
+        Uri.http(ApiConfig.baseUrl, '/api/reset-password'),
+        body: {
+          'email': email,
+          'token': token,
+          'new_password': password,
+        },
+      );
+
+      print(response.statusCode);
+      if (isSuccess(response.statusCode)) {
+        return 'Password reset done';
       } else {
         throw ServerException();
       }

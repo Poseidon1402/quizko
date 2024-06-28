@@ -78,6 +78,20 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
+  Future<Either<Failure, String>> resetPassword(String email, String token, String password) async {
+    try {
+      final message = await source.resetPassword(email, token, password);
+      return Right(message);
+    } on UnauthorizedException {
+      return const Left(ServerFailure(message: 'Email or password invalid'));
+    } on InternetConnectionException {
+      return const Left(NotConnectedFailure());
+    } on ServerException {
+      return const Left(ServerFailure());
+    }
+  }
+
+  @override
   Future<Either<Failure, bool>> logout() async {
     try {
       await source.logout(await secureStorage.read(key: 'token') as String);
