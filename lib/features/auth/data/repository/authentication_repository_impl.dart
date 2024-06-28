@@ -50,6 +50,20 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
+  Future<Either<Failure, String>> forgotPassword(String email) async {
+    try {
+      final message = await source.forgotPassword(email);
+      return Right(message);
+    } on UnauthorizedException {
+      return const Left(ServerFailure(message: 'Email or password invalid'));
+    } on InternetConnectionException {
+      return const Left(NotConnectedFailure());
+    } on ServerException {
+      return const Left(ServerFailure());
+    }
+  }
+
+  @override
   Future<Either<Failure, bool>> logout() async {
     try {
       await source.logout(await secureStorage.read(key: 'token') as String);

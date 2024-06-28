@@ -11,6 +11,7 @@ import '../models/user_model.dart';
 abstract class AuthenticationSource {
   Future<UserModel> subscribeUser(UserModel newUser);
   Future<UserModel> authenticate(String email, String password);
+  Future<String> forgotPassword(String email);
   Future<bool> logout(String token);
 }
 
@@ -58,6 +59,25 @@ class AuthenticationSourceImpl implements AuthenticationSource {
         return UserModel.fromJson(decodedJson['user'], decodedJson['token']);
       } else if (response.statusCode == 401) {
         throw UnauthorizedException();
+      } else {
+        throw ServerException();
+      }
+    } on http.ClientException {
+      throw InternetConnectionException();
+    } on SocketException {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<String> forgotPassword(String email) async {
+    try {
+      http.Response response = await client.post(Uri.http(ApiConfig.baseUrl, '/api/send-reset-code'), body: {
+        'email': email
+      },);
+
+      if(isSuccess(response.statusCode)) {
+        return 'Reinitialization code sent !';
       } else {
         throw ServerException();
       }

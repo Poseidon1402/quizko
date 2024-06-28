@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import '../../../features/auth/data/repository/authentication_repository_impl.dart';
 import '../../../features/auth/data/source/authentication_source.dart';
 import '../../../features/auth/domain/repository/authentication_repository.dart';
+import '../../../features/auth/domain/usecases/forgot_password.dart';
 import '../../../features/auth/domain/usecases/logout.dart';
 import '../../../features/auth/domain/usecases/sign_in.dart';
 import '../../../features/auth/domain/usecases/subscribe_user.dart';
@@ -58,6 +59,9 @@ void setup() {
   );
   sl.registerLazySingleton<Logout>(
     () => LogoutImpl(repository: sl()),
+  );
+  sl.registerLazySingleton<ForgotPassword>(
+    () => ForgotPasswordImpl(repository: sl()),
   );
 
   // Repositories
