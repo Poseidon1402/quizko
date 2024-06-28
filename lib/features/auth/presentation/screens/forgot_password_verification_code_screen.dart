@@ -4,27 +4,34 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:quizko/core/validator/form_validators.dart';
+import 'package:quizko/features/auth/domain/usecases/verify_reset_code.dart';
 
 import '../../../../core/utils/colors/app_color.dart';
 import '../../../../core/utils/constants/routes.dart';
 import '../../../../core/utils/services/injections.dart';
-import '../../../../core/validator/form_validators.dart';
 import '../../../../shared/components/buttons/custom_elevated_button.dart';
-import '../../../../shared/components/input/custom_text_form_field.dart';
 import '../../../../shared/components/others/app_snackbar.dart';
-import '../../domain/usecases/forgot_password.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({super.key});
+class ForgotPasswordVerificationCodeScreen extends StatefulWidget {
+  final String email;
+
+  const ForgotPasswordVerificationCodeScreen({
+    super.key,
+    required this.email,
+  });
 
   @override
-  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+  State<ForgotPasswordVerificationCodeScreen> createState() =>
+      _ForgotPasswordVerificationCodeScreenState();
 }
 
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+class _ForgotPasswordVerificationCodeScreenState
+    extends State<ForgotPasswordVerificationCodeScreen> {
   bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _codeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +84,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             ),
                             const Gap(40),
                             Text(
-                              'Forgot password',
+                              'Verification code',
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
@@ -86,21 +93,37 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   ),
                             ),
                             Text(
-                              'Enter your email address to get an OTP code to reset your password.',
+                              'Enter the verification code that has been sent to your mailbox',
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                             const Gap(30),
-                            CustomTextFormField(
-                              controller: _emailController,
-                              prefixIcon: const Icon(
-                                Icons.email_outlined,
-                                color: AppColor.grey1,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: PinCodeTextField(
+                                appContext: context,
+                                pastedTextStyle: Theme.of(context).textTheme.bodyLarge,
+                                length: 6,
+                                blinkWhenObscuring: true,
+                                animationType: AnimationType.fade,
+                                validator: (value) => length(value, min: 6),
+                                pinTheme: PinTheme(
+                                  shape: PinCodeFieldShape.underline,
+                                  selectedColor: AppColor.purple1
+                                ),
+                                cursorColor: Colors.black,
+                                animationDuration:
+                                    const Duration(milliseconds: 300),
+                                controller: _codeController,
+                                keyboardType: TextInputType.text,
+                                boxShadows: const [
+                                  BoxShadow(
+                                    offset: Offset(0, 1),
+                                    color: Colors.black12,
+                                    blurRadius: 10,
+                                  )
+                                ],
+                                onCompleted: (v) => _onButtonTapped(),
                               ),
-                              hintText: 'Email',
-                              keyboardType: TextInputType.emailAddress,
-                              validator: isEmail,
-                              textInputAction: TextInputAction.done,
-                              borderRadius: 24.0,
                             ),
                             Gap(100.h),
                             CustomElevatedButton(
@@ -114,7 +137,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                       size: 20,
                                     )
                                   : Text(
-                                      'Reset password',
+                                      'Verify',
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodySmall
@@ -160,19 +183,19 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
 
   void _onButtonTapped() async {
-    if(_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
-      final result = await sl<ForgotPassword>().call(_emailController.text);
+      final result = await sl<VerifyResetCode>().call(widget.email, _codeController.text);
 
       result.fold(
-            (failure) => ScaffoldMessenger.of(context).showSnackBar(
+        (failure) => ScaffoldMessenger.of(context).showSnackBar(
           myAppSnackBar(
             context: context,
             message: failure.message,
             backgroundColor: AppColor.red1,
           ),
         ),
-            (success) => context.pushReplacement('${Routes.forgotPasswordCode}?email=${_emailController.text}'),
+        (success) => context.pushReplacement(Routes.createNewPassword),
       );
 
       setState(() => _isLoading = false);

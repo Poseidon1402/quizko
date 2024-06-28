@@ -5,6 +5,7 @@ import '../features/account/presentation/screens/account_screen.dart';
 import '../features/account/presentation/screens/update_password_screen.dart';
 import '../features/auth/presentation/screens/create_new_password_screen.dart';
 import '../features/auth/presentation/screens/forgot_password_screen.dart';
+import '../features/auth/presentation/screens/forgot_password_verification_code_screen.dart';
 import '../features/auth/presentation/screens/sign_in_screen.dart';
 import '../features/auth/presentation/screens/sign_up_screen.dart';
 import '../features/home/domain/entity/interview_entity.dart';
@@ -126,6 +127,21 @@ abstract class AppRoutes {
           reverseTransitionDuration: const Duration(seconds: 1),
           key: state.pageKey,
           child: const AboutScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: CurveTween(curve: Curves.linear).animate(animation),
+              child: child,
+            );
+          },
+        ),
+      ),
+      GoRoute(
+        path: Routes.forgotPasswordCode,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          transitionDuration: const Duration(seconds: 1),
+          reverseTransitionDuration: const Duration(seconds: 1),
+          key: state.pageKey,
+          child: ForgotPasswordVerificationCodeScreen(email: state.queryParameters['email'] ?? ''),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: CurveTween(curve: Curves.linear).animate(animation),

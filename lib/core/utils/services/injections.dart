@@ -9,6 +9,7 @@ import '../../../features/auth/domain/usecases/forgot_password.dart';
 import '../../../features/auth/domain/usecases/logout.dart';
 import '../../../features/auth/domain/usecases/sign_in.dart';
 import '../../../features/auth/domain/usecases/subscribe_user.dart';
+import '../../../features/auth/domain/usecases/verify_reset_code.dart';
 import '../../../features/auth/presentation/bloc/authentication_bloc.dart';
 import '../../../features/home/data/repository/interview_repository_impl.dart';
 import '../../../features/home/data/source/interview_source.dart';
@@ -62,6 +63,9 @@ void setup() {
   );
   sl.registerLazySingleton<ForgotPassword>(
     () => ForgotPasswordImpl(repository: sl()),
+  );
+  sl.registerLazySingleton<VerifyResetCode>(
+    () => VerifyResetCodeImpl(repository: sl()),
   );
 
   // Repositories
