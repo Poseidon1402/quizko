@@ -11,6 +11,7 @@ import '../models/user_model.dart';
 abstract class AuthenticationSource {
   Future<UserModel> subscribeUser(UserModel newUser);
   Future<UserModel> authenticate(String email, String password);
+  Future<bool> logout(String token);
 }
 
 class AuthenticationSourceImpl implements AuthenticationSource {
@@ -57,6 +58,25 @@ class AuthenticationSourceImpl implements AuthenticationSource {
         return UserModel.fromJson(decodedJson['user'], decodedJson['token']);
       } else if (response.statusCode == 401) {
         throw UnauthorizedException();
+      } else {
+        throw ServerException();
+      }
+    } on http.ClientException {
+      throw InternetConnectionException();
+    } on SocketException {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<bool> logout(String token) async {
+    try {
+      http.Response response = await client.post(Uri.http(ApiConfig.baseUrl, '/api/logout'), headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+      });
+
+      if(isSuccess(response.statusCode)) {
+        return true;
       } else {
         throw ServerException();
       }

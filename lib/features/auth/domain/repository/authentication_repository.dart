@@ -7,4 +7,5 @@ import '../entity/user_entity.dart';
 abstract class AuthenticationRepository {
   Future<Either<Failure, UserEntity>> subscribeUser({required UserModel newUser});
   Future<Either<Failure, UserEntity>> authenticate(String email, String password);
+  Future<Either<Failure, bool>> logout();
 }

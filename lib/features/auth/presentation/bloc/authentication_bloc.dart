@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import '../../../../core/utils/enum/error_type.dart';
 import '../../data/models/user_model.dart';
 import '../../domain/entity/user_entity.dart';
+import '../../domain/usecases/logout.dart';
 import '../../domain/usecases/sign_in.dart';
 import '../../domain/usecases/subscribe_user.dart';
 
@@ -14,13 +15,16 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final SubscribeUser subscribeUser;
   final SignIn signIn;
+  final Logout logout;
 
   AuthenticationBloc({
     required this.subscribeUser,
     required this.signIn,
+    required this.logout,
   }) : super(InitialState()) {
     on<SubscribeUserEvent>(_handleSubscriptionEvent);
     on<SignInEvent>(_handleSignInEvent);
+    on<LogoutEvent>(_handleLogoutEvent);
   }
 
   void _handleSubscriptionEvent(
@@ -53,5 +57,12 @@ class AuthenticationBloc
       ),
       (user) => emit(AuthenticatedState(currentUser: user)),
     );
+  }
+
+  void _handleLogoutEvent(
+      LogoutEvent event, Emitter<AuthenticationState> emit) async {
+    final result = await logout();
+
+    result.fold((failure) => null, (success) => emit(InitialState()));
   }
 }
