@@ -118,7 +118,7 @@ class AuthenticationSourceImpl implements AuthenticationSource {
   Future<String> resetPassword(String email, String token, String password) async {
     try {
       http.Response response = await httpClient.post(
-        Uri.http(ApiConfig.baseUrl, '/api/reset-password'),
+        Uri.http(ApiConfig.baseUrl, '/api/new-password'),
         body: {
           'email': email,
           'token': token,
