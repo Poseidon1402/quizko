@@ -27,4 +27,6 @@ class SignInEvent extends AuthenticationEvent {
   List<Object?> get props => [email, password];
 }
 
+class VerifyTokenEvent extends AuthenticationEvent {}
+
 class LogoutEvent extends AuthenticationEvent {}

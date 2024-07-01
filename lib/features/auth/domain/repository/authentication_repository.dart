@@ -10,5 +10,6 @@ abstract class AuthenticationRepository {
   Future<Either<Failure, String>> forgotPassword(String email);
   Future<Either<Failure, String>> verifyResetCode(String email, String token);
   Future<Either<Failure, String>> resetPassword(String email, String token, String password);
+  Future<Either<Failure, String>> verifyToken();
   Future<Either<Failure, bool>> logout();
 }

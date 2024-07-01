@@ -11,6 +11,7 @@ import '../../../features/auth/domain/usecases/reset_password.dart';
 import '../../../features/auth/domain/usecases/sign_in.dart';
 import '../../../features/auth/domain/usecases/subscribe_user.dart';
 import '../../../features/auth/domain/usecases/verify_reset_code.dart';
+import '../../../features/auth/domain/usecases/verify_token.dart';
 import '../../../features/auth/presentation/bloc/authentication_bloc.dart';
 import '../../../features/home/data/repository/interview_repository_impl.dart';
 import '../../../features/home/data/source/interview_source.dart';
@@ -30,6 +31,7 @@ void setup() {
     () => AuthenticationBloc(
       subscribeUser: sl(),
       signIn: sl(),
+      verifyToken: sl(),
       logout: sl(),
     ),
   );
@@ -71,6 +73,9 @@ void setup() {
   sl.registerLazySingleton<ResetPassword>(
     () => ResetPasswordImpl(repository: sl()),
   );
+  sl.registerLazySingleton<VerifyToken>(
+    () => VerifyTokenImpl(repository: sl()),
+  );
 
   // Repositories
   sl.registerLazySingleton<AuthenticationRepository>(
@@ -86,7 +91,7 @@ void setup() {
 
   // Data Sources
   sl.registerLazySingleton<AuthenticationSource>(
-    () => AuthenticationSourceImpl(client: sl()),
+    () => AuthenticationSourceImpl(httpClient: sl()),
   );
   sl.registerLazySingleton<InterviewSource>(
     () => InterviewSourceImpl(client: sl()),

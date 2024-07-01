@@ -28,7 +28,7 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
     'H-Tol',
     null
   ];
-  String? _regId = null;
+  String? _regId;
   final _formKey = GlobalKey<FormState>();
   final _registrationNumberController = TextEditingController();
   final _fullNameController = TextEditingController();

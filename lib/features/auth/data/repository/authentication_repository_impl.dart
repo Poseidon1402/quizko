@@ -54,8 +54,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     try {
       final message = await source.forgotPassword(email);
       return Right(message);
-    } on UnauthorizedException {
-      return const Left(ServerFailure(message: 'Email or password invalid'));
     } on InternetConnectionException {
       return const Left(NotConnectedFailure());
     } on ServerException {
@@ -68,8 +66,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     try {
       final message = await source.verifyResetCode(email, token);
       return Right(message);
-    } on UnauthorizedException {
-      return const Left(ServerFailure(message: 'Email or password invalid'));
     } on InternetConnectionException {
       return const Left(NotConnectedFailure());
     } on ServerException {
@@ -82,8 +78,22 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     try {
       final message = await source.resetPassword(email, token, password);
       return Right(message);
+    } on InternetConnectionException {
+      return const Left(NotConnectedFailure());
+    } on ServerException {
+      return const Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> verifyToken() async {
+    try {
+      final token = await secureStorage.read(key: 'token') as String;
+      final message = await source.verifyToken(token);
+
+      return Right(message);
     } on UnauthorizedException {
-      return const Left(ServerFailure(message: 'Email or password invalid'));
+      return const Left(ServerFailure(message: 'Token invalid'));
     } on InternetConnectionException {
       return const Left(NotConnectedFailure());
     } on ServerException {
@@ -98,8 +108,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       secureStorage.delete(key: 'token');
 
       return const Right(true);
-    } on UnauthorizedException {
-      return const Left(ServerFailure(message: 'Email or password invalid'));
     } on InternetConnectionException {
       return const Left(NotConnectedFailure());
     } on ServerException {
