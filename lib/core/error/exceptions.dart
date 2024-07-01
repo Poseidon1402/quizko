@@ -11,3 +11,5 @@ class ConflictException implements Exception {}
 class InternetConnectionException implements Exception {}
 
 class UnauthorizedException implements Exception {}
+
+class InvalidDataException implements Exception {}

@@ -14,6 +14,12 @@ abstract class AuthenticationSource {
   Future<String> forgotPassword(String email);
   Future<String> verifyResetCode(String email, String token);
   Future<String> resetPassword(String email, String token, String password);
+  Future<String> updatePassword({
+    required String currentPassword,
+    required String password,
+    required String passwordConfirmation,
+    required String token,
+  });
   Future<String> verifyToken(String token);
   Future<UserModel> getCurrentUser(String token);
   Future<bool> logout(String token);
@@ -50,8 +56,8 @@ class AuthenticationSourceImpl implements AuthenticationSource {
   @override
   Future<UserModel> authenticate(String email, String password) async {
     try {
-      http.Response response =
-          await httpClient.post(Uri.http(ApiConfig.baseUrl, '/api/login'), body: {
+      http.Response response = await httpClient
+          .post(Uri.http(ApiConfig.baseUrl, '/api/login'), body: {
         'email': email,
         'password': password,
       });
@@ -115,7 +121,8 @@ class AuthenticationSourceImpl implements AuthenticationSource {
   }
 
   @override
-  Future<String> resetPassword(String email, String token, String password) async {
+  Future<String> resetPassword(
+      String email, String token, String password) async {
     try {
       http.Response response = await httpClient.post(
         Uri.http(ApiConfig.baseUrl, '/api/new-password'),
@@ -139,13 +146,48 @@ class AuthenticationSourceImpl implements AuthenticationSource {
   }
 
   @override
+  Future<String> updatePassword({
+    required String currentPassword,
+    required String password,
+    required String passwordConfirmation,
+    required String token,
+  }) async {
+    try {
+      http.Response response = await httpClient.put(
+        Uri.http(ApiConfig.baseUrl, '/api/password'),
+        body: {
+          'current_password': currentPassword,
+          'password': password,
+          'password_confirmation': passwordConfirmation,
+        },
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+
+      if (isSuccess(response.statusCode)) {
+        return 'Updated successfully';
+      } else if (response.statusCode == 422) {
+        throw InvalidDataException();
+      } else {
+        throw ServerException();
+      }
+    } on http.ClientException {
+      throw InternetConnectionException();
+    } on SocketException {
+      throw ServerException();
+    }
+  }
+
+  @override
   Future<String> verifyToken(String token) async {
     try {
-      http.Response response = await httpClient.get(Uri.http(ApiConfig.baseUrl, '/api/check-token'), headers: {
+      http.Response response = await httpClient
+          .get(Uri.http(ApiConfig.baseUrl, '/api/check-token'), headers: {
         HttpHeaders.authorizationHeader: 'Bearer $token',
       });
 
-      if(isSuccess(response.statusCode)) {
+      if (isSuccess(response.statusCode)) {
         return 'The token is valid';
       } else if (response.statusCode == 401) {
         throw UnauthorizedException();
@@ -162,12 +204,14 @@ class AuthenticationSourceImpl implements AuthenticationSource {
   @override
   Future<UserModel> getCurrentUser(String token) async {
     try {
-      http.Response response = await httpClient.get(Uri.http(ApiConfig.baseUrl, '/api/user'), headers: {
+      http.Response response = await httpClient
+          .get(Uri.http(ApiConfig.baseUrl, '/api/user'), headers: {
         HttpHeaders.authorizationHeader: 'Bearer $token',
       });
 
-      if(isSuccess(response.statusCode)) {
-        final decodedJson = json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+      if (isSuccess(response.statusCode)) {
+        final decodedJson = json.decode(utf8.decode(response.bodyBytes))
+            as Map<String, dynamic>;
 
         return UserModel.fromJson(decodedJson, null);
       } else {
@@ -179,6 +223,7 @@ class AuthenticationSourceImpl implements AuthenticationSource {
       throw ServerException();
     }
   }
+
   @override
   Future<bool> logout(String token) async {
     try {
