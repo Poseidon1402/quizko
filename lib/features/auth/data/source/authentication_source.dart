@@ -15,6 +15,7 @@ abstract class AuthenticationSource {
   Future<String> verifyResetCode(String email, String token);
   Future<String> resetPassword(String email, String token, String password);
   Future<String> verifyToken(String token);
+  Future<UserModel> getCurrentUser(String token);
   Future<bool> logout(String token);
 }
 
@@ -140,7 +141,9 @@ class AuthenticationSourceImpl implements AuthenticationSource {
   @override
   Future<String> verifyToken(String token) async {
     try {
-      http.Response response = await httpClient.post(Uri.http(ApiConfig.baseUrl, '/api/check-token'));
+      http.Response response = await httpClient.get(Uri.http(ApiConfig.baseUrl, '/api/check-token'), headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+      });
 
       if(isSuccess(response.statusCode)) {
         return 'The token is valid';
@@ -156,6 +159,26 @@ class AuthenticationSourceImpl implements AuthenticationSource {
     }
   }
 
+  @override
+  Future<UserModel> getCurrentUser(String token) async {
+    try {
+      http.Response response = await httpClient.get(Uri.http(ApiConfig.baseUrl, '/api/user'), headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+      });
+
+      if(isSuccess(response.statusCode)) {
+        final decodedJson = json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+
+        return UserModel.fromJson(decodedJson, null);
+      } else {
+        throw ServerException();
+      }
+    } on http.ClientException {
+      throw InternetConnectionException();
+    } on SocketException {
+      throw ServerException();
+    }
+  }
   @override
   Future<bool> logout(String token) async {
     try {

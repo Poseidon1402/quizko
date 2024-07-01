@@ -1,4 +1,5 @@
 abstract class Routes {
+  static const entryPoint = '/';
   static const login = '/login';
   static const subscribe = '/subscribe';
   static const forgotPassword = '/forgot-password';

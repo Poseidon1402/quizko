@@ -86,12 +86,18 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, String>> verifyToken() async {
+  Future<Either<Failure, UserEntity>> verifyToken() async {
     try {
-      final token = await secureStorage.read(key: 'token') as String;
-      final message = await source.verifyToken(token);
+      final token = await secureStorage.read(key: 'token');
 
-      return Right(message);
+      if(token != null) {
+        await source.verifyToken(token);
+        final user = await source.getCurrentUser(token);
+
+        return Right(user);
+      } else {
+        return const Left(AccessTokenMissingFailure());
+      }
     } on UnauthorizedException {
       return const Left(ServerFailure(message: 'Token invalid'));
     } on InternetConnectionException {

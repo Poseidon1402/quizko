@@ -63,18 +63,22 @@ class AuthenticationBloc
     );
   }
 
-  void _handleVerifyTokenEvent(VerifyTokenEvent event, Emitter<AuthenticationState> emit) async {
+  void _handleVerifyTokenEvent(
+      VerifyTokenEvent event, Emitter<AuthenticationState> emit) async {
     emit(LoadingState());
     final result = await verifyToken();
-    
-    result.fold((failure) => emit(
-      UnauthenticatedState(
-        message: failure.message,
-        type: failure.type,
+
+    result.fold(
+      (failure) => emit(
+        UnauthenticatedState(
+          message: failure.message,
+          type: failure.type,
+        ),
       ),
-    ), (success) => null); //TODO: Current user
+      (user) => emit(AuthenticatedState(currentUser: user)),
+    );
   }
-  
+
   void _handleLogoutEvent(
       LogoutEvent event, Emitter<AuthenticationState> emit) async {
     final result = await logout();
