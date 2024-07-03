@@ -52,8 +52,9 @@ flutter:
   generate: true
   # To add assets to your application, add an assets section, like this:
   assets:
-     - assets/images/
-     - assets/logo/
-     - assets/icons/
+    - assets/images/
+    - assets/logo/
+    - assets/icons/
+    - shorebird.yaml
     # - assets/images/
     # - shorebird.yaml
