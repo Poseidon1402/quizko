@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentUser =
-        (context.read<AuthenticationBloc>().state as AuthenticatedState)
+        (context.watch<AuthenticationBloc>().state as AuthenticatedState)
             .currentUser;
 
     return BlocBuilder<InterviewBloc, InterviewState>(
@@ -28,10 +28,10 @@ class HomeScreen extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0.0,
-            leading: const Padding(
-              padding: EdgeInsets.all(8.0),
+            leading: Padding(
+              padding: const EdgeInsets.all(8.0),
               child: CircleAvatar(
-                backgroundImage: AssetImage('assets/images/avatar.png'),
+                backgroundImage: currentUser.gender == 'masculine'? const AssetImage('assets/images/male.jpg') : const AssetImage('assets/images/female.jpg'),
                 backgroundColor: Colors.red,
                 radius: 15.0,
               ),

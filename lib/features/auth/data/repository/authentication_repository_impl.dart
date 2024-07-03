@@ -137,6 +137,20 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
+  Future<Either<Failure, UserEntity>> updateUser({required UserModel user}) async {
+    try {
+      final token = await secureStorage.read(key: 'token');
+      final updatedUser = await source.updateUser(user: user, token: token!);
+
+      return Right(updatedUser);
+    } on InternetConnectionException {
+      return const Left(NotConnectedFailure());
+    } on ServerException {
+      return const Left(ServerFailure());
+    }
+  }
+
+  @override
   Future<Either<Failure, bool>> logout() async {
     try {
       await source.logout(await secureStorage.read(key: 'token') as String);

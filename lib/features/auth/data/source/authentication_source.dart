@@ -22,6 +22,7 @@ abstract class AuthenticationSource {
   });
   Future<String> verifyToken(String token);
   Future<UserModel> getCurrentUser(String token);
+  Future<UserModel> updateUser({required UserModel user, required String token});
   Future<bool> logout(String token);
 }
 
@@ -214,6 +215,27 @@ class AuthenticationSourceImpl implements AuthenticationSource {
             as Map<String, dynamic>;
 
         return UserModel.fromJson(decodedJson, null);
+      } else {
+        throw ServerException();
+      }
+    } on http.ClientException {
+      throw InternetConnectionException();
+    } on SocketException {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<UserModel> updateUser({required UserModel user, required String token}) async {
+    try {
+      final response = await httpClient.put(Uri.http(ApiConfig.baseUrl, '/api/profile'), body: user.updateJson(), headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+      },);
+
+      if (isSuccess(response.statusCode)) {
+        final decodedJson = json.decode(utf8.decode(response.bodyBytes));
+
+        return UserModel.fromJson(decodedJson['user'], null);
       } else {
         throw ServerException();
       }

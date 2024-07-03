@@ -18,6 +18,7 @@ abstract class AuthenticationRepository {
     required String password,
     required String passwordConfirmation,
   });
+  Future<Either<Failure, UserEntity>> updateUser({required UserModel user});
   Future<Either<Failure, UserEntity>> verifyToken();
   Future<Either<Failure, bool>> logout();
 }

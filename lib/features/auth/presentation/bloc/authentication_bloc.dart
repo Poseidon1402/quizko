@@ -28,6 +28,7 @@ class AuthenticationBloc
     on<SubscribeUserEvent>(_handleSubscriptionEvent);
     on<SignInEvent>(_handleSignInEvent);
     on<VerifyTokenEvent>(_handleVerifyTokenEvent);
+    on<UpdateUserEvent>(_handleUpdateUserEvent);
     on<LogoutEvent>(_handleLogoutEvent);
   }
 
@@ -77,6 +78,10 @@ class AuthenticationBloc
       ),
       (user) => emit(AuthenticatedState(currentUser: user)),
     );
+  }
+
+  void _handleUpdateUserEvent(UpdateUserEvent event, Emitter<AuthenticationState> emit) async {
+    emit(AuthenticatedState(currentUser: event.user));
   }
 
   void _handleLogoutEvent(

@@ -2,6 +2,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../features/account/domain/usecases/update_user.dart';
 import '../../../features/auth/data/repository/authentication_repository_impl.dart';
 import '../../../features/auth/data/source/authentication_source.dart';
 import '../../../features/auth/domain/repository/authentication_repository.dart';
@@ -79,6 +80,9 @@ void setup() {
   );
   sl.registerLazySingleton<UpdatePassword>(
     () => UpdatePasswordImpl(repository: sl()),
+  );
+  sl.registerLazySingleton<UpdateUser>(
+    () => UpdateUserImpl(repository: sl()),
   );
 
   // Repositories
