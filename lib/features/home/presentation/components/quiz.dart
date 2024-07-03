@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
@@ -6,7 +7,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/utils/colors/app_color.dart';
 import '../../../../core/utils/constants/routes.dart';
+import '../../../auth/presentation/bloc/authentication_bloc.dart';
 import '../../domain/entity/interview_entity.dart';
+import '../bloc/interview_bloc.dart';
 
 class Quiz extends StatelessWidget {
   final InterviewEntity interview;
@@ -19,7 +22,7 @@ class Quiz extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.push(Routes.quiz, extra: interview),
+      onTap: () => interview.isCompleted ? _onTapped(context) : context.push(Routes.quiz, extra: interview),
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
@@ -132,5 +135,19 @@ class Quiz extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onTapped(BuildContext context) {
+    final candidateId =
+        (context.read<AuthenticationBloc>().state as AuthenticatedState)
+            .currentUser
+            .candidateId;
+    context.read<InterviewBloc>().add(
+      FetchInterviewCorrectionEvent(
+        candidateId: candidateId,
+        interviewId: interview.id,
+      ),
+    );
+    context.push('${Routes.userAnswer}?interview=${interview.id}');
   }
 }

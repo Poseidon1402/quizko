@@ -5,6 +5,7 @@ import 'answer_entity.dart';
 class QuestionEntity extends Equatable {
   final int id;
   final String label;
+  final String type;
   final int point;
   final List<AnswerEntity> answers;
 
@@ -13,8 +14,9 @@ class QuestionEntity extends Equatable {
     required this.label,
     required this.point,
     required this.answers,
+    required this.type,
   });
 
   @override
-  List<Object?> get props => [id, label, point, answers];
+  List<Object?> get props => [id, label, point, answers, type,];
 }
