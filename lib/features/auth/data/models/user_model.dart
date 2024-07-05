@@ -10,6 +10,7 @@ class UserModel extends UserEntity {
     required super.email,
     required super.gender,
     required super.fullName,
+    super.phone = '',
     this.password,
     this.token,
   });
@@ -20,6 +21,7 @@ class UserModel extends UserEntity {
         registrationNumber: json['candidate']['registration_number'],
         fullName: json['name'],
         email: json['email'],
+        phone: json['phone'] ?? '',
         gender: json['candidate']['gender'],
         token: token,
       );
@@ -29,13 +31,15 @@ class UserModel extends UserEntity {
         "name": fullName,
         "email": email,
         "password": password,
+        'phone': phone,
         "gender": gender,
       };
 
   Map<String, dynamic> updateJson() => {
-    "registration_number": registrationNumber,
-    "name": fullName,
-    "email": email,
-    "gender": gender,
-  };
+        "registration_number": registrationNumber,
+        "name": fullName,
+        "email": email,
+        "phone": phone,
+        "gender": gender,
+      };
 }

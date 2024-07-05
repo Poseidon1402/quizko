@@ -94,8 +94,8 @@ class SignUpScreen extends StatelessWidget {
               ],
             ),
             Positioned(
-              bottom: 100,
-              right: -170,
+              bottom: 80,
+              right: -200,
               child: Image.asset(
                 'assets/images/cubic.png',
                 width: 300.w,

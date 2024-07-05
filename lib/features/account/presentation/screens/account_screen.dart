@@ -6,6 +6,7 @@ import 'package:gap/gap.dart';
 
 import '../../../../core/utils/colors/app_color.dart';
 import '../../../../core/utils/services/injections.dart';
+import '../../../../core/validator/form_validators.dart';
 import '../../../../shared/components/buttons/custom_elevated_button.dart';
 import '../../../../shared/components/input/custom_text_form_field.dart';
 import '../../../../shared/components/input/select_field.dart';
@@ -27,6 +28,7 @@ class _AccountScreenState extends State<AccountScreen> {
   late final TextEditingController _registrationNumberController;
   late final TextEditingController _nameController;
   late final TextEditingController _emailController;
+  late final TextEditingController _phoneController;
   late String _gender;
 
   initForm() {
@@ -37,6 +39,7 @@ class _AccountScreenState extends State<AccountScreen> {
         TextEditingController(text: currentUser.registrationNumber);
     _nameController = TextEditingController(text: currentUser.fullName);
     _emailController = TextEditingController(text: currentUser.email);
+    _phoneController = TextEditingController(text: currentUser.phone);
     _gender = currentUser.gender;
   }
 
@@ -94,6 +97,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       const Gap(20),
                       CustomTextFormField(
                         controller: _nameController,
+                        validator: isRequired,
                         keyboardType: TextInputType.name,
                         label: 'Full Name',
                       ),
@@ -101,6 +105,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       CustomTextFormField(
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
+                        validator: isEmail,
                         label: 'Email',
                       ),
                       const Gap(20),
@@ -120,6 +125,14 @@ class _AccountScreenState extends State<AccountScreen> {
                             child: Text('Female'),
                           ),
                         ],
+                      ),
+                      const Gap(20),
+                      CustomTextFormField(
+                        controller: _phoneController,
+                        hintText: 'ex: 0320012345',
+                        validator: (value) => isPhoneNumber(value),
+                        keyboardType: TextInputType.phone,
+                        label: 'Phone',
                       ),
                     ],
                   ),
@@ -161,6 +174,7 @@ class _AccountScreenState extends State<AccountScreen> {
           registrationNumber: _registrationNumberController.text,
           fullName: _nameController.text,
           email: _emailController.text,
+          phone: _phoneController.text,
           gender: _gender,
         ),
       );

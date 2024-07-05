@@ -13,7 +13,6 @@ void main() {
     fullName: "John Doe",
     email: "johndoe@gmail.com",
     gender: "masculine",
-    levelId: 1,
   );
 
   test('should be a subsclass of user entity', () {
