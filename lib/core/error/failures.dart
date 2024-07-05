@@ -31,3 +31,7 @@ class AccessTokenMissingFailure extends Failure {
 class TokenExpiredFailure extends Failure {
   const TokenExpiredFailure({super.message = 'Expired token', super.type = ErrorType.expiredToken});
 }
+
+class InvalidPasswordFailure extends Failure {
+  const InvalidPasswordFailure({super.message = 'Password invalid', super.type = ErrorType.serverError});
+}

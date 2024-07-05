@@ -1,0 +1,29 @@
+{
+  "id": 5,
+  "name": "John Doe",
+  "email": "johndoe@gmail.com",
+  "email_verified_at": null,
+  "created_at": "2024-05-26T18:11:55.000000Z",
+  "updated_at": "2024-05-26T18:11:55.000000Z",
+  "role": "candidate",
+  "phone": "0380000025",
+  "candidate": {
+    "id": 5,
+    "registration_number": "2310",
+    "user_id": 5,
+    "post_id": 1,
+    "status": "pending",
+    "gender": "masculine",
+    "created_at": "2024-05-26T18:11:55.000000Z",
+    "updated_at": "2024-05-26T18:11:55.000000Z",
+    "post": {
+      "id": 1,
+      "name": "1ère année de Master",
+      "description": "Ecole Nationale d'Informatique",
+      "is_available": 1,
+      "nb_allowed": null,
+      "created_at": "2024-05-26T17:59:23.000000Z",
+      "updated_at": "2024-05-26T17:59:23.000000Z"
+    }
+  }
+}

@@ -38,7 +38,6 @@ abstract class AppTheme {
     return ThemeData(
       textTheme: textTheme,
       colorScheme: const ColorScheme.light(
-        background: AppColor.white1,
         primary: AppColor.purple3,
         onPrimary: AppColor.white1,
         surface: AppColor.white1,
@@ -50,8 +49,8 @@ abstract class AppTheme {
         color: Colors.transparent,
       ),
       checkboxTheme: const CheckboxThemeData(
-        fillColor: MaterialStatePropertyAll<Color>(Colors.transparent),
-        checkColor: MaterialStatePropertyAll<Color>(AppColor.purple3),
+        fillColor: WidgetStatePropertyAll<Color>(Colors.transparent),
+        checkColor: WidgetStatePropertyAll<Color>(AppColor.purple3),
         side: BorderSide(
           color: AppColor.grey1,
         ),

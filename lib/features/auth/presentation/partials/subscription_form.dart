@@ -23,16 +23,13 @@ class SubscriptionForm extends StatefulWidget {
 }
 
 class _SubscriptionFormState extends State<SubscriptionForm> {
-  final List<String?> _registrationId = [
-    'HF',
-    'H-Tol',
-    null
-  ];
-  String? _regId = null;
+  final List<String?> _registrationId = ['HF', 'H-Tol', null];
+  String? _regId;
   final _formKey = GlobalKey<FormState>();
   final _registrationNumberController = TextEditingController();
   final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
@@ -111,37 +108,50 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
             CustomTextFormField(
               controller: _passwordController,
               hintText: 'Password',
+              obscureText: true,
               keyboardType: TextInputType.visiblePassword,
               validator: (value) => length(value, min: 6, max: 50),
               textInputAction: TextInputAction.done,
               borderRadius: 24.0,
             ),
+            const Gap(20),
+            CustomTextFormField(
+              controller: _phoneController,
+              hintText: 'ex: 0320012345',
+              validator: (value) => isPhoneNumber(value),
+              keyboardType: TextInputType.phone,
+              textInputAction: TextInputAction.done,
+              label: 'Phone',
+            ),
             const Gap(40),
             FractionallySizedBox(
               widthFactor: 1,
               child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-                  builder: (context, state) {
-                return CustomElevatedButton(
-                  onPressed:
-                      state is! LoadingState ? _onSubscribeButtonTapped : () {},
-                  borderRadius: 24.0,
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  child: state is LoadingState
-                      ? SpinKitWave(
-                          size: 20.sp,
-                          color: AppColor.white1,
-                        )
-                      : Text(
-                          'Subscribe',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall
-                              ?.copyWith(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              ),
-                        ),
-                );
-              }),
+                builder: (context, state) {
+                  return CustomElevatedButton(
+                    onPressed: state is! LoadingState
+                        ? _onSubscribeButtonTapped
+                        : () {},
+                    borderRadius: 24.0,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    child: state is LoadingState
+                        ? SpinKitWave(
+                            size: 20.sp,
+                            color: AppColor.white1,
+                          )
+                        : Text(
+                            'Subscribe',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
+                          ),
+                  );
+                },
+              ),
             ),
           ],
         ),
@@ -154,10 +164,12 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
       context.read<AuthenticationBloc>().add(
             SubscribeUserEvent(
               newUser: UserModel(
-                registrationNumber: '${_regId != null ? '${_regId}_' : ''}${_registrationNumberController.text}',
+                registrationNumber:
+                    '${_registrationNumberController.text}${_regId != null ? '_$_regId' : ''}',
                 fullName: _fullNameController.text,
                 email: _emailController.text,
                 password: _passwordController.text,
+                phone: _phoneController.text,
                 gender: 'masculine',
               ),
             ),

@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 
 import '../../../../core/utils/colors/app_color.dart';
 import '../../../../shared/components/buttons/custom_elevated_button.dart';
+import '../../../../shared/components/input/custom_text_form_field.dart';
 import '../../../../shared/components/others/app_checkbox.dart';
 import '../../../auth/presentation/bloc/authentication_bloc.dart';
 import '../../../home/domain/entity/interview_entity.dart';
@@ -28,6 +29,13 @@ class QuestionBody extends StatefulWidget {
 
 class _QuestionBodyState extends State<QuestionBody> {
   int _picked = -1;
+  late final _replyController;
+
+  @override
+  void initState() {
+    _replyController = TextEditingController();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,20 +94,27 @@ class _QuestionBodyState extends State<QuestionBody> {
                           ),
                         ),
                         const Gap(10),
-                        ...widget.interview.subject
-                            .questions[widget.currentIndex].answers
-                            .map(
-                              (answer) => AppCheckbox(
-                                label: answer.label,
-                                checked: _picked == answer.id,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _picked = answer.id;
-                                  });
-                                },
-                              ),
-                            )
-                            .toList(),
+                        widget.interview.subject.questions[widget.currentIndex].type == 'qcm' ? Column(
+                          children: widget.interview.subject
+                              .questions[widget.currentIndex].answers
+                              .map(
+                                (answer) => AppCheckbox(
+                              label: answer.label,
+                              checked: _picked == answer.id,
+                              onChanged: (value) {
+                                setState(() {
+                                  _picked = answer.id;
+                                });
+                              },
+                            ),
+                          )
+                              .toList(),
+                        ) : CustomTextFormField(
+                          hintText: 'Your answer',
+                          controller: _replyController,
+                          minLines: 12,
+                          maxLines: 12,
+                        ),
                       ],
                     ),
                   ),
@@ -149,8 +164,13 @@ class _QuestionBodyState extends State<QuestionBody> {
   }
 
   void _onNextButtonTapped(BuildContext context) {
-    context.read<AnswerCubit>().setAnswer({'answer_id': _picked});
-    setState(() => _picked = -1);
+    if(widget.interview.subject.questions[widget.currentIndex].type == 'qcm') {
+      context.read<AnswerCubit>().setAnswer({'answer_id': _picked});
+      setState(() => _picked = -1);
+    } else {
+      context.read<AnswerCubit>().setAnswer({'answer_id': _replyController.text});
+      setState(() => _replyController = '');
+    }
     context.read<QuizBloc>().add(QuizEventNextQuestion());
   }
 

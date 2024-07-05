@@ -72,11 +72,11 @@ String? isUrl(String? value) {
 String? isPhoneNumber(String? value) {
   String pattern = r'(^(?:[0]3)?[0-9]{10}$)';
   RegExp regExp = RegExp(pattern);
-  if (value != null && value.isEmpty) {
+  if (value == null) {
     return 'This field cannot be empty';
   }
 
-  if (!regExp.hasMatch(value!)) {
+  if (!regExp.hasMatch(value)) {
     return 'Please enter a valid phone number';
   }
 

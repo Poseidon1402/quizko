@@ -31,7 +31,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
     super.initState();
@@ -41,7 +40,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => sl<AuthenticationBloc>()),
+        BlocProvider(
+          create: (_) => sl<AuthenticationBloc>()..add(VerifyTokenEvent()),
+        ),
         BlocProvider(create: (_) => sl<InterviewBloc>()),
         BlocProvider(
           create: (_) => sl<QuizBloc>(),

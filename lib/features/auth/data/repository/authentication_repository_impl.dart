@@ -18,7 +18,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   });
 
   @override
-  Future<Either<Failure, UserEntity>> subscribeUser({required UserModel newUser}) async {
+  Future<Either<Failure, UserEntity>> subscribeUser(
+      {required UserModel newUser}) async {
     try {
       final data = await source.subscribeUser(newUser);
       secureStorage.write(key: 'token', value: data.token);
@@ -34,7 +35,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, UserEntity>> authenticate(String email, String password) async {
+  Future<Either<Failure, UserEntity>> authenticate(
+      String email, String password) async {
     try {
       final data = await source.authenticate(email, password);
       secureStorage.write(key: 'token', value: data.token);
@@ -42,6 +44,119 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return Right(data);
     } on UnauthorizedException {
       return const Left(ServerFailure(message: 'Email or password invalid'));
+    } on InternetConnectionException {
+      return const Left(NotConnectedFailure());
+    } on ServerException {
+      return const Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> forgotPassword(String email) async {
+    try {
+      final message = await source.forgotPassword(email);
+      return Right(message);
+    } on InternetConnectionException {
+      return const Left(NotConnectedFailure());
+    } on ServerException {
+      return const Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> verifyResetCode(
+      String email, String token) async {
+    try {
+      final message = await source.verifyResetCode(email, token);
+      return Right(message);
+    } on InternetConnectionException {
+      return const Left(NotConnectedFailure());
+    } on ServerException {
+      return const Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> resetPassword(
+      String email, String token, String password) async {
+    try {
+      final message = await source.resetPassword(email, token, password);
+      return Right(message);
+    } on InternetConnectionException {
+      return const Left(NotConnectedFailure());
+    } on ServerException {
+      return const Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> updatePassword({
+    required String currentPassword,
+    required String password,
+    required String passwordConfirmation,
+  }) async {
+    try {
+      final token = await secureStorage.read(key: 'token') as String;
+      final message = await source.updatePassword(
+        currentPassword: currentPassword,
+        password: password,
+        passwordConfirmation: passwordConfirmation,
+        token: token,
+      );
+
+      return Right(message);
+    } on InvalidDataException {
+      return const Left(InvalidPasswordFailure());
+    } on InternetConnectionException {
+      return const Left(NotConnectedFailure());
+    } on ServerException {
+      return const Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> verifyToken() async {
+    try {
+      final token = await secureStorage.read(key: 'token');
+
+      if (token != null) {
+        await source.verifyToken(token);
+        final user = await source.getCurrentUser(token);
+
+        return Right(user);
+      } else {
+        return const Left(AccessTokenMissingFailure());
+      }
+    } on UnauthorizedException {
+      return const Left(ServerFailure(message: 'Token invalid'));
+    } on InternetConnectionException {
+      return const Left(NotConnectedFailure());
+    } on ServerException {
+      return const Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> updateUser({required UserModel user}) async {
+    try {
+      final token = await secureStorage.read(key: 'token');
+      final updatedUser = await source.updateUser(user: user, token: token!);
+
+      return Right(updatedUser);
+    } on InternetConnectionException {
+      return const Left(NotConnectedFailure());
+    } on ServerException {
+      return const Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> logout() async {
+    try {
+      await source.logout(await secureStorage.read(key: 'token') as String);
+      secureStorage.delete(key: 'token');
+
+      return const Right(true);
     } on InternetConnectionException {
       return const Left(NotConnectedFailure());
     } on ServerException {

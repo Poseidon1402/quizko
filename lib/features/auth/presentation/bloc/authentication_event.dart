@@ -26,3 +26,16 @@ class SignInEvent extends AuthenticationEvent {
   @override
   List<Object?> get props => [email, password];
 }
+
+class VerifyTokenEvent extends AuthenticationEvent {}
+
+class UpdateUserEvent extends AuthenticationEvent {
+  final UserEntity user;
+
+  UpdateUserEvent({required this.user});
+
+  @override
+  List<Object?> get props => [user];
+}
+
+class LogoutEvent extends AuthenticationEvent {}

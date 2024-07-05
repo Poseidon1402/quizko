@@ -5,16 +5,16 @@ class UserEntity extends Equatable {
   final String fullName;
   final String email;
   final String gender;
+  final String phone;
   final int candidateId;
-  final int? levelId;
 
   const UserEntity({
     required this.registrationNumber,
     required this.fullName,
     required this.email,
     required this.gender,
+    this.phone = '',
     required this.candidateId,
-    required this.levelId,
   });
 
   @override
@@ -23,7 +23,7 @@ class UserEntity extends Equatable {
         registrationNumber,
         fullName,
         email,
+        phone,
         gender,
-        levelId,
       ];
 }
