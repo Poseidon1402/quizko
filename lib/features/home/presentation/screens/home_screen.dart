@@ -52,6 +52,10 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
+            actions: [
+              Image.asset('assets/logo/eni.png'),
+              const Gap(10),
+            ],
           ),
           body: ConstrainedBox(
             constraints: const BoxConstraints.expand(),
