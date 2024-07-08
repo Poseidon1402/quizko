@@ -13,6 +13,7 @@ import '../../../../shared/components/input/select_field.dart';
 import '../../../../shared/components/others/app_snackbar.dart';
 import '../../../auth/data/models/user_model.dart';
 import '../../../auth/presentation/bloc/authentication_bloc.dart';
+import '../../domain/entity/class_entity.dart';
 import '../../domain/usecases/update_user.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -175,6 +176,10 @@ class _AccountScreenState extends State<AccountScreen> {
           fullName: _nameController.text,
           email: _emailController.text,
           phone: _phoneController.text,
+          classEntity: const ClassEntity(
+            id: 1,
+            name: 'M1 GID',
+          ),
           gender: _gender,
         ),
       );

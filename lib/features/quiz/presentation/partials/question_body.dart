@@ -29,7 +29,7 @@ class QuestionBody extends StatefulWidget {
 
 class _QuestionBodyState extends State<QuestionBody> {
   int _picked = -1;
-  late final _replyController;
+  late final TextEditingController _replyController;
 
   @override
   void initState() {
@@ -168,8 +168,8 @@ class _QuestionBodyState extends State<QuestionBody> {
       context.read<AnswerCubit>().setAnswer({'answer_id': _picked});
       setState(() => _picked = -1);
     } else {
-      context.read<AnswerCubit>().setAnswer({'answer_id': _replyController.text});
-      setState(() => _replyController = '');
+      /*context.read<AnswerCubit>().setAnswer({'answer_id': _replyController.text});
+      setState(() => _replyController = '');*/
     }
     context.read<QuizBloc>().add(QuizEventNextQuestion());
   }

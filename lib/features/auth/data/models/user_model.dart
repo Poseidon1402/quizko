@@ -1,3 +1,4 @@
+import '../../../account/domain/entity/class_entity.dart';
 import '../../domain/entity/user_entity.dart';
 
 class UserModel extends UserEntity {
@@ -11,6 +12,7 @@ class UserModel extends UserEntity {
     required super.gender,
     required super.fullName,
     super.phone = '',
+    required super.classEntity,
     this.password,
     this.token,
   });
@@ -23,6 +25,10 @@ class UserModel extends UserEntity {
         email: json['email'],
         phone: json['phone'] ?? '',
         gender: json['candidate']['gender'],
+        classEntity: const ClassEntity(
+          id: 1,
+          name: 'M1 GBD',
+        ),
         token: token,
       );
 
@@ -33,6 +39,7 @@ class UserModel extends UserEntity {
         "password": password,
         'phone': phone,
         "gender": gender,
+        "post_id": classEntity.id,
       };
 
   Map<String, dynamic> updateJson() => {

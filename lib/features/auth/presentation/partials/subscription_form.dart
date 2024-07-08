@@ -12,6 +12,8 @@ import '../../../../shared/components/buttons/custom_elevated_button.dart';
 import '../../../../shared/components/input/custom_text_form_field.dart';
 import '../../../../shared/components/input/select_field.dart';
 import '../../../../shared/components/others/app_snackbar.dart';
+import '../../../account/domain/entity/class_entity.dart';
+import '../../../account/presentation/bloc/class/class_bloc.dart';
 import '../../data/models/user_model.dart';
 import '../bloc/authentication_bloc.dart';
 
@@ -30,6 +32,8 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
   final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _classController = TextEditingController();
+  int _classId = -1;
   final _passwordController = TextEditingController();
 
   @override
@@ -123,6 +127,17 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
               textInputAction: TextInputAction.done,
               label: 'Phone',
             ),
+            const Gap(20),
+            CustomTextFormField(
+              controller: _classController,
+              hintText: 'Classes',
+              validator: isRequired,
+              readOnly: true,
+              showCursor: false,
+              onTap: _showClassesDialog,
+              keyboardType: TextInputType.phone,
+              textInputAction: TextInputAction.done,
+            ),
             const Gap(40),
             FractionallySizedBox(
               widthFactor: 1,
@@ -170,10 +185,68 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
                 email: _emailController.text,
                 password: _passwordController.text,
                 phone: _phoneController.text,
+                classEntity: ClassEntity(
+                  id: _classId,
+                  name: _classController.text,
+                ),
                 gender: 'masculine',
               ),
             ),
           );
     }
+  }
+
+  void _showClassesDialog() {
+    showDialog(
+      context: context,
+      builder: (_) => Dialog(
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.white,
+          ),
+          width: MediaQuery.sizeOf(context).width,
+          height: MediaQuery.sizeOf(context).height * 0.8,
+          child: BlocBuilder<ClassBloc, ClassState>(
+            builder: (_, state) {
+              if (state is LoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is LoadedClassState) {
+                return ListView(
+                  children: state.classes
+                      .map(
+                        (item) => ListTile(
+                          onTap: () {
+                            setState(() => _classController.text = item.name);
+                            _classId = item.id;
+                            context.pop();
+                          },
+                          trailing: Checkbox(
+                            value: item.id == _classId,
+                            onChanged: (value) {
+                              setState(() => _classController.text = item.name);
+                              _classId = item.id;
+                              context.pop();
+                            },
+                          ),
+                          title: Text(
+                            item.name,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
+                      )
+                      .toList(),
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
+          ),
+        ),
+      ),
+    );
   }
 }

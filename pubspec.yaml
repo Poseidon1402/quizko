@@ -29,7 +29,6 @@ dependencies:
   page_transition: ^2.1.0
   dartz: ^0.10.1
   cupertino_icons: ^1.0.2
-  getwidget: ^4.0.0
   get_it: ^7.6.4
   flutter_native_splash: ^2.3.9
   gap: ^3.0.1
