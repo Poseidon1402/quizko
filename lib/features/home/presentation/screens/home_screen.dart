@@ -10,6 +10,7 @@ import '../bloc/interview_bloc.dart' as interview_bloc;
 import '../bloc/interview_bloc.dart';
 import '../components/header.dart';
 import '../components/quiz.dart';
+import 'no_quizzes_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -25,6 +26,10 @@ class HomeScreen extends StatelessWidget {
       if (state is interview_bloc.LoadingState || state is interview_bloc.InitialState) {
         return const Center(child: CircularProgressIndicator());
       } else if (state is interview_bloc.InterviewsLoaded) {
+        if(state.interviews.isEmpty) {
+          return const NoQuizzesScreen();
+        }
+
         return Scaffold(
           extendBodyBehindAppBar: true,
           appBar: AppBar(
