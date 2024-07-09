@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/utils/colors/app_color.dart';
+import '../../../../core/utils/constants/routes.dart';
 import '../partials/subscription_form.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -13,6 +15,22 @@ class SignUpScreen extends StatelessWidget {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton.outlined(
+          onPressed: () => context.pushReplacement(Routes.login),
+          style: IconButton.styleFrom(
+              shape: const CircleBorder(),
+              side: BorderSide(
+                color: AppColor.purple1.withOpacity(0.18),
+              ),
+              padding: const EdgeInsets.all(10)),
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            size: 20,
+            color: AppColor.purple1,
+          ),
+        ),
+      ),
       backgroundColor: AppColor.white1,
       resizeToAvoidBottomInset: false,
       body: ConstrainedBox(
@@ -20,7 +38,7 @@ class SignUpScreen extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.only(bottom: bottomInset, left: 10, right: 10,),
           children: [
-            const Gap(75),
+            const Gap(20),
             SvgPicture.asset('assets/logo/logo_2.svg'),
             const Gap(50),
             Text(

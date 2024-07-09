@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => sl<AuthenticationBloc>()..add(VerifyTokenEvent()),
+          create: (_) => sl<AuthenticationBloc>(),
         ),
         BlocProvider(create: (_) => sl<InterviewBloc>()),
         BlocProvider(

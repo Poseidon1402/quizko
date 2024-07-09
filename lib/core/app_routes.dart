@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/account/presentation/screens/account_screen.dart';
 import '../features/account/presentation/screens/update_password_screen.dart';
-import '../features/auth/presentation/bloc/authentication_bloc.dart';
 import '../features/auth/presentation/screens/create_new_password_screen.dart';
 import '../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../features/auth/presentation/screens/forgot_password_verification_code_screen.dart';
@@ -33,7 +31,7 @@ abstract class AppRoutes {
       GoRoute(
         path: Routes.entryPoint,
         builder: (context, state) => const SplashScreen(),
-        redirect: (context, state) {
+        /*redirect: (context, state) {
           final state = context.watch<AuthenticationBloc>().state;
 
           if (state is AuthenticatedState) {
@@ -43,7 +41,7 @@ abstract class AppRoutes {
           }
 
           return null;
-        },
+        },*/
       ),
       GoRoute(
         path: Routes.login,

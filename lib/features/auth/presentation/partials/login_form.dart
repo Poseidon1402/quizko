@@ -21,6 +21,8 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  bool _showPassword = false;
+
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -57,9 +59,16 @@ class _LoginFormState extends State<LoginForm> {
             CustomTextFormField(
               controller: _passwordController,
               hintText: 'Password',
+              obscureText: !_showPassword,
               keyboardType: TextInputType.visiblePassword,
-              validator: isRequired,
-              obscureText: true,
+              suffixIcon: InkWell(
+                onTap: () => setState(() => _showPassword = !_showPassword),
+                child: Icon(
+                  _showPassword ? Icons.visibility : Icons.visibility_off,
+                  color: AppColor.grey1,
+                ),
+              ),
+              validator: (value) => length(value, min: 6, max: 50),
               textInputAction: TextInputAction.done,
               borderRadius: 24.0,
             ),
