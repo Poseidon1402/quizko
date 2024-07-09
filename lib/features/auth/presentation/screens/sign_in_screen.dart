@@ -4,9 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:quizko/core/utils/colors/app_color.dart';
 
+import '../../../../core/utils/colors/app_color.dart';
 import '../../../../core/utils/constants/routes.dart';
+import '../../../../core/utils/constants/widget_keys.dart';
 import '../partials/login_form.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -15,6 +16,7 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: WidgetKeys.signInScreenKey,
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColor.purple3,
       body: ConstrainedBox(

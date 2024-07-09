@@ -71,72 +71,19 @@ class Quiz extends StatelessWidget {
                     ),
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Chip(
                         elevation: 0.0,
                         backgroundColor: Colors.transparent,
                         avatar: SvgPicture.asset('assets/icons/clock.svg'),
                         label: Text(
-                          '${interview.duration.inMinutes} : 00',
+                          '${interview.duration.inHours.toString().padLeft(2, '0')} : ${interview.duration.inMinutes.toString().padLeft(2, '0')}',
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall
                               ?.copyWith(color: Colors.black.withOpacity(0.45)),
                         ),
                         side: BorderSide.none,
-                      ),
-                      Chip(
-                        backgroundColor: AppColor.green1,
-                        avatar: const Icon(
-                          Icons.check,
-                          size: 16,
-                          color: AppColor.white1,
-                        ),
-                        label: Text(
-                          '10',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall
-                              ?.copyWith(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                fontWeight: FontWeight.w700,
-                              ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                        side: BorderSide.none,
-                        elevation: 0.0,
-                      ),
-                      Chip(
-                        backgroundColor: AppColor.red3,
-                        avatar: const Icon(
-                          Icons.check,
-                          size: 16,
-                          color: AppColor.white1,
-                        ),
-                        label: Text(
-                          '4',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall
-                              ?.copyWith(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                fontWeight: FontWeight.w700,
-                              ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                        side: BorderSide.none,
-                        elevation: 0.0,
-                      ),
-                      Text(
-                        '50 pts',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColor.green1,
-                            fontWeight: FontWeight.w700),
                       ),
                     ],
                   ),

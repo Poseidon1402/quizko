@@ -50,5 +50,6 @@ class UserModel extends UserEntity {
         "email": email,
         "phone": phone,
         "gender": gender,
+        "post_id": classEntity.id,
       };
 }

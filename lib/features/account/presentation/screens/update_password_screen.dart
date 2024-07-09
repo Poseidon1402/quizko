@@ -31,6 +31,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         leading: InkWell(
           onTap: () => context.pop(),
           child: const Icon(Icons.arrow_back_ios),

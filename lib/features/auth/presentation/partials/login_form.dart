@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/utils/colors/app_color.dart';
 import '../../../../core/utils/constants/routes.dart';
+import '../../../../core/utils/constants/widget_keys.dart';
 import '../../../../core/validator/form_validators.dart';
 import '../../../../shared/components/buttons/custom_elevated_button.dart';
 import '../../../../shared/components/input/custom_text_form_field.dart';
@@ -48,6 +49,7 @@ class _LoginFormState extends State<LoginForm> {
         child: Column(
           children: [
             CustomTextFormField(
+              key: WidgetKeys.signInEmailKey,
               controller: _emailController,
               hintText: 'Email',
               keyboardType: TextInputType.emailAddress,
@@ -57,6 +59,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             const Gap(20),
             CustomTextFormField(
+              key: WidgetKeys.signInPasswordKey,
               controller: _passwordController,
               hintText: 'Password',
               obscureText: !_showPassword,
