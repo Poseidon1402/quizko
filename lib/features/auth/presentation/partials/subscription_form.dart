@@ -144,9 +144,9 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
               child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
                 builder: (context, state) {
                   return CustomElevatedButton(
-                    onPressed: state is! LoadingState
+                    onPressed: _onSubscribeButtonTapped/*state is! LoadingState
                         ? _onSubscribeButtonTapped
-                        : () {},
+                        : () {}*/,
                     borderRadius: 24.0,
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     child: state is LoadingState

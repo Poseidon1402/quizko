@@ -38,6 +38,15 @@ class _QuestionBodyState extends State<QuestionBody> {
   }
 
   @override
+  void didChangeDependencies() {
+    final answer = context
+        .read<AnswerCubit>()
+        .state[widget.interview.subject.questions[widget.currentIndex].id];
+
+    setState(() => _picked = answer?['answer_id'] ?? -1);
+    super.didChangeDependencies();
+  }
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -65,8 +74,7 @@ class _QuestionBodyState extends State<QuestionBody> {
                       borderRadius: BorderRadius.circular(20),
                       color: Colors.white,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: ListView(
                       children: [
                         RichText(
                           text: TextSpan(
@@ -94,27 +102,31 @@ class _QuestionBodyState extends State<QuestionBody> {
                           ),
                         ),
                         const Gap(10),
-                        widget.interview.subject.questions[widget.currentIndex].type == 'qcm' ? Column(
-                          children: widget.interview.subject
-                              .questions[widget.currentIndex].answers
-                              .map(
-                                (answer) => AppCheckbox(
-                              label: answer.label,
-                              checked: _picked == answer.id,
-                              onChanged: (value) {
-                                setState(() {
-                                  _picked = answer.id;
-                                });
-                              },
-                            ),
-                          )
-                              .toList(),
-                        ) : CustomTextFormField(
-                          hintText: 'Your answer',
-                          controller: _replyController,
-                          minLines: 12,
-                          maxLines: 12,
-                        ),
+                        widget.interview.subject.questions[widget.currentIndex]
+                                    .type ==
+                                'qcm'
+                            ? Column(
+                                children: widget.interview.subject
+                                    .questions[widget.currentIndex].answers
+                                    .map(
+                                      (answer) => AppCheckbox(
+                                        label: answer.label,
+                                        checked: _picked == answer.id,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _picked = answer.id;
+                                          });
+                                        },
+                                      ),
+                                    )
+                                    .toList(),
+                              )
+                            : CustomTextFormField(
+                                hintText: 'Your answer',
+                                controller: _replyController,
+                                minLines: 12,
+                                maxLines: 12,
+                              ),
                       ],
                     ),
                   ),
@@ -124,39 +136,68 @@ class _QuestionBodyState extends State<QuestionBody> {
           ),
         ),
         const Gap(20),
-        FractionallySizedBox(
-          widthFactor: 1,
-          child: BlocBuilder<QuizBloc, QuizState>(builder: (context, state) {
-            return CustomElevatedButton(
-              onPressed: () {
-                if (_picked != -1) {
-                  if (widget.currentIndex ==
-                      widget.interview.subject.questions.length - 1) {
-                    _onFinishButtonTapped(context);
-                  } else {
-                    _onNextButtonTapped(context);
-                  }
-                }
-              },
-              borderRadius: 24,
-              backgroundColor: AppColor.white1.withOpacity(0.1),
-              child:
-                  BlocBuilder<QuizBloc, QuizState>(builder: (context, state) {
-                if (state is QuizStateLoading) {
-                  return const SpinKitThreeBounce(
-                    size: 24,
-                    color: AppColor.white1,
-                  );
-                }
-                return Text(
-                  widget.currentIndex == widget.interview.subject.questions.length - 1 ? 'Finish' : 'Next',
+        Row(
+          children: [
+            Expanded(
+              child: CustomElevatedButton(
+                onPressed:
+                    context.watch<QuizBloc>().state is QuizStateLoading ||
+                            widget.currentIndex == 0
+                        ? null
+                        : () => _onBackButtonTapped(context),
+                borderRadius: 24,
+                backgroundColor: AppColor.white1.withOpacity(0.1),
+                child: Text(
+                  'Back',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).colorScheme.onPrimary,
                       ),
-                );
-              }),
-            );
-          }),
+                ),
+              ),
+            ),
+            const Gap(12),
+            Expanded(
+              child: BlocBuilder<QuizBloc, QuizState>(
+                builder: (context, state) {
+                  return CustomElevatedButton(
+                    onPressed: _picked != -1
+                        ? () {
+                            if (_picked != -1) {
+                              if (widget.currentIndex ==
+                                  widget.interview.subject.questions.length -
+                                      1) {
+                                _onFinishButtonTapped(context);
+                              } else {
+                                _onNextButtonTapped(context);
+                              }
+                            }
+                          }
+                        : null,
+                    borderRadius: 24,
+                    backgroundColor: AppColor.white1.withOpacity(0.1),
+                    child: BlocBuilder<QuizBloc, QuizState>(
+                        builder: (context, state) {
+                      if (state is QuizStateLoading) {
+                        return const SpinKitThreeBounce(
+                          size: 24,
+                          color: AppColor.white1,
+                        );
+                      }
+                      return Text(
+                        widget.currentIndex ==
+                                widget.interview.subject.questions.length - 1
+                            ? 'Finish'
+                            : 'Next',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
+                      );
+                    }),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
         const Gap(30),
       ],
@@ -164,8 +205,11 @@ class _QuestionBodyState extends State<QuestionBody> {
   }
 
   void _onNextButtonTapped(BuildContext context) {
-    if(widget.interview.subject.questions[widget.currentIndex].type == 'qcm') {
-      context.read<AnswerCubit>().setAnswer({'answer_id': _picked});
+    if (widget.interview.subject.questions[widget.currentIndex].type == 'qcm') {
+      context.read<AnswerCubit>().setAnswer(
+        widget.interview.subject.questions[widget.currentIndex].id,
+        {'answer_id': _picked},
+      );
       setState(() => _picked = -1);
     } else {
       /*context.read<AnswerCubit>().setAnswer({'answer_id': _replyController.text});
@@ -175,8 +219,13 @@ class _QuestionBodyState extends State<QuestionBody> {
   }
 
   void _onFinishButtonTapped(BuildContext context) {
-    context.read<AnswerCubit>().setAnswer({'answer_id': _picked});
-    context.read<InterviewBloc>().add(InterviewCompletedEvent(id: widget.interview.id));
+    context.read<AnswerCubit>().setAnswer(
+      widget.interview.subject.questions[widget.currentIndex].id,
+      {'answer_id': _picked},
+    );
+    context
+        .read<InterviewBloc>()
+        .add(InterviewCompletedEvent(id: widget.interview.id));
     context.read<QuizBloc>().add(
           QuizEventFinished(
             answers: context.read<AnswerCubit>().state,
@@ -187,5 +236,13 @@ class _QuestionBodyState extends State<QuestionBody> {
                     .candidateId,
           ),
         );
+  }
+
+  void _onBackButtonTapped(BuildContext context) {
+    final isLoading = context.read<QuizBloc>().state is QuizStateLoading;
+
+    if (!isLoading) {
+      context.read<QuizBloc>().add(QuizEventPreviousQuestion());
+    }
   }
 }

@@ -1,17 +1,26 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/utils/colors/app_color.dart';
+import '../../../../core/utils/constants/routes.dart';
 import '../../../../shared/components/buttons/gradient_button.dart';
+import '../../../auth/presentation/bloc/authentication_bloc.dart';
+import '../../domain/entity/interview_entity.dart';
+import '../bloc/interview_bloc.dart';
 import '../clip/header_painter.dart';
 
 class Header extends StatelessWidget {
+  final InterviewEntity? interview;
+
   const Header({
     super.key,
+    required this.interview,
   });
 
   @override
@@ -57,7 +66,8 @@ class Header extends StatelessWidget {
                                   alignment: Alignment.center,
                                   transform: Matrix4.rotationY(math.pi),
                                   child: SvgPicture.asset(
-                                      'assets/images/circle.svg'),
+                                    'assets/images/circle.svg',
+                                  ),
                                 ),
                               ),
                               Expanded(
@@ -147,34 +157,30 @@ class Header extends StatelessWidget {
                                       ),
                                     ),
                                     child: Text(
-                                      'Global Knowledge',
+                                      interview!.name,
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleLarge,
                                     ),
                                   ),
-                                  Row(
-                                    children: [
-                                      SvgPicture.asset(
-                                        'assets/icons/pts.svg',
-                                        width: 30,
-                                        height: 30,
-                                      ),
-                                      Text(
-                                        'Earn 120 Points',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall
-                                            ?.copyWith(
-                                              color: AppColor.purple3,
-                                            ),
-                                      ),
-                                    ],
+                                  Text(
+                                    '${interview?.subject.questions.length} questions',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                      color: AppColor.purple3,
+                                    ),
                                   ),
                                   FractionallySizedBox(
                                     widthFactor: 1,
                                     child: GradientButton(
-                                      onPressed: () {},
+                                      onPressed: () => interview!.isCompleted
+                                          ? _onTapped(context)
+                                          : context.push(
+                                              Routes.quiz,
+                                              extra: interview,
+                                            ),
                                       colors: const [
                                         AppColor.purple4,
                                         AppColor.purple3,
@@ -208,5 +214,21 @@ class Header extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _onTapped(BuildContext context) {
+    if(interview != null) {
+      final candidateId =
+          (context.read<AuthenticationBloc>().state as AuthenticatedState)
+              .currentUser
+              .candidateId;
+      context.read<InterviewBloc>().add(
+        FetchInterviewCorrectionEvent(
+          candidateId: candidateId,
+          interviewId: interview!.id,
+        ),
+      );
+      context.push('${Routes.userAnswer}?interview=${interview!.id}');
+    }
   }
 }

@@ -37,6 +37,9 @@ class AuthenticationSourceImpl implements AuthenticationSource {
       http.Response response = await httpClient.post(
         Uri.http(ApiConfig.baseUrl, '/api/subscribe'),
         body: newUser.subscriptionJson(),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+        }
       );
 
       final decodedJson = json.decode(utf8.decode(response.bodyBytes));

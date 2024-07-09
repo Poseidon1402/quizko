@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/utils/constants/routes.dart';
 import '../../../auth/presentation/bloc/authentication_bloc.dart';
 import '../bloc/interview_bloc.dart' as interview_bloc;
 import '../bloc/interview_bloc.dart';
@@ -61,7 +63,7 @@ class HomeScreen extends StatelessWidget {
             constraints: const BoxConstraints.expand(),
             child: Column(
               children: [
-                const Expanded(child: Header()),
+                Expanded(child: Header(interview: state.interviews.firstOrNull,)),
                 Flexible(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -80,7 +82,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                             const Spacer(),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () => context.push(Routes.seeAllQuiz),
                               child: Row(
                                 children: [
                                   Text(
@@ -108,7 +110,7 @@ class HomeScreen extends StatelessWidget {
                         Expanded(
                           child: ListView.separated(
                             padding: const EdgeInsets.all(0),
-                            itemCount: state.interviews.length,
+                            itemCount: state.interviews.length > 3 ? 5 : state.interviews.length,
                             separatorBuilder: (context, index) => const Gap(10),
                             itemBuilder: (context, index) => Quiz(interview: state.interviews[index],),
                           ),

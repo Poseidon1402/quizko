@@ -14,4 +14,5 @@ abstract class Routes {
   static const mark = '/mark';
   static const about = '/about';
   static const userAnswer = '/user_answer';
+  static const seeAllQuiz = '/all_quiz';
 }
