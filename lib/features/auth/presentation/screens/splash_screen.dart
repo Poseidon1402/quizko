@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/config/api_config.dart';
 import '../../../../core/utils/colors/app_color.dart';
 import '../../../../core/utils/constants/routes.dart';
+import '../../../../core/validator/form_validators.dart';
 import '../../../../shared/components/buttons/custom_elevated_button.dart';
 import '../../../../shared/components/input/custom_text_form_field.dart';
 import '../bloc/authentication_bloc.dart';
@@ -26,6 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _showIpInputDialog() async {
+    final formKey = GlobalKey<FormState>();
     final TextEditingController ipAddressController = TextEditingController();
 
     return showDialog<void>(
@@ -37,26 +39,32 @@ class _SplashScreenState extends State<SplashScreen> {
             'Enter IP Address',
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          content: Wrap(
-            children: [
-              SizedBox(
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.wifi,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 50.sp,
-                    ),
-                    const Gap(10),
-                    CustomTextFormField(
-                      controller: ipAddressController,
-                      keyboardType: TextInputType.text,
-                      hintText: 'IP Address',
-                    ),
-                  ],
-                ),
-              )
-            ],
+          content: Form(
+            key: formKey,
+            child: Wrap(
+              children: [
+                SizedBox(
+                  width: MediaQuery.sizeOf(context).width,
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.wifi,
+                        color: Theme.of(context).colorScheme.primary,
+                        size: 50.sp,
+                      ),
+                      const Gap(10),
+                      CustomTextFormField(
+                        controller: ipAddressController,
+                        validator: isValidIpAddressAndPort,
+                        keyboardType: TextInputType.text,
+                        errorFontSize: 12,
+                        hintText: 'ex: 192.168.1.100:5555',
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
           actions: <Widget>[
             FractionallySizedBox(
@@ -70,8 +78,10 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                 ),
                 onPressed: () {
-                  ApiConfig.baseUrl = ipAddressController.text;
-                  context.read<AuthenticationBloc>().add(VerifyTokenEvent());
+                  if(formKey.currentState!.validate()) {
+                    ApiConfig.baseUrl = ipAddressController.text;
+                    context.read<AuthenticationBloc>().add(VerifyTokenEvent());
+                  }
                 },
               ),
             ),

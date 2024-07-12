@@ -110,3 +110,18 @@ String? isFourDigitNumber(String? value) {
   }
   return null;
 }
+
+String? isValidIpAddressAndPort(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'Required field';
+  }
+
+  final regex = RegExp(
+      r'^(?:\d{1,3}\.){3}\d{1,3}:\d{1,5}$'
+  );
+  if(!regex.hasMatch(value)) {
+    return 'Please enter a valid IP address and port';
+  }
+
+  return null;
+}
