@@ -25,7 +25,7 @@ class InterviewBloc extends Bloc<InterviewEvent, InterviewState> {
   void _handleFetchInterviewsEvent(
       FetchInterviewsEvent event, Emitter<InterviewState> emit) async {
     emit(LoadingState());
-    final result = await fetchInterviews(candidateId: event.candidateId);
+    final result = await fetchInterviews(candidateId: event.candidateId, classId: event.classId);
     result.fold(
       (failure) => emit(ErrorState(error: failure)),
       (interviews) => emit(InterviewsLoaded(interviews: interviews)),

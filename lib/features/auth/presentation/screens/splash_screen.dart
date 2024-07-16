@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/config/api_config.dart';
 import '../../../../core/utils/colors/app_color.dart';
 import '../../../../core/utils/constants/routes.dart';
+import '../../../../core/utils/constants/widget_keys.dart';
 import '../../../../core/validator/form_validators.dart';
 import '../../../../shared/components/buttons/custom_elevated_button.dart';
 import '../../../../shared/components/input/custom_text_form_field.dart';
@@ -35,6 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog.adaptive(
+          key: WidgetKeys.ipAddressDialogKey,
           title: Text(
             'Enter IP Address',
             style: Theme.of(context).textTheme.titleMedium,
@@ -54,6 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       ),
                       const Gap(10),
                       CustomTextFormField(
+                        key: WidgetKeys.ipAddressKey,
                         controller: ipAddressController,
                         validator: isValidIpAddressAndPort,
                         keyboardType: TextInputType.text,
@@ -70,6 +73,7 @@ class _SplashScreenState extends State<SplashScreen> {
             FractionallySizedBox(
               widthFactor: 1,
               child: CustomElevatedButton(
+                key: WidgetKeys.setIpKey,
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 child: Text(
                   'OK',
@@ -102,6 +106,7 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       },
       child: Container(
+        key: WidgetKeys.splashScreenKey,
         color: AppColor.purple3,
         child: Center(
           child: FractionallySizedBox(

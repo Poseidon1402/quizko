@@ -37,6 +37,7 @@ class _LoginFormState extends State<LoginForm> {
         } else if (state is UnauthenticatedState) {
           ScaffoldMessenger.of(context).showSnackBar(
             myAppSnackBar(
+              key: WidgetKeys.signInErrorSnackBar,
               context: context,
               message: state.message,
               backgroundColor: AppColor.red1,

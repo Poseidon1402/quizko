@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:socket_io_client/socket_io_client.dart' as socket_io;
 
 import '../../../../core/utils/colors/app_color.dart';
 import '../../../../core/utils/constants/main_tab.dart';
@@ -26,10 +27,20 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     currentIndex = widget.navigationShell.currentIndex;
-    final id = (context.read<AuthenticationBloc>().state as AuthenticatedState)
-        .currentUser
-        .candidateId;
-    context.read<InterviewBloc>().add(FetchInterviewsEvent(candidateId: id));
+    final user =
+        (context.read<AuthenticationBloc>().state as AuthenticatedState)
+            .currentUser;
+
+    context.read<InterviewBloc>().add(
+          FetchInterviewsEvent(
+            candidateId: user.candidateId,
+            classId: user.classEntity.id,
+          ),
+        );
+    socket_io.Socket socket = socket_io.io('http://10.0.2.2:4000');
+    socket.connect();
+    socket.onConnect((_) => print('connected'));
+    socket.onError((error) => print(error));
     super.initState();
   }
 

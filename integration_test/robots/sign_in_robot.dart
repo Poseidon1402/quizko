@@ -28,5 +28,12 @@ class SignInRobot {
   Future<void> tapSignInButton() async {
     final signInButton = find.byKey(WidgetKeys.signInButtonKey);
     expect(signInButton, findsOneWidget);
+    await tester.tap(signInButton);
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> verifyError() async {
+    final errorSnackBar = find.byKey(WidgetKeys.signInErrorSnackBar);
+    expect(errorSnackBar, findsOneWidget);
   }
 }

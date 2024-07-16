@@ -21,10 +21,10 @@ class InterviewRepositoryImpl implements InterviewRepository {
   });
 
   @override
-  Future<Either<Failure, List<InterviewEntity>>> fetchInterviews({required int candidateId}) async {
+  Future<Either<Failure, List<InterviewEntity>>> fetchInterviews({required int candidateId, required int classId}) async {
     try {
       final token = await secureStorage.read(key: 'token');
-      final data = await interviewSource.fetchInterviews(token!);
+      final data = await interviewSource.fetchInterviews(token!, classId);
       List<InterviewEntity> interviews = [];
 
       for (InterviewEntity interview in data) {

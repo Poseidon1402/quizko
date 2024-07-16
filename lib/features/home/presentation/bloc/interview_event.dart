@@ -7,11 +7,12 @@ abstract class InterviewEvent extends Equatable {
 
 class FetchInterviewsEvent extends InterviewEvent {
   final int candidateId;
+  final int classId;
 
-  FetchInterviewsEvent({required this.candidateId});
+  FetchInterviewsEvent({required this.candidateId, required this.classId});
 
   @override
-  List<Object?> get props => [candidateId];
+  List<Object?> get props => [candidateId, classId];
 }
 
 class InterviewCompletedEvent extends InterviewEvent {
