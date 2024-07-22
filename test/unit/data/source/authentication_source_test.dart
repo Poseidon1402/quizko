@@ -48,7 +48,7 @@ void main() {
         ),
       ).thenAnswer(
         (_) async => http.Response(
-          readJson('helpers/dummy_data/dummy_sign_in_response.json'),
+          readJson('helpers/dummy_data/responses/dummy_sign_in_response.json'),
           200,
         ),
       );
@@ -110,7 +110,7 @@ void main() {
         ),
       ).thenAnswer(
         (_) async => http.Response(
-          readJson('helpers/dummy_data/dummy_sign_in_response.json'),
+          readJson('helpers/dummy_data/responses/dummy_sign_in_response.json'),
           200,
         ),
       );
@@ -121,13 +121,15 @@ void main() {
     });
 
     test('Should throw a bad request exception', () async {
-      when(mockHttpClient.post(
-        Uri.http(ApiConfig.baseUrl, '/api/subscribe'),
-        body: newUserModel.subscriptionJson(),
-        headers: {
-          HttpHeaders.contentTypeHeader: 'application/json',
-        },
-      )).thenAnswer(
+      when(
+        mockHttpClient.post(
+          Uri.http(ApiConfig.baseUrl, '/api/subscribe'),
+          body: newUserModel.subscriptionJson(),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+          },
+        ),
+      ).thenAnswer(
         (_) async => http.Response(
           '{"message": "Duplicated registration number"}',
           400,
@@ -140,6 +142,55 @@ void main() {
           isA<BadRequestException>(),
         ),
       );
+    });
+  });
+
+  group('Getting current user', () {
+    test('Should return a valid user model', () async {
+      when(
+        mockHttpClient.get(
+          Uri.http(ApiConfig.baseUrl, '/api/user'),
+          headers: {
+            HttpHeaders.authorizationHeader: 'Bearer token',
+          },
+        ),
+      ).thenAnswer(
+        (_) async => http.Response(
+          readJson(
+            'helpers/dummy_data/responses/dummy_current_user_response.json',
+          ),
+          200,
+        ),
+      );
+
+      final result = await authenticationSource.getCurrentUser('token');
+
+      expect(result, equals(userModel));
+    });
+  });
+
+  group('Update current user', () {
+    test('Should return a valid user model', () async {
+      when(
+        mockHttpClient.put(
+          Uri.http(ApiConfig.baseUrl, '/api/profile'),
+          body: userModel.updateJson(),
+          headers: {
+            HttpHeaders.authorizationHeader: 'Bearer token',
+          },
+        ),
+      ).thenAnswer(
+        (_) async => http.Response(
+          readJson(
+            'helpers/dummy_data/responses/dummy_update_user_response.json',
+          ),
+          200,
+        ),
+      );
+
+      final result = await authenticationSource.updateUser(user: userModel, token: 'token');
+
+      expect(result, equals(userModel));
     });
   });
 }

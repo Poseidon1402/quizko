@@ -22,7 +22,8 @@ abstract class AuthenticationSource {
   });
   Future<String> verifyToken(String token);
   Future<UserModel> getCurrentUser(String token);
-  Future<UserModel> updateUser({required UserModel user, required String token});
+  Future<UserModel> updateUser(
+      {required UserModel user, required String token});
   Future<bool> logout(String token);
 }
 
@@ -35,12 +36,11 @@ class AuthenticationSourceImpl implements AuthenticationSource {
   Future<UserModel> subscribeUser(UserModel newUser) async {
     try {
       http.Response response = await httpClient.post(
-        Uri.http(ApiConfig.baseUrl, '/api/subscribe'),
-        body: newUser.subscriptionJson(),
-        headers: {
-          HttpHeaders.contentTypeHeader: 'application/json',
-        }
-      );
+          Uri.http(ApiConfig.baseUrl, '/api/subscribe'),
+          body: newUser.subscriptionJson(),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+          });
 
       final decodedJson = json.decode(utf8.decode(response.bodyBytes));
       if (isSuccess(response.statusCode)) {
@@ -229,11 +229,16 @@ class AuthenticationSourceImpl implements AuthenticationSource {
   }
 
   @override
-  Future<UserModel> updateUser({required UserModel user, required String token}) async {
+  Future<UserModel> updateUser(
+      {required UserModel user, required String token}) async {
     try {
-      final response = await httpClient.put(Uri.http(ApiConfig.baseUrl, '/api/profile'), body: user.updateJson(), headers: {
-        HttpHeaders.authorizationHeader: 'Bearer $token',
-      },);
+      final response = await httpClient.put(
+        Uri.http(ApiConfig.baseUrl, '/api/profile'),
+        body: user.updateJson(),
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
 
       if (isSuccess(response.statusCode)) {
         final decodedJson = json.decode(utf8.decode(response.bodyBytes));
