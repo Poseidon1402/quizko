@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
@@ -19,6 +21,19 @@ void main() {
     authenticationSource = AuthenticationSourceImpl(httpClient: mockHttpClient);
   });
 
+  const userModel = UserModel(
+    candidateId: 5,
+    registrationNumber: "1111",
+    fullName: "John Doe",
+    email: "johndoe@example.com",
+    gender: "masculine",
+    phone: "0320011122",
+    classEntity: ClassModel(
+      id: 1,
+      name: 'M1 GB',
+    ),
+  );
+
   group('Authenticate User', () {
     Map<String, String> signInBody = {
       'email': 'johndoe@example.com',
@@ -26,19 +41,6 @@ void main() {
     };
 
     test('Should return a valid user model', () async {
-      const userModel = UserModel(
-        candidateId: 5,
-        registrationNumber: "1111",
-        fullName: "John Doe",
-        email: "johndoe@example.com",
-        gender: "masculine",
-        phone: "0320011122",
-        classEntity: ClassModel(
-          id: 1,
-          name: 'M1 GB',
-        ),
-      );
-
       when(
         mockHttpClient.post(
           Uri.http(ApiConfig.baseUrl, '/api/login'),
@@ -61,16 +63,14 @@ void main() {
 
     test('Should throw an unauthorized exception', () async {
       when(
-        when(
-          mockHttpClient.post(
-            Uri.http(ApiConfig.baseUrl, '/api/login'),
-            body: signInBody,
-          ),
-        ).thenAnswer(
-          (_) async => http.Response(
-            "{'message': 'Unauthenticated'}",
-            401,
-          ),
+        mockHttpClient.post(
+          Uri.http(ApiConfig.baseUrl, '/api/login'),
+          body: signInBody,
+        ),
+      ).thenAnswer(
+        (_) async => http.Response(
+          "{'message': 'Unauthenticated'}",
+          401,
         ),
       );
 
@@ -79,6 +79,65 @@ void main() {
             'johndoe@example.com', 'password'),
         throwsA(
           isA<UnauthorizedException>(),
+        ),
+      );
+    });
+  });
+
+  group('Subscribe user', () {
+    const newUserModel = UserModel(
+      candidateId: 5,
+      registrationNumber: "1111",
+      fullName: "John Doe",
+      email: "johndoe@example.com",
+      gender: "masculine",
+      phone: "0320011122",
+      password: 'password',
+      classEntity: ClassModel(
+        id: 1,
+        name: 'M1 GB',
+      ),
+    );
+
+    test('Should return a valid user model', () async {
+      when(
+        mockHttpClient.post(
+          Uri.http(ApiConfig.baseUrl, '/api/subscribe'),
+          body: newUserModel.subscriptionJson(),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+          },
+        ),
+      ).thenAnswer(
+        (_) async => http.Response(
+          readJson('helpers/dummy_data/dummy_sign_in_response.json'),
+          200,
+        ),
+      );
+
+      final result = await authenticationSource.subscribeUser(newUserModel);
+
+      expect(result, equals(userModel));
+    });
+
+    test('Should throw a bad request exception', () async {
+      when(mockHttpClient.post(
+        Uri.http(ApiConfig.baseUrl, '/api/subscribe'),
+        body: newUserModel.subscriptionJson(),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+        },
+      )).thenAnswer(
+        (_) async => http.Response(
+          '{"message": "Duplicated registration number"}',
+          400,
+        ),
+      );
+
+      expect(
+        () async => authenticationSource.subscribeUser(newUserModel),
+        throwsA(
+          isA<BadRequestException>(),
         ),
       );
     });
