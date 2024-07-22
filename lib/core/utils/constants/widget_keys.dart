@@ -5,7 +5,7 @@ abstract class WidgetKeys {
   static const Key splashScreenKey = Key('splashScreenKey');
   static const Key ipAddressDialogKey = Key('ipAddressDialogKey');
   static const Key ipAddressKey = Key('ipAddressKey');
-  static const Key setIpKey = Key('ipAddressKey');
+  static const Key setIpKey = Key('setIpKey');
 
   // Sign In
   static const Key signInScreenKey = Key('signInScreen');

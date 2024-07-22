@@ -96,6 +96,7 @@ class _LoginFormState extends State<LoginForm> {
               child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
                 builder: (context, state) {
                   return CustomElevatedButton(
+                    key: WidgetKeys.signInButtonKey,
                     onPressed: _onSignInButtonTapped,
                     borderRadius: 24.0,
                     backgroundColor: Theme.of(context).colorScheme.primary,
