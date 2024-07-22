@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../../../account/domain/entity/class_entity.dart';
+import '../../../account/data/models/class_model.dart';
 import '../../domain/entity/user_entity.dart';
 
 class UserModel extends UserEntity {
@@ -27,10 +27,7 @@ class UserModel extends UserEntity {
         email: json['email'],
         phone: json['phone'] ?? '',
         gender: json['candidate']['gender'],
-        classEntity: const ClassEntity(
-          id: 1,
-          name: 'M1 GBD',
-        ),
+        classEntity: ClassModel.fromJson(json['candidate']['post']),
         token: token,
       );
 
