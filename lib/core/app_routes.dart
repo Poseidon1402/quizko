@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/account/presentation/screens/account_screen.dart';
 import '../features/account/presentation/screens/update_password_screen.dart';
-import '../features/auth/presentation/bloc/authentication_bloc.dart';
 import '../features/auth/presentation/screens/create_new_password_screen.dart';
 import '../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../features/auth/presentation/screens/forgot_password_verification_code_screen.dart';
@@ -13,6 +11,7 @@ import '../features/auth/presentation/screens/sign_up_screen.dart';
 import '../features/auth/presentation/screens/splash_screen.dart';
 import '../features/home/domain/entity/interview_entity.dart';
 import '../features/home/presentation/screens/home_screen.dart';
+import '../features/home/presentation/screens/see_all_quiz.dart';
 import '../features/main/presentation/screens/main_screen.dart';
 import '../features/quiz/presentation/screens/mark_screen.dart';
 import '../features/quiz/presentation/screens/quiz_screen.dart';
@@ -32,7 +31,7 @@ abstract class AppRoutes {
       GoRoute(
         path: Routes.entryPoint,
         builder: (context, state) => const SplashScreen(),
-        redirect: (context, state) {
+        /*redirect: (context, state) {
           final state = context.watch<AuthenticationBloc>().state;
 
           if (state is AuthenticatedState) {
@@ -42,7 +41,7 @@ abstract class AppRoutes {
           }
 
           return null;
-        },
+        },*/
       ),
       GoRoute(
         path: Routes.login,
@@ -149,6 +148,22 @@ abstract class AppRoutes {
           reverseTransitionDuration: const Duration(seconds: 1),
           key: state.pageKey,
           child: const AboutScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: CurveTween(curve: Curves.linear).animate(animation),
+              child: child,
+            );
+          },
+        ),
+      ),
+      GoRoute(
+        parentNavigatorKey: _rootNavigatorKey,
+        path: Routes.seeAllQuiz,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          transitionDuration: const Duration(seconds: 1),
+          reverseTransitionDuration: const Duration(seconds: 1),
+          key: state.pageKey,
+          child: const SeeAllQuiz(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: CurveTween(curve: Curves.linear).animate(animation),

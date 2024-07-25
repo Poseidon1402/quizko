@@ -89,7 +89,7 @@ class Quiz extends StatelessWidget {
                         backgroundColor: Colors.white,
                         avatar: SvgPicture.asset('assets/icons/clock.svg'),
                         label: Text(
-                          '${interview.duration.inMinutes} : 00',
+                          '${interview.duration.inHours.toString().padLeft(2, '0')} : ${interview.duration.inMinutes.toString().padLeft(2, '0')}',
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall

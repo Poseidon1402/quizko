@@ -6,7 +6,7 @@ import '../entity/interview_entity.dart';
 
 abstract class InterviewRepository {
   Future<Either<Failure, List<InterviewEntity>>> fetchInterviews(
-      {required int candidateId});
+      {required int candidateId, required int classId});
   Future<Either<Failure, int>> getMarks({
     required int interviewId,
     required int candidateId,

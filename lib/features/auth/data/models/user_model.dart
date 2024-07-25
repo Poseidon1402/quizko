@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import '../../../account/data/models/class_model.dart';
 import '../../domain/entity/user_entity.dart';
 
 class UserModel extends UserEntity {
@@ -11,6 +14,7 @@ class UserModel extends UserEntity {
     required super.gender,
     required super.fullName,
     super.phone = '',
+    required super.classEntity,
     this.password,
     this.token,
   });
@@ -23,17 +27,19 @@ class UserModel extends UserEntity {
         email: json['email'],
         phone: json['phone'] ?? '',
         gender: json['candidate']['gender'],
+        classEntity: ClassModel.fromJson(json['candidate']['post']),
         token: token,
       );
 
-  Map<String, dynamic> subscriptionJson() => {
+  String subscriptionJson() => json.encode({
         "registration_number": registrationNumber,
         "name": fullName,
         "email": email,
         "password": password,
         'phone': phone,
         "gender": gender,
-      };
+        "post_id": classEntity.id,
+      });
 
   Map<String, dynamic> updateJson() => {
         "registration_number": registrationNumber,
@@ -41,5 +47,6 @@ class UserModel extends UserEntity {
         "email": email,
         "phone": phone,
         "gender": gender,
+        "post_id": classEntity.id,
       };
 }

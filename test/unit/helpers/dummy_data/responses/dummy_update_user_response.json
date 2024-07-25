@@ -1,0 +1,30 @@
+{
+  "user": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "email_verified_at": null,
+    "created_at": "2024-05-26T18:11:55.000000Z",
+    "updated_at": "2024-05-26T18:11:55.000000Z",
+    "role": "candidate",
+    "phone": "0320011122",
+    "candidate": {
+      "id": 5,
+      "registration_number": "1111",
+      "user_id": 5,
+      "post_id": 1,
+      "status": "pending",
+      "gender": "masculine",
+      "created_at": "2024-05-26T18:11:55.000000Z",
+      "updated_at": "2024-05-26T18:11:55.000000Z",
+      "post": {
+        "id": 1,
+        "name": "M1 GB",
+        "description": "ENI",
+        "is_available": 1,
+        "created_at": "2024-05-26T17:59:23.000000Z",
+        "updated_at": "2024-07-09T16:02:48.000000Z"
+      }
+    }
+  }
+}

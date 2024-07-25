@@ -2,7 +2,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../features/account/data/repository/class_repository_impl.dart';
+import '../../../features/account/data/source/class_source.dart';
+import '../../../features/account/domain/repository/class_repository.dart';
+import '../../../features/account/domain/usecases/fetch_classes.dart';
 import '../../../features/account/domain/usecases/update_user.dart';
+import '../../../features/account/presentation/bloc/class/class_bloc.dart';
 import '../../../features/auth/data/repository/authentication_repository_impl.dart';
 import '../../../features/auth/data/source/authentication_source.dart';
 import '../../../features/auth/domain/repository/authentication_repository.dart';
@@ -46,6 +51,9 @@ void setup() {
   sl.registerFactory(
     () => QuizBloc(fetchMark: sl()),
   );
+  sl.registerFactory(
+    () => ClassBloc(fetchClasses: sl()),
+  );
 
   // Use cases
   sl.registerLazySingleton<SubscribeUser>(
@@ -84,6 +92,9 @@ void setup() {
   sl.registerLazySingleton<UpdateUser>(
     () => UpdateUserImpl(repository: sl()),
   );
+  sl.registerLazySingleton<FetchClasses>(
+    () => FetchClassesImpl(repository: sl()),
+  );
 
   // Repositories
   sl.registerLazySingleton<AuthenticationRepository>(
@@ -94,7 +105,13 @@ void setup() {
   );
   sl.registerLazySingleton<InterviewRepository>(
     () => InterviewRepositoryImpl(
-        interviewSource: sl(), resultSource: sl(), secureStorage: sl()),
+      interviewSource: sl(),
+      resultSource: sl(),
+      secureStorage: sl(),
+    ),
+  );
+  sl.registerLazySingleton<ClassRepository>(
+    () => ClassRepositoryImpl(source: sl()),
   );
 
   // Data Sources
@@ -106,6 +123,9 @@ void setup() {
   );
   sl.registerLazySingleton<ResultSource>(
     () => ResultSourceImpl(client: sl()),
+  );
+  sl.registerLazySingleton<ClassSource>(
+    () => ClassSourceImpl(client: sl()),
   );
 
   // Other Services

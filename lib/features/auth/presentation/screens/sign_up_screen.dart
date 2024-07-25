@@ -1,6 +1,4 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -17,91 +15,47 @@ class SignUpScreen extends StatelessWidget {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
     return Scaffold(
-      backgroundColor: AppColor.purple3,
+      appBar: AppBar(
+        leading: IconButton.outlined(
+          onPressed: () => context.pushReplacement(Routes.login),
+          style: IconButton.styleFrom(
+              shape: const CircleBorder(),
+              side: BorderSide(
+                color: AppColor.purple1.withOpacity(0.18),
+              ),
+              padding: const EdgeInsets.all(10)),
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            size: 20,
+            color: AppColor.purple1,
+          ),
+        ),
+      ),
+      backgroundColor: AppColor.white1,
       resizeToAvoidBottomInset: false,
       body: ConstrainedBox(
         constraints: const BoxConstraints.expand(),
-        child: Stack(
+        child: ListView(
+          padding: EdgeInsets.only(bottom: bottomInset, left: 10, right: 10,),
           children: [
-            Column(
-              children: [
-                Expanded(
-                  flex: 5,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: AppColor.white1,
-                      borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(150),
-                        bottomLeft: Radius.circular(32),
-                      ),
-                    ),
-                    child: ListView(
-                      padding: EdgeInsets.only(bottom: bottomInset, left: 20, right: 0),
-                      children: [
-                        const Gap(75),
-                        SvgPicture.asset('assets/logo/logo_2.svg'),
-                        const Gap(50),
-                        Text(
-                          'Sign up',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium
-                              ?.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                        ),
-                        Text(
-                          'To continue, please create your account',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        const Gap(30),
-                        const SubscriptionForm(),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Center(
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Already have an account ? ',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                          ),
-                          TextSpan(
-                            text: 'Sign in',
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () => context.go(Routes.login),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  color: AppColor.purple2,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Positioned(
-              bottom: 80,
-              right: -200,
-              child: Image.asset(
-                'assets/images/cubic.png',
-                width: 300.w,
-                height: 300.h,
+            const Gap(20),
+            SvgPicture.asset('assets/logo/logo_2.svg'),
+            const Gap(50),
+            Text(
+              'Sign up',
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(
+                color: Theme.of(context).colorScheme.primary,
               ),
-            )
+            ),
+            Text(
+              'To continue, please create your account',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            const Gap(30),
+            const SubscriptionForm(),
           ],
         ),
       ),

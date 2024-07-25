@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/utils/constants/routes.dart';
 import '../../../auth/presentation/bloc/authentication_bloc.dart';
 import '../bloc/interview_bloc.dart' as interview_bloc;
 import '../bloc/interview_bloc.dart';
 import '../components/header.dart';
 import '../components/quiz.dart';
+import 'no_quizzes_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -23,6 +26,10 @@ class HomeScreen extends StatelessWidget {
       if (state is interview_bloc.LoadingState || state is interview_bloc.InitialState) {
         return const Center(child: CircularProgressIndicator());
       } else if (state is interview_bloc.InterviewsLoaded) {
+        if(state.interviews.isEmpty) {
+          return const NoQuizzesScreen();
+        }
+
         return Scaffold(
           extendBodyBehindAppBar: true,
           appBar: AppBar(
@@ -52,12 +59,16 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
+            actions: [
+              Image.asset('assets/logo/eni.png'),
+              const Gap(10),
+            ],
           ),
           body: ConstrainedBox(
             constraints: const BoxConstraints.expand(),
             child: Column(
               children: [
-                const Expanded(child: Header()),
+                Expanded(child: Header(interview: state.interviews.firstOrNull,)),
                 Flexible(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -76,7 +87,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                             const Spacer(),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () => context.push(Routes.seeAllQuiz),
                               child: Row(
                                 children: [
                                   Text(
@@ -104,7 +115,7 @@ class HomeScreen extends StatelessWidget {
                         Expanded(
                           child: ListView.separated(
                             padding: const EdgeInsets.all(0),
-                            itemCount: state.interviews.length,
+                            itemCount: state.interviews.length > 3 ? 5 : state.interviews.length,
                             separatorBuilder: (context, index) => const Gap(10),
                             itemBuilder: (context, index) => Quiz(interview: state.interviews[index],),
                           ),

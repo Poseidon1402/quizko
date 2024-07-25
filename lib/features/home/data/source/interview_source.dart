@@ -10,7 +10,7 @@ import '../models/interview_model.dart';
 import '../models/question_model.dart';
 
 abstract class InterviewSource {
-  Future<List<InterviewModel>> fetchInterviews(String token);
+  Future<List<InterviewModel>> fetchInterviews(String token, int classId);
   Future<List<QuestionModel>> fetchRelatedQuestions({
     required String token,
     required int subjectId,
@@ -34,10 +34,10 @@ class InterviewSourceImpl implements InterviewSource {
   InterviewSourceImpl({required this.client});
 
   @override
-  Future<List<InterviewModel>> fetchInterviews(String token) async {
+  Future<List<InterviewModel>> fetchInterviews(String token, int classId) async {
     try {
       http.Response response = await client
-          .get(Uri.http(ApiConfig.baseUrl, '/api/tests/1'), headers: {
+          .get(Uri.http(ApiConfig.baseUrl, '/api/tests/$classId'), headers: {
         HttpHeaders.authorizationHeader: 'Bearer $token',
       });
 

@@ -17,6 +17,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
           ),
         ) {
     on<QuizEventNextQuestion>(_handleNextQuestionEvent);
+    on<QuizEventPreviousQuestion>(_handlePreviousQuestionEvent);
     on<QuizEventAnswered>(_handleAnswerEvent);
     on<QuizEventFinished>(_handleFinishEvent);
   }
@@ -27,6 +28,16 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     emit(
       QuizStateLoaded(
         currentQuestionIndex: currentState.currentQuestionIndex + 1,
+      ),
+    );
+  }
+
+  void _handlePreviousQuestionEvent(
+      QuizEventPreviousQuestion event, Emitter<QuizState> emit) {
+    final currentState = state as QuizStateLoaded;
+    emit(
+      QuizStateLoaded(
+        currentQuestionIndex: currentState.currentQuestionIndex - 1,
       ),
     );
   }
@@ -46,8 +57,13 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     final currentIndex = (state as QuizStateLoaded).currentQuestionIndex;
     emit(QuizStateLoading());
 
+    List<Map<String, int>> data = [];
+    for(var item in event.answers.values) {
+      data.add(item);
+    }
+
     final result = await fetchMark(
-      answers: event.answers,
+      answers: data,
       candidateId: event.candidateId,
       interviewId: event.interviewId,
     );

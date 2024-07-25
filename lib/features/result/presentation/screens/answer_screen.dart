@@ -108,8 +108,19 @@ class AnswerScreen extends StatelessWidget {
             ),
           );
         } else {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Scaffold(
+            backgroundColor: Colors.white,
+            body: ConstrainedBox(
+              constraints: const BoxConstraints.expand(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/images/zero_items.png'),
+                  const Gap(20),
+                  Text('There is no questions that you have answered', style: Theme.of(context).textTheme.bodyLarge,),
+                ],
+              ),
+            ),
           );
         }
       } else {

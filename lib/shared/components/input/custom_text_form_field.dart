@@ -22,6 +22,7 @@ class CustomTextFormField extends StatelessWidget {
   final int? minLines;
   final String? label;
   final Color? labelColor;
+  final double? errorFontSize;
   final BorderSide? focusedBorderSide;
   final EdgeInsetsGeometry? contentPadding;
   final FocusNode? focusNode;
@@ -56,6 +57,7 @@ class CustomTextFormField extends StatelessWidget {
     this.focusNode,
     this.textInputAction,
     this.onCompleteEditing,
+    this.errorFontSize,
   });
 
   @override
@@ -106,6 +108,7 @@ class CustomTextFormField extends StatelessWidget {
         ),
         errorStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
           color: AppColor.red1,
+          fontSize: errorFontSize,
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(borderRadius),

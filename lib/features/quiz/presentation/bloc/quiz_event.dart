@@ -20,10 +20,12 @@ class QuizEventAnswered extends QuizEvent {
 
 class QuizEventNextQuestion extends QuizEvent {}
 
+class QuizEventPreviousQuestion extends QuizEvent {}
+
 class QuizEventFinished extends QuizEvent {
   final int candidateId;
   final int interviewId;
-  final List<Map<String, int>> answers;
+  final Map<int, Map<String, int>> answers;
 
   QuizEventFinished({
     required this.answers,

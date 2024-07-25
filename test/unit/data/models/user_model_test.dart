@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:quizko/features/account/data/models/class_model.dart';
 import 'package:quizko/features/auth/data/models/user_model.dart';
 import 'package:quizko/features/auth/domain/entity/user_entity.dart';
 
@@ -13,6 +14,8 @@ void main() {
     fullName: "John Doe",
     email: "johndoe@gmail.com",
     gender: "masculine",
+    phone: "0380000025",
+    classEntity: ClassModel(id: 1, name: 'M1 GID'),
   );
 
   test('should be a subsclass of user entity', () {

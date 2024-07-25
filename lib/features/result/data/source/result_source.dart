@@ -38,6 +38,7 @@ class ResultSourceImpl implements ResultSource {
         },
       );
 
+      print(response.body);
       if (isSuccess(response.statusCode)) {
         final decodedJson = json.decode(utf8.decode(response.bodyBytes));
         return (decodedJson['data'] as List<dynamic>)

@@ -1,9 +1,14 @@
 import 'package:bloc/bloc.dart';
 
-class AnswerCubit extends Cubit<List<Map<String, int>>> {
-  AnswerCubit(): super([]);
+// Key: Question id
+// value: {'answer_id': _picked}
+class AnswerCubit extends Cubit<Map<int, Map<String, int>>> {
+  AnswerCubit(): super({});
 
-  void setAnswer(Map<String, int> answer) => emit([...state, answer]);
+  void setAnswer(int id, Map<String, int> answer) {
+    state[id] = answer;
+    emit(state);
+  }
 
-  void reinitializeAnswer() => emit([]);
+  void reinitializeAnswer() => emit({});
 }

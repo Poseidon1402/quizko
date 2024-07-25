@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/utils/colors/app_color.dart';
 import '../../../../core/utils/constants/routes.dart';
+import '../../../../core/utils/constants/widget_keys.dart';
 import '../../../../core/validator/form_validators.dart';
 import '../../../../shared/components/buttons/custom_elevated_button.dart';
 import '../../../../shared/components/input/custom_text_form_field.dart';
@@ -21,6 +22,8 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  bool _showPassword = false;
+
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -34,6 +37,7 @@ class _LoginFormState extends State<LoginForm> {
         } else if (state is UnauthenticatedState) {
           ScaffoldMessenger.of(context).showSnackBar(
             myAppSnackBar(
+              key: WidgetKeys.signInErrorSnackBar,
               context: context,
               message: state.message,
               backgroundColor: AppColor.red1,
@@ -46,6 +50,7 @@ class _LoginFormState extends State<LoginForm> {
         child: Column(
           children: [
             CustomTextFormField(
+              key: WidgetKeys.signInEmailKey,
               controller: _emailController,
               hintText: 'Email',
               keyboardType: TextInputType.emailAddress,
@@ -55,11 +60,19 @@ class _LoginFormState extends State<LoginForm> {
             ),
             const Gap(20),
             CustomTextFormField(
+              key: WidgetKeys.signInPasswordKey,
               controller: _passwordController,
               hintText: 'Password',
+              obscureText: !_showPassword,
               keyboardType: TextInputType.visiblePassword,
-              validator: isRequired,
-              obscureText: true,
+              suffixIcon: InkWell(
+                onTap: () => setState(() => _showPassword = !_showPassword),
+                child: Icon(
+                  _showPassword ? Icons.visibility : Icons.visibility_off,
+                  color: AppColor.grey1,
+                ),
+              ),
+              validator: (value) => length(value, min: 6, max: 50),
               textInputAction: TextInputAction.done,
               borderRadius: 24.0,
             ),
@@ -83,6 +96,7 @@ class _LoginFormState extends State<LoginForm> {
               child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
                 builder: (context, state) {
                   return CustomElevatedButton(
+                    key: WidgetKeys.signInButtonKey,
                     onPressed: _onSignInButtonTapped,
                     borderRadius: 24.0,
                     backgroundColor: Theme.of(context).colorScheme.primary,
