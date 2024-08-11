@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
@@ -127,6 +129,57 @@ void main() {
         ),
         throwsA(isA<ServerException>()),
       );
+    });
+  });
+
+  group('Submit quiz', () {
+    test('Should return a valid mark', () async {
+      when(mockClient.post(
+        Uri.http(ApiConfig.baseUrl, '/api/answer'),
+        body: json.encode({
+          'candidate_id': 1,
+          'interview_id': 1,
+          'candidate_answers': [
+            {'candidate_answer': 1}
+          ],
+        }),
+        headers: anyNamed('headers'),
+      )).thenAnswer(
+        (_) async => http.Response(jsonEncode({'total_points': 5}), 200),
+      );
+
+      final result = await interviewSource.submitQuiz(
+        token: 'token',
+        interviewId: 1,
+        candidateId: 1,
+        answers: [
+          {'candidate_answer': 1}
+        ],
+      );
+
+      expect(result, equals(5));
+    });
+  });
+
+  group('Verifying if the quiz is already completed by the user', () {
+    test('Should return a valid boolean', () async {
+      when(mockClient.get(
+        Uri.http(
+          ApiConfig.baseUrl,
+          '/api/is-student-passed/1/1',
+        ),
+        headers: anyNamed('headers'),
+      )).thenAnswer(
+        (_) async => http.Response(jsonEncode({'exists': false}), 200),
+      );
+
+      final result = await interviewSource.isAlreadyCompleted(
+        token: 'token',
+        interviewId: 1,
+        candidateId: 1,
+      );
+
+      expect(result, equals(false));
     });
   });
 }
