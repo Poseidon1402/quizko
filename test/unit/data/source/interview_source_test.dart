@@ -4,7 +4,9 @@ import 'package:mockito/mockito.dart';
 import 'package:quizko/core/config/api_config.dart';
 import 'package:quizko/core/error/exceptions.dart';
 import 'package:quizko/core/utils/services/date_converter_service.dart';
+import 'package:quizko/features/home/data/models/answer_model.dart';
 import 'package:quizko/features/home/data/models/interview_model.dart';
+import 'package:quizko/features/home/data/models/question_model.dart';
 import 'package:quizko/features/home/data/models/subject_model.dart';
 import 'package:quizko/features/home/data/source/interview_source.dart';
 
@@ -40,7 +42,8 @@ void main() {
       )).thenAnswer(
         (_) async => http.Response(
           readJson(
-              'helpers/dummy_data/responses/dummy_interviews_list_response.json'),
+            'helpers/dummy_data/responses/dummy_interviews_list_response.json',
+          ),
           200,
         ),
       );
@@ -64,6 +67,64 @@ void main() {
 
       expect(
         () async => await interviewSource.fetchInterviews('token', 1),
+        throwsA(isA<ServerException>()),
+      );
+    });
+  });
+
+  group('Fetch related questions', () {
+    const questions = [
+      QuestionModel(
+        id: 1,
+        label: 'Choose one fact about Android',
+        point: 1,
+        answers: [
+          AnswerModel(id: 1, label: "Android is a web navigator"),
+          AnswerModel(id: 2, label: "Android is an app web"),
+          AnswerModel(id: 3, label: "Android is a web server"),
+          AnswerModel(id: 4, label: "Android is an operating system"),
+        ],
+        type: "qcm",
+      ),
+    ];
+
+    test('Should return a valid question list on success', () async {
+      when(mockClient.get(
+        Uri.http(ApiConfig.baseUrl, '/api/questions/1'),
+        headers: anyNamed('headers'),
+      )).thenAnswer(
+        (_) async => http.Response(
+          readJson(
+            'helpers/dummy_data/responses/dummy_questions_list_response.json',
+          ),
+          200,
+        ),
+      );
+
+      final result = await interviewSource.fetchRelatedQuestions(
+        token: 'token',
+        subjectId: 1,
+      );
+
+      expect(result, equals(questions));
+    });
+
+    test('Should throw a server exception on error', () async {
+      when(mockClient.get(
+        Uri.http(ApiConfig.baseUrl, '/api/questions/1'),
+        headers: anyNamed('headers'),
+      )).thenAnswer(
+        (_) async => http.Response(
+          '{}',
+          400,
+        ),
+      );
+
+      expect(
+        () async => await interviewSource.fetchRelatedQuestions(
+          token: 'token',
+          subjectId: 1,
+        ),
         throwsA(isA<ServerException>()),
       );
     });
