@@ -26,9 +26,17 @@ import 'package:quizko/features/auth/domain/usecases/verify_token.dart' as _i21;
 import 'package:quizko/features/home/data/models/interview_model.dart' as _i13;
 import 'package:quizko/features/home/data/models/question_model.dart' as _i14;
 import 'package:quizko/features/home/data/source/interview_source.dart' as _i12;
+import 'package:quizko/features/home/domain/entity/interview_entity.dart'
+    as _i24;
+import 'package:quizko/features/home/domain/usecases/fetch_interviews.dart'
+    as _i23;
 import 'package:quizko/features/result/data/models/result_question_model.dart'
     as _i16;
 import 'package:quizko/features/result/data/source/result_source.dart' as _i15;
+import 'package:quizko/features/result/domain/entity/result_question_entity.dart'
+    as _i26;
+import 'package:quizko/features/result/domain/usecases/fetch_corrections.dart'
+    as _i25;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -1120,4 +1128,82 @@ class MockLogout extends _i1.Mock implements _i22.Logout {
           ),
         )),
       ) as _i6.Future<_i5.Either<_i18.Failure, bool>>);
+}
+
+/// A class which mocks [FetchInterviews].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockFetchInterviews extends _i1.Mock implements _i23.FetchInterviews {
+  MockFetchInterviews() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i6.Future<_i5.Either<_i18.Failure, List<_i24.InterviewEntity>>> call({
+    required int? candidateId,
+    required int? classId,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #call,
+          [],
+          {
+            #candidateId: candidateId,
+            #classId: classId,
+          },
+        ),
+        returnValue: _i6
+            .Future<_i5.Either<_i18.Failure, List<_i24.InterviewEntity>>>.value(
+            _FakeEither_9<_i18.Failure, List<_i24.InterviewEntity>>(
+          this,
+          Invocation.method(
+            #call,
+            [],
+            {
+              #candidateId: candidateId,
+              #classId: classId,
+            },
+          ),
+        )),
+      ) as _i6.Future<_i5.Either<_i18.Failure, List<_i24.InterviewEntity>>>);
+}
+
+/// A class which mocks [FetchCorrections].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockFetchCorrections extends _i1.Mock implements _i25.FetchCorrections {
+  MockFetchCorrections() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i6.Future<_i5.Either<_i18.Failure, List<_i26.ResultQuestionEntity>>> call({
+    required int? candidateId,
+    required int? interviewId,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #call,
+          [],
+          {
+            #candidateId: candidateId,
+            #interviewId: interviewId,
+          },
+        ),
+        returnValue: _i6.Future<
+                _i5
+                .Either<_i18.Failure, List<_i26.ResultQuestionEntity>>>.value(
+            _FakeEither_9<_i18.Failure, List<_i26.ResultQuestionEntity>>(
+          this,
+          Invocation.method(
+            #call,
+            [],
+            {
+              #candidateId: candidateId,
+              #interviewId: interviewId,
+            },
+          ),
+        )),
+      ) as _i6
+          .Future<_i5.Either<_i18.Failure, List<_i26.ResultQuestionEntity>>>);
 }
