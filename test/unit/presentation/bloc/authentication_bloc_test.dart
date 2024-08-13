@@ -183,33 +183,11 @@ void main() {
     );
 
     blocTest(
-      'Should emit [LoadingState, AuthenticatedState] when the user is updated successfully',
-      build: () {
-        when(mockVerifyToken.call())
-            .thenAnswer((_) async => const Right(updatedUser));
-        return authenticationBloc;
-      },
-      act: (bloc) => bloc.add(VerifyTokenEvent()),
+      'Should emit [AuthenticatedState] when the user is updated',
+      build: () => authenticationBloc,
+      act: (bloc) => bloc.add(UpdateUserEvent(user: updatedUser)),
       expect: () => [
-        LoadingState(),
         AuthenticatedState(currentUser: updatedUser),
-      ],
-    );
-
-    blocTest(
-      'Should emit [LoadingState, UnauthenticatedState] when the user is updated successfully',
-      build: () {
-        when(mockVerifyToken.call())
-            .thenAnswer((_) async => const Left(serverFailure));
-        return authenticationBloc;
-      },
-      act: (bloc) => bloc.add(VerifyTokenEvent()),
-      expect: () => [
-        LoadingState(),
-        UnauthenticatedState(
-          message: serverFailure.message,
-          type: serverFailure.type,
-        ),
       ],
     );
   });
