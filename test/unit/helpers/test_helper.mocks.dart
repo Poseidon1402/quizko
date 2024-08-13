@@ -13,30 +13,32 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i3;
 import 'package:http/http.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i8;
-import 'package:quizko/core/error/failures.dart' as _i18;
+import 'package:quizko/core/error/failures.dart' as _i20;
+import 'package:quizko/features/account/data/models/class_model.dart' as _i18;
+import 'package:quizko/features/account/data/source/class_source.dart' as _i17;
 import 'package:quizko/features/auth/data/models/user_model.dart' as _i4;
 import 'package:quizko/features/auth/data/source/authentication_source.dart'
     as _i11;
-import 'package:quizko/features/auth/domain/entity/user_entity.dart' as _i19;
-import 'package:quizko/features/auth/domain/usecases/logout.dart' as _i22;
-import 'package:quizko/features/auth/domain/usecases/sign_in.dart' as _i20;
+import 'package:quizko/features/auth/domain/entity/user_entity.dart' as _i21;
+import 'package:quizko/features/auth/domain/usecases/logout.dart' as _i24;
+import 'package:quizko/features/auth/domain/usecases/sign_in.dart' as _i22;
 import 'package:quizko/features/auth/domain/usecases/subscribe_user.dart'
-    as _i17;
-import 'package:quizko/features/auth/domain/usecases/verify_token.dart' as _i21;
+    as _i19;
+import 'package:quizko/features/auth/domain/usecases/verify_token.dart' as _i23;
 import 'package:quizko/features/home/data/models/interview_model.dart' as _i13;
 import 'package:quizko/features/home/data/models/question_model.dart' as _i14;
 import 'package:quizko/features/home/data/source/interview_source.dart' as _i12;
 import 'package:quizko/features/home/domain/entity/interview_entity.dart'
-    as _i24;
+    as _i26;
 import 'package:quizko/features/home/domain/usecases/fetch_interviews.dart'
-    as _i23;
+    as _i25;
 import 'package:quizko/features/result/data/models/result_question_model.dart'
     as _i16;
 import 'package:quizko/features/result/data/source/result_source.dart' as _i15;
 import 'package:quizko/features/result/domain/entity/result_question_entity.dart'
-    as _i26;
+    as _i28;
 import 'package:quizko/features/result/domain/usecases/fetch_corrections.dart'
-    as _i25;
+    as _i27;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -1012,16 +1014,35 @@ class MockResultSource extends _i1.Mock implements _i15.ResultSource {
       ) as _i6.Future<List<_i16.ResultQuestionModel>>);
 }
 
+/// A class which mocks [ClassSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockClassSource extends _i1.Mock implements _i17.ClassSource {
+  MockClassSource() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i6.Future<List<_i18.ClassModel>> fetchAll() => (super.noSuchMethod(
+        Invocation.method(
+          #fetchAll,
+          [],
+        ),
+        returnValue:
+            _i6.Future<List<_i18.ClassModel>>.value(<_i18.ClassModel>[]),
+      ) as _i6.Future<List<_i18.ClassModel>>);
+}
+
 /// A class which mocks [SubscribeUser].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSubscribeUser extends _i1.Mock implements _i17.SubscribeUser {
+class MockSubscribeUser extends _i1.Mock implements _i19.SubscribeUser {
   MockSubscribeUser() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i5.Either<_i18.Failure, _i19.UserEntity>> call(
+  _i6.Future<_i5.Either<_i20.Failure, _i21.UserEntity>> call(
           {required _i4.UserModel? newUser}) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -1030,8 +1051,8 @@ class MockSubscribeUser extends _i1.Mock implements _i17.SubscribeUser {
           {#newUser: newUser},
         ),
         returnValue:
-            _i6.Future<_i5.Either<_i18.Failure, _i19.UserEntity>>.value(
-                _FakeEither_9<_i18.Failure, _i19.UserEntity>(
+            _i6.Future<_i5.Either<_i20.Failure, _i21.UserEntity>>.value(
+                _FakeEither_9<_i20.Failure, _i21.UserEntity>(
           this,
           Invocation.method(
             #call,
@@ -1039,19 +1060,19 @@ class MockSubscribeUser extends _i1.Mock implements _i17.SubscribeUser {
             {#newUser: newUser},
           ),
         )),
-      ) as _i6.Future<_i5.Either<_i18.Failure, _i19.UserEntity>>);
+      ) as _i6.Future<_i5.Either<_i20.Failure, _i21.UserEntity>>);
 }
 
 /// A class which mocks [SignIn].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSignIn extends _i1.Mock implements _i20.SignIn {
+class MockSignIn extends _i1.Mock implements _i22.SignIn {
   MockSignIn() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i5.Either<_i18.Failure, _i19.UserEntity>> call(
+  _i6.Future<_i5.Either<_i20.Failure, _i21.UserEntity>> call(
     String? email,
     String? password,
   ) =>
@@ -1064,8 +1085,8 @@ class MockSignIn extends _i1.Mock implements _i20.SignIn {
           ],
         ),
         returnValue:
-            _i6.Future<_i5.Either<_i18.Failure, _i19.UserEntity>>.value(
-                _FakeEither_9<_i18.Failure, _i19.UserEntity>(
+            _i6.Future<_i5.Either<_i20.Failure, _i21.UserEntity>>.value(
+                _FakeEither_9<_i20.Failure, _i21.UserEntity>(
           this,
           Invocation.method(
             #call,
@@ -1075,71 +1096,71 @@ class MockSignIn extends _i1.Mock implements _i20.SignIn {
             ],
           ),
         )),
-      ) as _i6.Future<_i5.Either<_i18.Failure, _i19.UserEntity>>);
+      ) as _i6.Future<_i5.Either<_i20.Failure, _i21.UserEntity>>);
 }
 
 /// A class which mocks [VerifyToken].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockVerifyToken extends _i1.Mock implements _i21.VerifyToken {
+class MockVerifyToken extends _i1.Mock implements _i23.VerifyToken {
   MockVerifyToken() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i5.Either<_i18.Failure, _i19.UserEntity>> call() =>
+  _i6.Future<_i5.Either<_i20.Failure, _i21.UserEntity>> call() =>
       (super.noSuchMethod(
         Invocation.method(
           #call,
           [],
         ),
         returnValue:
-            _i6.Future<_i5.Either<_i18.Failure, _i19.UserEntity>>.value(
-                _FakeEither_9<_i18.Failure, _i19.UserEntity>(
+            _i6.Future<_i5.Either<_i20.Failure, _i21.UserEntity>>.value(
+                _FakeEither_9<_i20.Failure, _i21.UserEntity>(
           this,
           Invocation.method(
             #call,
             [],
           ),
         )),
-      ) as _i6.Future<_i5.Either<_i18.Failure, _i19.UserEntity>>);
+      ) as _i6.Future<_i5.Either<_i20.Failure, _i21.UserEntity>>);
 }
 
 /// A class which mocks [Logout].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLogout extends _i1.Mock implements _i22.Logout {
+class MockLogout extends _i1.Mock implements _i24.Logout {
   MockLogout() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i5.Either<_i18.Failure, bool>> call() => (super.noSuchMethod(
+  _i6.Future<_i5.Either<_i20.Failure, bool>> call() => (super.noSuchMethod(
         Invocation.method(
           #call,
           [],
         ),
-        returnValue: _i6.Future<_i5.Either<_i18.Failure, bool>>.value(
-            _FakeEither_9<_i18.Failure, bool>(
+        returnValue: _i6.Future<_i5.Either<_i20.Failure, bool>>.value(
+            _FakeEither_9<_i20.Failure, bool>(
           this,
           Invocation.method(
             #call,
             [],
           ),
         )),
-      ) as _i6.Future<_i5.Either<_i18.Failure, bool>>);
+      ) as _i6.Future<_i5.Either<_i20.Failure, bool>>);
 }
 
 /// A class which mocks [FetchInterviews].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFetchInterviews extends _i1.Mock implements _i23.FetchInterviews {
+class MockFetchInterviews extends _i1.Mock implements _i25.FetchInterviews {
   MockFetchInterviews() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i5.Either<_i18.Failure, List<_i24.InterviewEntity>>> call({
+  _i6.Future<_i5.Either<_i20.Failure, List<_i26.InterviewEntity>>> call({
     required int? candidateId,
     required int? classId,
   }) =>
@@ -1153,8 +1174,8 @@ class MockFetchInterviews extends _i1.Mock implements _i23.FetchInterviews {
           },
         ),
         returnValue: _i6
-            .Future<_i5.Either<_i18.Failure, List<_i24.InterviewEntity>>>.value(
-            _FakeEither_9<_i18.Failure, List<_i24.InterviewEntity>>(
+            .Future<_i5.Either<_i20.Failure, List<_i26.InterviewEntity>>>.value(
+            _FakeEither_9<_i20.Failure, List<_i26.InterviewEntity>>(
           this,
           Invocation.method(
             #call,
@@ -1165,19 +1186,19 @@ class MockFetchInterviews extends _i1.Mock implements _i23.FetchInterviews {
             },
           ),
         )),
-      ) as _i6.Future<_i5.Either<_i18.Failure, List<_i24.InterviewEntity>>>);
+      ) as _i6.Future<_i5.Either<_i20.Failure, List<_i26.InterviewEntity>>>);
 }
 
 /// A class which mocks [FetchCorrections].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFetchCorrections extends _i1.Mock implements _i25.FetchCorrections {
+class MockFetchCorrections extends _i1.Mock implements _i27.FetchCorrections {
   MockFetchCorrections() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i5.Either<_i18.Failure, List<_i26.ResultQuestionEntity>>> call({
+  _i6.Future<_i5.Either<_i20.Failure, List<_i28.ResultQuestionEntity>>> call({
     required int? candidateId,
     required int? interviewId,
   }) =>
@@ -1192,8 +1213,8 @@ class MockFetchCorrections extends _i1.Mock implements _i25.FetchCorrections {
         ),
         returnValue: _i6.Future<
                 _i5
-                .Either<_i18.Failure, List<_i26.ResultQuestionEntity>>>.value(
-            _FakeEither_9<_i18.Failure, List<_i26.ResultQuestionEntity>>(
+                .Either<_i20.Failure, List<_i28.ResultQuestionEntity>>>.value(
+            _FakeEither_9<_i20.Failure, List<_i28.ResultQuestionEntity>>(
           this,
           Invocation.method(
             #call,
@@ -1205,5 +1226,5 @@ class MockFetchCorrections extends _i1.Mock implements _i25.FetchCorrections {
           ),
         )),
       ) as _i6
-          .Future<_i5.Either<_i18.Failure, List<_i26.ResultQuestionEntity>>>);
+          .Future<_i5.Either<_i20.Failure, List<_i28.ResultQuestionEntity>>>);
 }
