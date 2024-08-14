@@ -16,6 +16,10 @@ import 'package:mockito/src/dummies.dart' as _i8;
 import 'package:quizko/core/error/failures.dart' as _i20;
 import 'package:quizko/features/account/data/models/class_model.dart' as _i18;
 import 'package:quizko/features/account/data/source/class_source.dart' as _i17;
+import 'package:quizko/features/account/domain/entity/class_entity.dart'
+    as _i30;
+import 'package:quizko/features/account/domain/usecases/fetch_classes.dart'
+    as _i29;
 import 'package:quizko/features/auth/data/models/user_model.dart' as _i4;
 import 'package:quizko/features/auth/data/source/authentication_source.dart'
     as _i11;
@@ -1227,4 +1231,31 @@ class MockFetchCorrections extends _i1.Mock implements _i27.FetchCorrections {
         )),
       ) as _i6
           .Future<_i5.Either<_i20.Failure, List<_i28.ResultQuestionEntity>>>);
+}
+
+/// A class which mocks [FetchClasses].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockFetchClasses extends _i1.Mock implements _i29.FetchClasses {
+  MockFetchClasses() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i6.Future<_i5.Either<_i20.Failure, List<_i30.ClassEntity>>> call() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #call,
+          [],
+        ),
+        returnValue:
+            _i6.Future<_i5.Either<_i20.Failure, List<_i30.ClassEntity>>>.value(
+                _FakeEither_9<_i20.Failure, List<_i30.ClassEntity>>(
+          this,
+          Invocation.method(
+            #call,
+            [],
+          ),
+        )),
+      ) as _i6.Future<_i5.Either<_i20.Failure, List<_i30.ClassEntity>>>);
 }

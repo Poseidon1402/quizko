@@ -2,6 +2,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mockito/annotations.dart';
 import 'package:http/http.dart' as http;
 import 'package:quizko/features/account/data/source/class_source.dart';
+import 'package:quizko/features/account/domain/usecases/fetch_classes.dart';
 import 'package:quizko/features/auth/data/source/authentication_source.dart';
 import 'package:quizko/features/auth/domain/usecases/logout.dart';
 import 'package:quizko/features/auth/domain/usecases/sign_in.dart';
@@ -28,5 +29,6 @@ import 'package:quizko/features/result/domain/usecases/fetch_corrections.dart';
   Logout,
   FetchInterviews,
   FetchCorrections,
+  FetchClasses,
 ])
 void main() {}
