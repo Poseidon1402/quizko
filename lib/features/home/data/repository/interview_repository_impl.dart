@@ -21,15 +21,18 @@ class InterviewRepositoryImpl implements InterviewRepository {
   });
 
   @override
-  Future<Either<Failure, List<InterviewEntity>>> fetchInterviews({required int candidateId, required int classId}) async {
+  Future<Either<Failure, List<InterviewEntity>>> fetchInterviews(
+      {required int candidateId, required int classId}) async {
     try {
       final token = await secureStorage.read(key: 'token');
       final data = await interviewSource.fetchInterviews(token!, classId);
       List<InterviewEntity> interviews = [];
 
       for (InterviewEntity interview in data) {
-        final questions = await interviewSource.fetchRelatedQuestions(token: token, subjectId: interview.subject.id);
-        final isCompleted = await interviewSource.isAlreadyCompleted(token: token, interviewId: interview.id, candidateId: candidateId);
+        final questions = await interviewSource.fetchRelatedQuestions(
+            token: token, subjectId: interview.subject.id);
+        final isCompleted = await interviewSource.isAlreadyCompleted(
+            token: token, interviewId: interview.id, candidateId: candidateId);
         interviews.add(
           interview.copyWith(
             subject: interview.subject.copyWith(questions: questions),
@@ -68,12 +71,19 @@ class InterviewRepositoryImpl implements InterviewRepository {
       return const Left(ServerFailure());
     }
   }
-  
+
   @override
-  Future<Either<Failure, List<ResultQuestionEntity>>> fetchCorrections({required int candidateId, required int interviewId,}) async {
+  Future<Either<Failure, List<ResultQuestionEntity>>> fetchCorrections({
+    required int candidateId,
+    required int interviewId,
+  }) async {
     try {
       final token = await secureStorage.read(key: 'token');
-      final data = await resultSource.fetchCorrections(candidateId: candidateId, interviewId: interviewId, token: token!);
+      final data = await resultSource.fetchCorrections(
+        candidateId: candidateId,
+        interviewId: interviewId,
+        token: token!,
+      );
 
       return Right(data);
     } on InternetConnectionException {

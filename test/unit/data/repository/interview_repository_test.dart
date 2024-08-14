@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:quizko/core/error/exceptions.dart';
@@ -10,6 +11,8 @@ import 'package:quizko/features/home/data/models/subject_model.dart';
 import 'package:quizko/features/home/data/repository/interview_repository_impl.dart';
 import 'package:quizko/features/home/domain/entity/interview_entity.dart';
 import 'package:quizko/features/home/domain/entity/subject_entity.dart';
+import 'package:quizko/features/result/data/models/result_answer_model.dart';
+import 'package:quizko/features/result/data/models/result_question_model.dart';
 
 import '../../helpers/test_helper.mocks.dart';
 
@@ -116,6 +119,72 @@ void main() {
         (failure) => expect(failure, const ServerFailure()),
         (success) => null,
       );
+    });
+  });
+
+  group('Fetch corrections', () {
+    const corrections = [
+      ResultQuestionModel(
+        label: 'Question 1',
+        answers: [
+          ResultAnswerModel(
+            label: 'Answer 1',
+            isCorrect: false,
+            isCandidateAnswer: false,
+          ),
+          ResultAnswerModel(
+            label: 'Answer 2',
+            isCorrect: true,
+            isCandidateAnswer: true,
+          ),
+          ResultAnswerModel(
+            label: 'Answer 3',
+            isCorrect: false,
+            isCandidateAnswer: false,
+          ),
+          ResultAnswerModel(
+            label: 'Answer 4',
+            isCorrect: false,
+            isCandidateAnswer: false,
+          ),
+        ],
+      )
+    ];
+
+    test('Should return a valid list of result question entity', () async {
+      when(
+        mockFlutterSecureStorage.read(key: 'token'),
+      ).thenAnswer((_) async => 'token');
+      when(mockResultSource.fetchCorrections(
+        candidateId: 1,
+        interviewId: 1,
+        token: 'token',
+      )).thenAnswer((_) async => corrections);
+
+      final result = await interviewRepositoryImpl.fetchCorrections(
+        candidateId: 1,
+        interviewId: 1,
+      );
+
+      expect(result, equals(const Right(corrections)));
+    });
+
+    test('Should return a server failure', () async {
+      when(
+        mockFlutterSecureStorage.read(key: 'token'),
+      ).thenAnswer((_) async => 'token');
+      when(mockResultSource.fetchCorrections(
+        candidateId: 1,
+        interviewId: 1,
+        token: 'token',
+      )).thenThrow(ServerException());
+
+      final result = await interviewRepositoryImpl.fetchCorrections(
+        candidateId: 1,
+        interviewId: 1,
+      );
+
+      expect(result, equals(const Left(ServerFailure())));
     });
   });
 }
