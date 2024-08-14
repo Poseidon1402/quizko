@@ -1,0 +1,24 @@
+{
+  "id": 1,
+  "question": "What is the main language used by Android OS ?",
+  "point": 1,
+  "answers": [
+    {
+      "id": 1,
+      "answer": "JAVA"
+    },
+    {
+      "id": 2,
+      "answer": "C++"
+    },
+    {
+      "id": 3,
+      "answer": "Python"
+    },
+    {
+      "id": 4,
+      "answer": "Dart"
+    }
+  ],
+  "type": "qcm"
+}

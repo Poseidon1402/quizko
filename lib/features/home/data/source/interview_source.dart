@@ -11,16 +11,19 @@ import '../models/question_model.dart';
 
 abstract class InterviewSource {
   Future<List<InterviewModel>> fetchInterviews(String token, int classId);
+
   Future<List<QuestionModel>> fetchRelatedQuestions({
     required String token,
     required int subjectId,
   });
+
   Future<int> submitQuiz({
     required String token,
     required int interviewId,
     required int candidateId,
     required List<Map<String, int>> answers,
   });
+
   Future<bool> isAlreadyCompleted({
     required String token,
     required int interviewId,
@@ -34,7 +37,8 @@ class InterviewSourceImpl implements InterviewSource {
   InterviewSourceImpl({required this.client});
 
   @override
-  Future<List<InterviewModel>> fetchInterviews(String token, int classId) async {
+  Future<List<InterviewModel>> fetchInterviews(
+      String token, int classId) async {
     try {
       http.Response response = await client
           .get(Uri.http(ApiConfig.baseUrl, '/api/tests/$classId'), headers: {

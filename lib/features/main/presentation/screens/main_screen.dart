@@ -39,8 +39,6 @@ class _MainScreenState extends State<MainScreen> {
         );
     socket_io.Socket socket = socket_io.io('http://10.0.2.2:4000');
     socket.connect();
-    socket.onConnect((_) => print('connected'));
-    socket.onError((error) => print(error));
     super.initState();
   }
 
