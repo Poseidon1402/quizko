@@ -1,0 +1,25 @@
+{
+  "question": "Question 1",
+  "answers": [
+    {
+      "answer": "Answer 1",
+      "is_correct": 0,
+      "is_candidate_answer": false
+    },
+    {
+      "answer": "Answer 2",
+      "is_correct": 1,
+      "is_candidate_answer": true
+    },
+    {
+      "answer": "Answer 3",
+      "is_correct": 0,
+      "is_candidate_answer": false
+    },
+    {
+      "answer": "Answer 4",
+      "is_correct": 0,
+      "is_candidate_answer": false
+    }
+  ]
+}
