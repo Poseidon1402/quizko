@@ -36,6 +36,7 @@ import 'package:quizko/features/home/domain/entity/interview_entity.dart'
     as _i26;
 import 'package:quizko/features/home/domain/usecases/fetch_interviews.dart'
     as _i25;
+import 'package:quizko/features/home/domain/usecases/fetch_marks.dart' as _i31;
 import 'package:quizko/features/result/data/models/result_question_model.dart'
     as _i16;
 import 'package:quizko/features/result/data/source/result_source.dart' as _i15;
@@ -1258,4 +1259,44 @@ class MockFetchClasses extends _i1.Mock implements _i29.FetchClasses {
           ),
         )),
       ) as _i6.Future<_i5.Either<_i20.Failure, List<_i30.ClassEntity>>>);
+}
+
+/// A class which mocks [FetchMarks].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockFetchMarks extends _i1.Mock implements _i31.FetchMarks {
+  MockFetchMarks() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i6.Future<_i5.Either<_i20.Failure, int>> call({
+    required int? interviewId,
+    required int? candidateId,
+    required List<Map<String, int>>? answers,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #call,
+          [],
+          {
+            #interviewId: interviewId,
+            #candidateId: candidateId,
+            #answers: answers,
+          },
+        ),
+        returnValue: _i6.Future<_i5.Either<_i20.Failure, int>>.value(
+            _FakeEither_9<_i20.Failure, int>(
+          this,
+          Invocation.method(
+            #call,
+            [],
+            {
+              #interviewId: interviewId,
+              #candidateId: candidateId,
+              #answers: answers,
+            },
+          ),
+        )),
+      ) as _i6.Future<_i5.Either<_i20.Failure, int>>);
 }

@@ -18,7 +18,6 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         ) {
     on<QuizEventNextQuestion>(_handleNextQuestionEvent);
     on<QuizEventPreviousQuestion>(_handlePreviousQuestionEvent);
-    on<QuizEventAnswered>(_handleAnswerEvent);
     on<QuizEventFinished>(_handleFinishEvent);
   }
 
@@ -35,21 +34,14 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
   void _handlePreviousQuestionEvent(
       QuizEventPreviousQuestion event, Emitter<QuizState> emit) {
     final currentState = state as QuizStateLoaded;
-    emit(
-      QuizStateLoaded(
-        currentQuestionIndex: currentState.currentQuestionIndex - 1,
-      ),
-    );
-  }
 
-  void _handleAnswerEvent(QuizEventAnswered event, Emitter<QuizState> emit) {
-    final currentState = state as QuizStateLoaded;
-
-    emit(
-      QuizStateLoaded(
-        currentQuestionIndex: currentState.currentQuestionIndex,
-      ),
-    );
+    if(currentState.currentQuestionIndex > 0) {
+      emit(
+        QuizStateLoaded(
+          currentQuestionIndex: currentState.currentQuestionIndex - 1,
+        ),
+      );
+    }
   }
 
   void _handleFinishEvent(
