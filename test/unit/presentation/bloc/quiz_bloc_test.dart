@@ -18,7 +18,7 @@ void main() {
 
   test(
     'initial state should be QuizStateLoaded with current question index = 0',
-    () => expect(quizBloc.state, QuizStateLoaded(currentQuestionIndex: 0)),
+        () => expect(quizBloc.state, QuizStateLoaded(currentQuestionIndex: 0)),
   );
 
   group('Handle next question event', () {
@@ -102,4 +102,3 @@ void main() {
     );
   });
 }
-
