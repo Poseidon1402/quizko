@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "245110718371",
+    "project_id": "quizko-ccd78",
+    "storage_bucket": "quizko-ccd78.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245110718371:android:07fd32227e23a142a2e416",
+        "android_client_info": {
+          "package_name": "com.eni.quizko"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIpQL5UBx2cPB2nz4unYDLea1OZhF_cYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
