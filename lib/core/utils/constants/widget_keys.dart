@@ -13,4 +13,7 @@ abstract class WidgetKeys {
   static const Key signInPasswordKey = Key('signInPassword');
   static const Key signInButtonKey = Key('signInButton');
   static const Key signInErrorSnackBar = Key('signInErrorSnackBar');
+
+  // Main
+  static const Key homeScreenKey = Key('homeScreen');
 }

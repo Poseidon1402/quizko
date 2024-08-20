@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/utils/constants/routes.dart';
+import '../../../../core/utils/constants/widget_keys.dart';
 import '../../../auth/presentation/bloc/authentication_bloc.dart';
 import '../bloc/interview_bloc.dart' as interview_bloc;
 import '../bloc/interview_bloc.dart';
@@ -31,6 +32,7 @@ class HomeScreen extends StatelessWidget {
         }
 
         return Scaffold(
+          key: WidgetKeys.homeScreenKey,
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             backgroundColor: Colors.transparent,

@@ -20,24 +20,32 @@ void main() {
     di.sl.reset(dispose: true);
   });
 
-  group('E2E authentication', () {
-    testWidgets('Unauthenticated Flow', (tester) async {
-      await tester.pumpWidget(const MyApp());
-      await tester.pumpAndSettle();
+  testWidgets('Authentication flow', (tester) async {
+    await tester.pumpWidget(const MyApp());
+    await tester.pumpAndSettle();
 
-      splashRobot = SplashRobot(tester: tester);
+    splashRobot = SplashRobot(tester: tester);
 
-      splashRobot.verify();
-      await splashRobot.enterIpAddress('10.0.2.2:5556');
-      await tester.pumpAndSettle();
+    splashRobot.verify();
+    await splashRobot.enterIpAddress('192.168.1.101:5556');
+    await tester.pumpAndSettle(const Duration(seconds: 3));
 
-      signInRobot = SignInRobot(tester: tester);
+    signInRobot = SignInRobot(tester: tester);
 
-      signInRobot.verify();
-      await signInRobot.enterEmail('rjls.tiavina@gmail.com');
-      await signInRobot.enterPassword('1234567890');
-      await signInRobot.tapSignInButton();
-      await signInRobot.verifyError();
-    });
+    // Unauthenticated flow
+    signInRobot.verify();
+    await signInRobot.enterEmail('rjls.tiavina@gmail.com');
+    await signInRobot.enterPassword('1234567890');
+    await signInRobot.tapSignInButton();
+    signInRobot.verifyError();
+
+    // Authenticated flow
+    signInRobot.verify();
+    await signInRobot.enterPassword('123456789');
+    await signInRobot.tapSignInButton();
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+    signInRobot.verifySuccess();
+
+    await tester.pumpAndSettle();
   });
 }

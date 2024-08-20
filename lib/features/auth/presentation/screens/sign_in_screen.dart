@@ -21,90 +21,88 @@ class SignInScreen extends StatelessWidget {
       backgroundColor: AppColor.purple3,
       body: ConstrainedBox(
         constraints: const BoxConstraints.expand(),
-        child: Form(
-          child: Stack(
-            children: [
-              Column(
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: AppColor.white1,
-                        borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(150),
-                          bottomLeft: Radius.circular(32),
-                        ),
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: AppColor.white1,
+                      borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(150),
+                        bottomLeft: Radius.circular(32),
                       ),
-                      child: ListView(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                    ),
+                    child: ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      children: [
+                        const Gap(75),
+                        SvgPicture.asset('assets/logo/logo_2.svg'),
+                        const Gap(50),
+                        Text(
+                          'Login',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                        ),
+                        Text(
+                          'To continue, please login to your account',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        const Gap(30),
+                        const LoginForm(),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: RichText(
+                      text: TextSpan(
                         children: [
-                          const Gap(75),
-                          SvgPicture.asset('assets/logo/logo_2.svg'),
-                          const Gap(50),
-                          Text(
-                            'Login',
+                          TextSpan(
+                            text: 'Don\'t have an account ? ',
                             style: Theme.of(context)
                                 .textTheme
-                                .titleMedium
+                                .bodyMedium
                                 ?.copyWith(
-                                  color: Theme.of(context).colorScheme.primary,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
                                 ),
                           ),
-                          Text(
-                            'To continue, please login to your account',
-                            style: Theme.of(context).textTheme.bodyMedium,
+                          TextSpan(
+                            text: 'Sign up',
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () => context.pushReplacement(Routes.subscribe),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: AppColor.purple2,
+                                ),
                           ),
-                          const Gap(30),
-                          const LoginForm(),
                         ],
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: Center(
-                      child: RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Don\'t have an account ? ',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.onPrimary,
-                                  ),
-                            ),
-                            TextSpan(
-                              text: 'Sign up',
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () => context.pushReplacement(Routes.subscribe),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                    color: AppColor.purple2,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Positioned(
-                bottom: 100,
-                right: -170,
-                child: Image.asset(
-                  'assets/images/cubic.png',
-                  width: 300.w,
-                  height: 300.h,
                 ),
-              )
-            ],
-          ),
+              ],
+            ),
+            Positioned(
+              bottom: 100,
+              right: -170,
+              child: Image.asset(
+                'assets/images/cubic.png',
+                width: 300.w,
+                height: 300.h,
+              ),
+            )
+          ],
         ),
       ),
     );

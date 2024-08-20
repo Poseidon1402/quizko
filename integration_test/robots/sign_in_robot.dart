@@ -32,8 +32,13 @@ class SignInRobot {
     await tester.pumpAndSettle();
   }
 
-  Future<void> verifyError() async {
+  void verifyError() {
     final errorSnackBar = find.byKey(WidgetKeys.signInErrorSnackBar);
     expect(errorSnackBar, findsOneWidget);
+  }
+
+  void verifySuccess() {
+    final homeScreen = find.byKey(WidgetKeys.homeScreenKey);
+    expect(homeScreen, findsOneWidget);
   }
 }
