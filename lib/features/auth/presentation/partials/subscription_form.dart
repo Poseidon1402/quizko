@@ -10,6 +10,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/utils/colors/app_color.dart';
 import '../../../../core/utils/constants/routes.dart';
+import '../../../../core/utils/constants/widget_keys.dart';
 import '../../../../core/validator/form_validators.dart';
 import '../../../../shared/components/buttons/custom_elevated_button.dart';
 import '../../../../shared/components/input/custom_text_form_field.dart';
@@ -51,6 +52,7 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
         } else if (state is UnauthenticatedState) {
           ScaffoldMessenger.of(context).showSnackBar(
             myAppSnackBar(
+              key: WidgetKeys.signUpSnackBarErrorKey,
               context: context,
               message: state.message,
               backgroundColor: AppColor.red1,
@@ -66,6 +68,7 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
               children: [
                 Expanded(
                   child: CustomTextFormField(
+                    key: WidgetKeys.signUpRegistrationNumberKey,
                     controller: _registrationNumberController,
                     hintText: 'Registration number',
                     keyboardType: const TextInputType.numberWithOptions(),
@@ -98,6 +101,7 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
             ),
             const Gap(20),
             CustomTextFormField(
+              key: WidgetKeys.signUpFullNameKey,
               controller: _fullNameController,
               hintText: 'Full name',
               keyboardType: TextInputType.emailAddress,
@@ -107,6 +111,7 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
             ),
             const Gap(20),
             CustomTextFormField(
+              key: WidgetKeys.signUpEmailKey,
               controller: _emailController,
               hintText: 'Email',
               keyboardType: TextInputType.emailAddress,
@@ -116,6 +121,7 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
             ),
             const Gap(20),
             CustomTextFormField(
+              key: WidgetKeys.signUpPasswordKey,
               controller: _passwordController,
               hintText: 'Password',
               obscureText: !_showPassword,
@@ -133,6 +139,7 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
             ),
             const Gap(20),
             SelectField(
+              key: WidgetKeys.signUpGenderKey,
               value: _gender,
               contentPadding: const EdgeInsets.all(10),
               onChanged: (value) => setState(() => _gender = value),
@@ -151,6 +158,7 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
             ),
             const Gap(20),
             CustomTextFormField(
+              key: WidgetKeys.signUpPhoneKey,
               controller: _phoneController,
               hintText: 'ex: 0320012345',
               validator: (value) => isPhoneNumber(value),
@@ -160,6 +168,7 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
             ),
             const Gap(20),
             CustomTextFormField(
+              key: WidgetKeys.signUpClassKey,
               controller: _classController,
               hintText: 'Classes',
               validator: isRequired,
@@ -175,6 +184,7 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
               child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
                 builder: (context, state) {
                   return CustomElevatedButton(
+                    key: WidgetKeys.signUpButtonKey,
                     onPressed: state is! LoadingState
                         ? _onSubscribeButtonTapped
                         : () {},
@@ -231,6 +241,7 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
     showDialog(
       context: context,
       builder: (_) => Dialog(
+        key: WidgetKeys.signUpClassDialogKey,
         child: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
@@ -292,6 +303,7 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
           child: Wrap(
             children: [
               Dialog(
+                key: WidgetKeys.signUpSuccessDialogKey,
                 elevation: 2.0,
                 child: Container(
                   padding: const EdgeInsets.all(24),
@@ -319,6 +331,7 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
                       FractionallySizedBox(
                         widthFactor: 1,
                         child: CustomElevatedButton(
+                          key: WidgetKeys.confirmKey,
                           onPressed: () => context.go(Routes.home),
                           backgroundColor: AppColor.purple3,
                           borderRadius: 24,

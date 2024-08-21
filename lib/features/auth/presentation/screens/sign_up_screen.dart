@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/utils/colors/app_color.dart';
 import '../../../../core/utils/constants/routes.dart';
+import '../../../../core/utils/constants/widget_keys.dart';
 import '../partials/subscription_form.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -15,6 +16,7 @@ class SignUpScreen extends StatelessWidget {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
     return Scaffold(
+      key: WidgetKeys.signUpScreenKey,
       appBar: AppBar(
         leading: IconButton.outlined(
           onPressed: () => context.pushReplacement(Routes.login),

@@ -27,7 +27,7 @@ void main() {
     splashRobot = SplashRobot(tester: tester);
 
     splashRobot.verify();
-    await splashRobot.enterIpAddress('192.168.1.101:5556');
+    await splashRobot.enterIpAddress('192.168.1.102:5556');
     await tester.pumpAndSettle(const Duration(seconds: 3));
 
     signInRobot = SignInRobot(tester: tester);
@@ -45,7 +45,6 @@ void main() {
     await signInRobot.tapSignInButton();
     await tester.pumpAndSettle(const Duration(seconds: 3));
     signInRobot.verifySuccess();
-
     await tester.pumpAndSettle();
   });
 }

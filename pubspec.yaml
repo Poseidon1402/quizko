@@ -50,6 +50,7 @@ dev_dependencies:
   bloc_test: ^9.1.5
   logger: ^2.0.2+1
   flutter_launcher_icons: ^0.13.1
+  faker: ^2.1.0
 
 flutter:
   uses-material-design: true
