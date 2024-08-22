@@ -237,6 +237,7 @@ class AuthenticationSourceImpl implements AuthenticationSource {
         body: user.updateJson(),
         headers: {
           HttpHeaders.authorizationHeader: 'Bearer $token',
+          HttpHeaders.contentTypeHeader: 'application/json',
         },
       );
 

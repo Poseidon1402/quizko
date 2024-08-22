@@ -41,12 +41,12 @@ class UserModel extends UserEntity {
         "post_id": classEntity.id,
       });
 
-  Map<String, dynamic> updateJson() => {
-        "registration_number": registrationNumber,
-        "name": fullName,
-        "email": email,
-        "phone": phone,
-        "gender": gender,
-        "post_id": classEntity.id,
-      };
+  String updateJson() => jsonEncode({
+    "registration_number": registrationNumber,
+    "name": fullName,
+    "email": email,
+    "phone": phone,
+    "gender": gender,
+    "post_id": classEntity.id,
+  });
 }
