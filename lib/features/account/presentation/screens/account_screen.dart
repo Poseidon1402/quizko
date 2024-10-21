@@ -148,7 +148,7 @@ class _AccountScreenState extends State<AccountScreen> {
         FractionallySizedBox(
           widthFactor: 0.9,
           child: CustomElevatedButton(
-            onPressed: _onSaveButtonTapped,
+            // onPressed: _onSaveButtonTapped,
             backgroundColor: Theme.of(context).colorScheme.primary,
             borderRadius: 24,
             child: _isLoading
@@ -167,7 +167,7 @@ class _AccountScreenState extends State<AccountScreen> {
     );
   }
 
-  void _onSaveButtonTapped() async {
+  /*void _onSaveButtonTapped() async {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
       final result = await sl<UpdateUser>().call(
@@ -201,5 +201,5 @@ class _AccountScreenState extends State<AccountScreen> {
 
       setState(() => _isLoading = false);
     }
-  }
+  }*/
 }

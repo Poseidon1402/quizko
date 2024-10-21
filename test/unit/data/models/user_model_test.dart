@@ -8,14 +8,20 @@ import 'package:quizko/features/auth/domain/entity/user_entity.dart';
 import '../../helpers/json_reader.dart';
 
 void main() {
-  const userModel = UserModel(
-    candidateId: 5,
-    registrationNumber: "2310",
-    fullName: "John Doe",
-    email: "johndoe@gmail.com",
-    gender: "masculine",
-    phone: "0380000025",
-    classEntity: ClassModel(id: 1, name: 'M1 GID'),
+  var userModel = const UserModel(
+    candidateId: '9ee237c7-1655-46dd-bcae-c055c366b32e',
+    registrationNumber: "2244",
+    lastName: 'Mirana',
+    firstName: 'Seheno',
+    email: "student1@gmail.com",
+    gender: "MALE",
+    phone: "+261340000000",
+    classEntity: ClassModel(
+      id: '5afab7e4-877d-426c-a506-07bf9bcdb8ad',
+      group: '',
+      level: 'L2',
+      category: 'GB',
+    ),
   );
 
   test('should be a subsclass of user entity', () {

@@ -1,29 +1,22 @@
 {
-  "id": 5,
-  "name": "John Doe",
-  "email": "johndoe@gmail.com",
-  "email_verified_at": null,
-  "created_at": "2024-05-26T18:11:55.000000Z",
-  "updated_at": "2024-05-26T18:11:55.000000Z",
-  "role": "candidate",
-  "phone": "0380000025",
-  "candidate": {
-    "id": 5,
-    "registration_number": "2310",
-    "user_id": 5,
-    "post_id": 1,
-    "status": "pending",
-    "gender": "masculine",
-    "created_at": "2024-05-26T18:11:55.000000Z",
-    "updated_at": "2024-05-26T18:11:55.000000Z",
-    "post": {
-      "id": 1,
-      "name": "M1 GID",
-      "description": "Ecole Nationale d'Informatique",
-      "is_available": 1,
-      "nb_allowed": null,
-      "created_at": "2024-05-26T17:59:23.000000Z",
-      "updated_at": "2024-05-26T17:59:23.000000Z"
+  "id": "9ee237c7-1655-46dd-bcae-c055c366b32e",
+  "lastName": "Mirana",
+  "firstName": "Seheno",
+  "email": "student1@gmail.com",
+  "role": "STUDENT",
+  "registrationNumber": "2244",
+  "gender": "MALE",
+  "phone": "+261340000000",
+  "class": {
+    "id": "5afab7e4-877d-426c-a506-07bf9bcdb8ad",
+    "group": null,
+    "level": {
+      "id": "16448fbf-1c26-4ced-87b5-52d168119cda",
+      "label": "L2"
+    },
+    "category": {
+      "id": "32b6d5d0-d090-42f0-86b1-41d3272e26f1",
+      "label": "GB"
     }
   }
 }
