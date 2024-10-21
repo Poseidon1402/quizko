@@ -113,25 +113,27 @@ void main() {
     });
   });
 
-  /*group('Subscribe user', () {
+  group('Subscribe user', () {
     const newUserModel = UserModel(
-      candidateId: 5,
-      registrationNumber: "1111",
-      fullName: "John Doe",
-      email: "johndoe@example.com",
-      gender: "masculine",
-      phone: "0320011122",
-      password: 'password',
+      candidateId: '9ee237c7-1655-46dd-bcae-c055c366b32e',
+      registrationNumber: "2244",
+      lastName: 'Mirana',
+      firstName: 'Seheno',
+      email: "student1@gmail.com",
+      gender: "MALE",
+      phone: "+261340000000",
       classEntity: ClassModel(
-        id: 1,
-        name: 'M1 GB',
+        id: '5afab7e4-877d-426c-a506-07bf9bcdb8ad',
+        group: '',
+        level: 'L2',
+        category: 'GB',
       ),
     );
 
     test('Should return a valid user model', () async {
       when(
         mockHttpClient.post(
-          Uri.http(ApiConfig.baseUrl, '/api/subscribe'),
+          Uri.http(ApiConfig.baseUrl, '/api/auth/subscription'),
           body: newUserModel.subscriptionJson(),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
@@ -139,7 +141,7 @@ void main() {
         ),
       ).thenAnswer(
         (_) async => http.Response(
-          readJson('helpers/dummy_data/responses/dummy_sign_in_response.json'),
+          readJson('helpers/dummy_data/responses/dummy_sign_up_response.json'),
           200,
         ),
       );
@@ -152,7 +154,7 @@ void main() {
     test('Should throw a bad request exception', () async {
       when(
         mockHttpClient.post(
-          Uri.http(ApiConfig.baseUrl, '/api/subscribe'),
+          Uri.http(ApiConfig.baseUrl, '/api/auth/subscription'),
           body: newUserModel.subscriptionJson(),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
@@ -174,6 +176,7 @@ void main() {
     });
   });
 
+  /*
   group('Getting current user', () {
     test('Should return a valid user model', () async {
       when(
