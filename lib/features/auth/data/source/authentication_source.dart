@@ -72,7 +72,7 @@ class AuthenticationSourceImpl implements AuthenticationSource {
       } else if (response.statusCode == 401) {
         throw UnauthorizedException();
       } else if (response.statusCode == 404) {
-        throw NotFoundException(message: 'Unable to find user ! Check your credentials');
+        throw NotFoundException();
       } else {
         throw ServerException();
       }

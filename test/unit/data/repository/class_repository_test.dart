@@ -19,8 +19,18 @@ void main() {
 
   group('Fetch classes', () {
     const classes = [
-      ClassModel(id: 1, name: 'M1 GB'),
-      ClassModel(id: 2, name: 'M1 IG'),
+      ClassModel(
+        id: 'bf94a726-5934-4339-9efe-f41f0ebb1da8',
+        group: 'G1',
+        level: 'L1',
+        category: 'GB',
+      ),
+      ClassModel(
+        id: '2bcc9fb4-b1b0-4cef-b872-2d92cfdfb0f7',
+        group: 'G2',
+        level: 'L1',
+        category: 'GB',
+      ),
     ];
 
     test('Should return a list of class entity', () async {

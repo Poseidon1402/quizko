@@ -44,6 +44,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return Right(data);
     } on UnauthorizedException {
       return const Left(ServerFailure(message: 'Email or password invalid'));
+    } on NotFoundException {
+      return const Left(NotFoundFailure(message: 'User not found ! Check your credentials'));
     } on InternetConnectionException {
       return const Left(NotConnectedFailure());
     } on ServerException {

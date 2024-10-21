@@ -39,7 +39,7 @@ void main() {
 
   group('Authenticate User', () {
     Map<String, String> signInBody = {
-      'email': 'johndoe@example.com',
+      'email': 'student1@gmail.com',
       'password': 'password',
     };
 
@@ -57,7 +57,7 @@ void main() {
       );
 
       final result = await authenticationSource.authenticate(
-        'johndoe@example.com',
+        'student1@gmail.com',
         'password',
       );
 
@@ -79,7 +79,7 @@ void main() {
 
       expect(
         () async => await authenticationSource.authenticate(
-          'johndoe@example.com',
+          'student1@gmail.com',
           'password',
         ),
         throwsA(
@@ -103,7 +103,7 @@ void main() {
 
       expect(
         () async => await authenticationSource.authenticate(
-          'johndoe@example.com',
+          'student1@gmail.com',
           'password',
         ),
         throwsA(
