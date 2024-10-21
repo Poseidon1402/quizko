@@ -26,7 +26,7 @@ class ClassSourceImpl implements ClassSource {
 
       if(isSuccess(response.statusCode)) {
         final decodedJson = json.decode(utf8.decode(response.bodyBytes));
-        return (decodedJson['data'] as List<dynamic>).map((item) => ClassModel.fromJson(item)).toList();
+        return (decodedJson as List<dynamic>).map((item) => ClassModel.fromJson(item)).toList();
       } else {
         throw ServerException();
       }

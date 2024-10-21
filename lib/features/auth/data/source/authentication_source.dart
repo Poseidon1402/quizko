@@ -61,7 +61,7 @@ class AuthenticationSourceImpl implements AuthenticationSource {
   Future<UserModel> authenticate(String email, String password) async {
     try {
       http.Response response = await httpClient
-          .post(Uri.http(ApiConfig.baseUrl, '/api/login'), body: {
+          .post(Uri.https(ApiConfig.baseUrl, '/api/auth/login'), body: {
         'email': email,
         'password': password,
       });
@@ -71,6 +71,8 @@ class AuthenticationSourceImpl implements AuthenticationSource {
         return UserModel.fromJson(decodedJson['user'], decodedJson['token']);
       } else if (response.statusCode == 401) {
         throw UnauthorizedException();
+      } else if (response.statusCode == 404) {
+        throw NotFoundException(message: 'Unable to find user ! Check your credentials');
       } else {
         throw ServerException();
       }

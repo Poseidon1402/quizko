@@ -13,3 +13,9 @@ class InternetConnectionException implements Exception {}
 class UnauthorizedException implements Exception {}
 
 class InvalidDataException implements Exception {}
+
+class NotFoundException<T> implements Exception {
+  final T message;
+
+  NotFoundException({required this.message});
+}

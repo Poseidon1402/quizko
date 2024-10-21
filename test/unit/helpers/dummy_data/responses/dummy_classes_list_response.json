@@ -1,12 +1,26 @@
-{
-  "data": [
-    {
-      "id": 1,
-      "name": "M1 GB"
+[
+  {
+    "id": "bf94a726-5934-4339-9efe-f41f0ebb1da8",
+    "group": "G1",
+    "level": {
+      "id": "40682526-90ab-44c0-9141-06ed01807d6f",
+      "label": "L1"
     },
-    {
-      "id": 2,
-      "name": "M1 IG"
+    "category": {
+      "id": "32b6d5d0-d090-42f0-86b1-41d3272e26f1",
+      "label": "GB"
     }
-  ]
-}
+  },
+  {
+    "id": "2bcc9fb4-b1b0-4cef-b872-2d92cfdfb0f7",
+    "group": "G2",
+    "level": {
+      "id": "40682526-90ab-44c0-9141-06ed01807d6f",
+      "label": "L1"
+    },
+    "category": {
+      "id": "32b6d5d0-d090-42f0-86b1-41d3272e26f1",
+      "label": "GB"
+    }
+  }
+]

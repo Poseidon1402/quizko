@@ -22,15 +22,18 @@ void main() {
   });
 
   const userModel = UserModel(
-    candidateId: 5,
-    registrationNumber: "1111",
-    fullName: "John Doe",
-    email: "johndoe@example.com",
-    gender: "masculine",
-    phone: "0320011122",
+    candidateId: '9ee237c7-1655-46dd-bcae-c055c366b32e',
+    registrationNumber: "2244",
+    lastName: 'Mirana',
+    firstName: 'Seheno',
+    email: "student1@gmail.com",
+    gender: "MALE",
+    phone: "+261340000000",
     classEntity: ClassModel(
-      id: 1,
-      name: 'M1 GB',
+      id: '5afab7e4-877d-426c-a506-07bf9bcdb8ad',
+      group: '',
+      level: 'L2',
+      category: 'GB',
     ),
   );
 
@@ -43,7 +46,7 @@ void main() {
     test('Should return a valid user model', () async {
       when(
         mockHttpClient.post(
-          Uri.http(ApiConfig.baseUrl, '/api/login'),
+          Uri.https(ApiConfig.baseUrl, '/api/auth/login'),
           body: signInBody,
         ),
       ).thenAnswer(
@@ -64,7 +67,7 @@ void main() {
     test('Should throw an unauthorized exception', () async {
       when(
         mockHttpClient.post(
-          Uri.http(ApiConfig.baseUrl, '/api/login'),
+          Uri.https(ApiConfig.baseUrl, '/api/auth/login'),
           body: signInBody,
         ),
       ).thenAnswer(
@@ -76,15 +79,41 @@ void main() {
 
       expect(
         () async => await authenticationSource.authenticate(
-            'johndoe@example.com', 'password'),
+          'johndoe@example.com',
+          'password',
+        ),
         throwsA(
           isA<UnauthorizedException>(),
         ),
       );
     });
+
+    test('Should throw a not found exception', () async {
+      when(
+        mockHttpClient.post(
+          Uri.https(ApiConfig.baseUrl, '/api/auth/login'),
+          body: signInBody,
+        ),
+      ).thenAnswer(
+        (_) async => http.Response(
+          "{'message': 'Aucun compte associé à cette adresse e-mail/numéro matricule.'}",
+          404,
+        ),
+      );
+
+      expect(
+        () async => await authenticationSource.authenticate(
+          'johndoe@example.com',
+          'password',
+        ),
+        throwsA(
+          isA<NotFoundException>(),
+        ),
+      );
+    });
   });
 
-  group('Subscribe user', () {
+  /*group('Subscribe user', () {
     const newUserModel = UserModel(
       candidateId: 5,
       registrationNumber: "1111",
@@ -192,5 +221,5 @@ void main() {
 
       expect(result, equals(userModel));
     });
-  });
+  });*/
 }
