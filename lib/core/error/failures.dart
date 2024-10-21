@@ -35,3 +35,7 @@ class TokenExpiredFailure extends Failure {
 class InvalidPasswordFailure extends Failure {
   const InvalidPasswordFailure({super.message = 'Password invalid', super.type = ErrorType.serverError});
 }
+
+class NotFoundFailure extends Failure {
+  const NotFoundFailure({super.message = 'We cannot found the requested data', super.type = ErrorType.notFound});
+}

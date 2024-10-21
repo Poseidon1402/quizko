@@ -1,4 +1,4 @@
-enum ErrorType { serverError, notConnectedError, expiredToken, tokenMissing, missingFileError }
+enum ErrorType { serverError, notConnectedError, expiredToken, tokenMissing, missingFileError, notFound }
 
 extension ErrorTypeExtension on ErrorType {
   String get label {

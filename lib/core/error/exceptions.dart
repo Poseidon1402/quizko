@@ -14,8 +14,4 @@ class UnauthorizedException implements Exception {}
 
 class InvalidDataException implements Exception {}
 
-class NotFoundException<T> implements Exception {
-  final T message;
-
-  NotFoundException({required this.message});
-}
+class NotFoundException implements Exception {}
