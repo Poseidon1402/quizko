@@ -40,7 +40,7 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
   final _phoneController = TextEditingController();
   final _classController = TextEditingController();
   String? _gender;
-  int _classId = -1;
+  String _classId = -1;
   final _passwordController = TextEditingController();
 
   @override

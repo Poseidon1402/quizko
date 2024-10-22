@@ -211,7 +211,7 @@ class AuthenticationSourceImpl implements AuthenticationSource {
   Future<UserModel> getCurrentUser(String token) async {
     try {
       http.Response response = await httpClient
-          .get(Uri.http(ApiConfig.baseUrl, '/api/user'), headers: {
+          .get(Uri.http(ApiConfig.baseUrl, '/api/users/me'), headers: {
         HttpHeaders.authorizationHeader: 'Bearer $token',
       });
 

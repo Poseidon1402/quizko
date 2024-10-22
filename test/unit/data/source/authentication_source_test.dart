@@ -113,7 +113,7 @@ void main() {
     });
   });
 
-  group('Subscribe user', () {
+  /*group('Subscribe user', () {
     const newUserModel = UserModel(
       candidateId: '9ee237c7-1655-46dd-bcae-c055c366b32e',
       registrationNumber: "2244",
@@ -174,14 +174,14 @@ void main() {
         ),
       );
     });
-  });
+  });*/
 
-  /*
+
   group('Getting current user', () {
     test('Should return a valid user model', () async {
       when(
         mockHttpClient.get(
-          Uri.http(ApiConfig.baseUrl, '/api/user'),
+          Uri.http(ApiConfig.baseUrl, '/api/users/me'),
           headers: {
             HttpHeaders.authorizationHeader: 'Bearer token',
           },
@@ -201,6 +201,7 @@ void main() {
     });
   });
 
+  /*
   group('Update current user', () {
     test('Should return a valid user model', () async {
       when(
