@@ -809,7 +809,6 @@ class MockAuthenticationSource extends _i1.Mock
   _i6.Future<String> updatePassword({
     required String? currentPassword,
     required String? password,
-    required String? passwordConfirmation,
     required String? token,
   }) =>
       (super.noSuchMethod(
@@ -819,7 +818,6 @@ class MockAuthenticationSource extends _i1.Mock
           {
             #currentPassword: currentPassword,
             #password: password,
-            #passwordConfirmation: passwordConfirmation,
             #token: token,
           },
         ),
@@ -831,7 +829,6 @@ class MockAuthenticationSource extends _i1.Mock
             {
               #currentPassword: currentPassword,
               #password: password,
-              #passwordConfirmation: passwordConfirmation,
               #token: token,
             },
           ),

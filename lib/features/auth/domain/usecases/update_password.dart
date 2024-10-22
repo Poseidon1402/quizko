@@ -7,7 +7,6 @@ abstract class UpdatePassword {
   Future<Either<Failure, String>> call({
     required String currentPassword,
     required String password,
-    required String passwordConfirmation,
   });
 }
 
@@ -20,11 +19,10 @@ class UpdatePasswordImpl implements UpdatePassword {
   Future<Either<Failure, String>> call({
     required String currentPassword,
     required String password,
-    required String passwordConfirmation,
   }) {
     return repository.updatePassword(
-        currentPassword: currentPassword,
-        password: password,
-        passwordConfirmation: passwordConfirmation);
+      currentPassword: currentPassword,
+      password: password,
+    );
   }
 }

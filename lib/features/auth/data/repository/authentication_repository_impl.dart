@@ -95,14 +95,12 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   Future<Either<Failure, String>> updatePassword({
     required String currentPassword,
     required String password,
-    required String passwordConfirmation,
   }) async {
     try {
       final token = await secureStorage.read(key: 'token') as String;
       final message = await source.updatePassword(
         currentPassword: currentPassword,
         password: password,
-        passwordConfirmation: passwordConfirmation,
         token: token,
       );
 

@@ -16,7 +16,6 @@ abstract class AuthenticationRepository {
   Future<Either<Failure, String>> updatePassword({
     required String currentPassword,
     required String password,
-    required String passwordConfirmation,
   });
   Future<Either<Failure, UserEntity>> updateUser({required UserModel user});
   Future<Either<Failure, UserEntity>> verifyToken();

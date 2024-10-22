@@ -17,7 +17,6 @@ abstract class AuthenticationSource {
   Future<String> updatePassword({
     required String currentPassword,
     required String password,
-    required String passwordConfirmation,
     required String token,
   });
   Future<String> verifyToken(String token);
@@ -155,16 +154,14 @@ class AuthenticationSourceImpl implements AuthenticationSource {
   Future<String> updatePassword({
     required String currentPassword,
     required String password,
-    required String passwordConfirmation,
     required String token,
   }) async {
     try {
-      http.Response response = await httpClient.put(
-        Uri.http(ApiConfig.baseUrl, '/api/password'),
+      http.Response response = await httpClient.patch(
+        Uri.https(ApiConfig.baseUrl, '/api/users/password'),
         body: {
-          'current_password': currentPassword,
-          'password': password,
-          'password_confirmation': passwordConfirmation,
+          'currentPassword': currentPassword,
+          'newPassword': password,
         },
         headers: {
           HttpHeaders.authorizationHeader: 'Bearer $token',
@@ -173,7 +170,7 @@ class AuthenticationSourceImpl implements AuthenticationSource {
 
       if (isSuccess(response.statusCode)) {
         return 'Updated successfully';
-      } else if (response.statusCode == 422) {
+      } else if (response.statusCode == 401) {
         throw InvalidDataException();
       } else {
         throw ServerException();
@@ -211,7 +208,7 @@ class AuthenticationSourceImpl implements AuthenticationSource {
   Future<UserModel> getCurrentUser(String token) async {
     try {
       http.Response response = await httpClient
-          .get(Uri.http(ApiConfig.baseUrl, '/api/users/me'), headers: {
+          .get(Uri.https(ApiConfig.baseUrl, '/api/users/me'), headers: {
         HttpHeaders.authorizationHeader: 'Bearer $token',
       });
 

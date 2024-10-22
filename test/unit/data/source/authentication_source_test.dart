@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -176,7 +177,6 @@ void main() {
     });
   });*/
 
-
   group('Getting current user', () {
     test('Should return a valid user model', () async {
       when(
@@ -198,6 +198,69 @@ void main() {
       final result = await authenticationSource.getCurrentUser('token');
 
       expect(result, equals(userModel));
+    });
+  });
+
+  group('Update user password', () {
+    test('Should return a success response', () async {
+      when(
+        mockHttpClient.patch(
+          Uri.https(ApiConfig.baseUrl, '/api/users/password'),
+          body: {
+            'currentPassword': '12345678',
+            'newPassword': '1234567',
+          },
+          headers: {
+            HttpHeaders.authorizationHeader: 'Bearer token',
+          },
+        ),
+      ).thenAnswer(
+        (_) async => http.Response(
+          'Le nouveau mot de passe a été bien enregistré avec success.',
+          200,
+        ),
+      );
+
+      final result = await authenticationSource.updatePassword(
+        currentPassword: '12345678',
+        password: '1234567',
+        token: 'token',
+      );
+
+      expect(result, equals('Updated successfully'));
+    });
+
+    test('Should return a success response', () async {
+      when(
+        mockHttpClient.patch(
+          Uri.https(ApiConfig.baseUrl, '/api/users/password'),
+          body: {
+            'currentPassword': '12345678',
+            'newPassword': '1234567',
+          },
+          headers: {
+            HttpHeaders.authorizationHeader: 'Bearer token',
+          },
+        ),
+      ).thenAnswer(
+        (_) async => http.Response(
+          json.encode({
+            "message": "Mot de passe incorrect. Veuillez réessayer!",
+            "error": "Unauthorized",
+            "statusCode": 401
+          }),
+          401,
+        ),
+      );
+
+      expect(
+        () async => await authenticationSource.updatePassword(
+          currentPassword: '12345678',
+          password: '1234567',
+          token: 'token',
+        ),
+        throwsA(isA<InvalidDataException>()),
+      );
     });
   });
 
