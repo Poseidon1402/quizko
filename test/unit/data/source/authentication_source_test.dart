@@ -30,6 +30,7 @@ void main() {
     email: "student1@gmail.com",
     gender: "MALE",
     phone: "+261340000000",
+    token: 'token',
     classEntity: ClassModel(
       id: '5afab7e4-877d-426c-a506-07bf9bcdb8ad',
       group: '',
@@ -114,7 +115,7 @@ void main() {
     });
   });
 
-  /*group('Subscribe user', () {
+  group('Subscribe user', () {
     const newUserModel = UserModel(
       candidateId: '9ee237c7-1655-46dd-bcae-c055c366b32e',
       registrationNumber: "2244",
@@ -134,7 +135,7 @@ void main() {
     test('Should return a valid user model', () async {
       when(
         mockHttpClient.post(
-          Uri.http(ApiConfig.baseUrl, '/api/auth/subscription'),
+          Uri.https(ApiConfig.baseUrl, '/api/auth/subscription'),
           body: newUserModel.subscriptionJson(),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
@@ -155,7 +156,7 @@ void main() {
     test('Should throw a bad request exception', () async {
       when(
         mockHttpClient.post(
-          Uri.http(ApiConfig.baseUrl, '/api/auth/subscription'),
+          Uri.https(ApiConfig.baseUrl, '/api/auth/subscription'),
           body: newUserModel.subscriptionJson(),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
@@ -163,8 +164,8 @@ void main() {
         ),
       ).thenAnswer(
         (_) async => http.Response(
-          '{"message": "Duplicated registration number"}',
-          400,
+          '{"message": "The email address already exists."}',
+          409,
         ),
       );
 
@@ -175,7 +176,7 @@ void main() {
         ),
       );
     });
-  });*/
+  });
 
   group('Getting current user', () {
     test('Should return a valid user model', () async {

@@ -34,7 +34,7 @@ class AuthenticationSourceImpl implements AuthenticationSource {
   Future<UserModel> subscribeUser(UserModel newUser) async {
     try {
       http.Response response = await httpClient.post(
-          Uri.http(ApiConfig.baseUrl, '/api/subscribe'),
+          Uri.https(ApiConfig.baseUrl, '/api/auth/subscription'),
           body: newUser.subscriptionJson(),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
@@ -42,8 +42,8 @@ class AuthenticationSourceImpl implements AuthenticationSource {
 
       final decodedJson = json.decode(utf8.decode(response.bodyBytes));
       if (isSuccess(response.statusCode)) {
-        return UserModel.fromJson(decodedJson['user'], decodedJson['token']);
-      } else if (response.statusCode == 400) {
+        return UserModel.fromJson(decodedJson['user'], decodedJson['accessToken']);
+      } else if (response.statusCode == 409) {
         throw BadRequestException(message: decodedJson['message']);
       } else {
         throw ServerException();

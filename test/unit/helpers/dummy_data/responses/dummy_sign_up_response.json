@@ -1,22 +1,25 @@
 {
-  "id": "9ee237c7-1655-46dd-bcae-c055c366b32e",
-  "lastName": "Mirana",
-  "firstName": "Seheno",
-  "email": "student1@gmail.com",
-  "role": "STUDENT",
-  "registrationNumber": "2244",
-  "gender": "MALE",
-  "phone": "+261340000000",
-  "class": {
-    "id": "5afab7e4-877d-426c-a506-07bf9bcdb8ad",
-    "group": null,
-    "level": {
-      "id": "16448fbf-1c26-4ced-87b5-52d168119cda",
-      "label": "L2"
-    },
-    "category": {
-      "id": "32b6d5d0-d090-42f0-86b1-41d3272e26f1",
-      "label": "GB"
+  "accessToken": "token",
+  "user": {
+    "id": "9ee237c7-1655-46dd-bcae-c055c366b32e",
+    "lastName": "Mirana",
+    "firstName": "Seheno",
+    "email": "student1@gmail.com",
+    "role": "STUDENT",
+    "registrationNumber": "2244",
+    "gender": "MALE",
+    "phone": "+261340000000",
+    "class": {
+      "id": "5afab7e4-877d-426c-a506-07bf9bcdb8ad",
+      "group": null,
+      "level": {
+        "id": "16448fbf-1c26-4ced-87b5-52d168119cda",
+        "label": "L2"
+      },
+      "category": {
+        "id": "32b6d5d0-d090-42f0-86b1-41d3272e26f1",
+        "label": "GB"
+      }
     }
   }
 }

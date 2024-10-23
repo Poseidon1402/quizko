@@ -35,20 +35,21 @@ class UserModel extends UserEntity {
 
   String subscriptionJson() => json.encode({
         "registration_number": registrationNumber,
-        "name": fullName,
+        "lastName": lastName,
+        "firstName": firstName,
         "email": email,
         "password": password,
         'phone': phone,
         "gender": gender,
-        "post_id": classEntity.id,
+        "classId": classEntity.id,
       });
 
   String updateJson() => jsonEncode({
-    "registration_number": registrationNumber,
-    "name": fullName,
-    "email": email,
-    "phone": phone,
-    "gender": gender,
-    "post_id": classEntity.id,
-  });
+        "registration_number": registrationNumber,
+        "name": fullName,
+        "email": email,
+        "phone": phone,
+        "gender": gender,
+        "post_id": classEntity.id,
+      });
 }
