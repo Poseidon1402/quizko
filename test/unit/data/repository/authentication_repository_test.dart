@@ -208,4 +208,52 @@ void main() {
       expect(result, equals(const Right(updatedUser)));
     });
   });*/
+
+  group('Update password', () {
+    test('Should return a string value', () async {
+      when(
+        mockAuthenticationSource.updatePassword(
+          currentPassword: '123456789',
+          password: '1234567',
+          token: 'token',
+        ),
+      ).thenAnswer((_) async => 'Updated successfully');
+      when(
+        mockFlutterSecureStorage.read(key: 'token'),
+      ).thenAnswer((_) async => 'token');
+
+      final result = await authenticationRepositoryImpl.updatePassword(
+        currentPassword: '123456789',
+        password: '1234567',
+      );
+
+      expect(
+        result,
+        equals(const Right('Updated successfully')),
+      );
+    });
+
+    test('Should return an invalid password failure', () async {
+      when(
+        mockAuthenticationSource.updatePassword(
+          currentPassword: '123456789',
+          password: '1234567',
+          token: 'token',
+        ),
+      ).thenThrow(InvalidDataException());
+      when(
+        mockFlutterSecureStorage.read(key: 'token'),
+      ).thenAnswer((_) async => 'token');
+
+      final result = await authenticationRepositoryImpl.updatePassword(
+        currentPassword: '123456789',
+        password: '1234567',
+      );
+
+      expect(
+        result,
+        equals(const Left(InvalidPasswordFailure())),
+      );
+    });
+  });
 }
