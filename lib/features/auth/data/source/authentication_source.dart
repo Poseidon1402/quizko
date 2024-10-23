@@ -22,7 +22,6 @@ abstract class AuthenticationSource {
   Future<UserModel> getCurrentUser(String token);
   Future<UserModel> updateUser(
       {required UserModel user, required String token});
-  Future<bool> logout(String token);
 }
 
 class AuthenticationSourceImpl implements AuthenticationSource {
@@ -223,26 +222,6 @@ class AuthenticationSourceImpl implements AuthenticationSource {
         return UserModel.fromJson(decodedJson, null);
       } else if(response.statusCode == 409) {
         throw BadRequestException(message: decodedJson['message']);
-      } else {
-        throw ServerException();
-      }
-    } on http.ClientException {
-      throw InternetConnectionException();
-    } on SocketException {
-      throw ServerException();
-    }
-  }
-
-  @override
-  Future<bool> logout(String token) async {
-    try {
-      http.Response response = await httpClient
-          .post(Uri.http(ApiConfig.baseUrl, '/api/logout'), headers: {
-        HttpHeaders.authorizationHeader: 'Bearer $token',
-      });
-
-      if (isSuccess(response.statusCode)) {
-        return true;
       } else {
         throw ServerException();
       }

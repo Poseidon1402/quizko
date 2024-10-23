@@ -155,7 +155,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<Either<Failure, bool>> logout() async {
     try {
-      await source.logout(await secureStorage.read(key: 'token') as String);
       secureStorage.delete(key: 'token');
 
       return const Right(true);
