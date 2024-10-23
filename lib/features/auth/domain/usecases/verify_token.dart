@@ -15,6 +15,6 @@ class VerifyTokenImpl implements VerifyToken {
 
   @override
   Future<Either<Failure, UserEntity>> call() {
-    return repository.verifyToken();
+    return repository.getCurrentUser();
   }
 }

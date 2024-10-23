@@ -209,6 +209,31 @@ void main() {
     });
   });*/
 
+  group('Get current user', () {
+    test('Should return a valid user entity', () async {
+      when(mockAuthenticationSource.getCurrentUser('token'))
+          .thenAnswer((_) async => user);
+      when(mockFlutterSecureStorage.read(key: 'token'))
+          .thenAnswer((_) async => 'token');
+
+      final result = await authenticationRepositoryImpl.getCurrentUser();
+
+      expect(result, equals(const Right(user)));
+    });
+
+    test('Should return an access token missing failure', () async {
+      when(mockFlutterSecureStorage.read(key: 'token'))
+          .thenAnswer((_) async => null);
+
+      final result = await authenticationRepositoryImpl.getCurrentUser();
+
+      expect(
+        result,
+        equals(const Left(AccessTokenMissingFailure())),
+      );
+    });
+  });
+
   group('Update password', () {
     test('Should return a string value', () async {
       when(

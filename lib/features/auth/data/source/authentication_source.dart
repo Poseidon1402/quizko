@@ -19,7 +19,6 @@ abstract class AuthenticationSource {
     required String password,
     required String token,
   });
-  Future<String> verifyToken(String token);
   Future<UserModel> getCurrentUser(String token);
   Future<UserModel> updateUser(
       {required UserModel user, required String token});
@@ -172,28 +171,6 @@ class AuthenticationSourceImpl implements AuthenticationSource {
         return 'Updated successfully';
       } else if (response.statusCode == 401) {
         throw InvalidDataException();
-      } else {
-        throw ServerException();
-      }
-    } on http.ClientException {
-      throw InternetConnectionException();
-    } on SocketException {
-      throw ServerException();
-    }
-  }
-
-  @override
-  Future<String> verifyToken(String token) async {
-    try {
-      http.Response response = await httpClient
-          .get(Uri.http(ApiConfig.baseUrl, '/api/check-token'), headers: {
-        HttpHeaders.authorizationHeader: 'Bearer $token',
-      });
-
-      if (isSuccess(response.statusCode)) {
-        return 'The token is valid';
-      } else if (response.statusCode == 401) {
-        throw UnauthorizedException();
       } else {
         throw ServerException();
       }

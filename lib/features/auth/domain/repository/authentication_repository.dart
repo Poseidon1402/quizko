@@ -18,6 +18,6 @@ abstract class AuthenticationRepository {
     required String password,
   });
   Future<Either<Failure, UserEntity>> updateUser({required UserModel user});
-  Future<Either<Failure, UserEntity>> verifyToken();
+  Future<Either<Failure, UserEntity>> getCurrentUser();
   Future<Either<Failure, bool>> logout();
 }
