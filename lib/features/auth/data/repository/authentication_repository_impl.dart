@@ -143,6 +143,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       final updatedUser = await source.updateUser(user: user, token: token!);
 
       return Right(updatedUser);
+    } on BadRequestException catch (e) {
+      return Left(ServerFailure(message: e.message));
     } on InternetConnectionException {
       return const Left(NotConnectedFailure());
     } on ServerException {

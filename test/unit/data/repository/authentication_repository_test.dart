@@ -136,32 +136,35 @@ void main() {
     test('Should return a server failure with a custom message', () async {
       when(
         mockAuthenticationSource.subscribeUser(newUser),
-      ).thenThrow(const BadRequestException(message: 'The email address already exists.'));
+      ).thenThrow(const BadRequestException(
+          message: 'The email address already exists.'));
 
       final result =
           await authenticationRepositoryImpl.subscribeUser(newUser: newUser);
 
       expect(
         result,
-        equals(const Left(ServerFailure(message: 'The email address already exists.'))),
+        equals(const Left(
+            ServerFailure(message: 'The email address already exists.'))),
       );
     });
   });
 
-  /*
-
   group('Update user', () {
     const updatedUser = UserModel(
-      candidateId: 5,
-      registrationNumber: "1111",
-      fullName: "John Doe",
-      email: "johndoe2@example.com",
-      gender: "masculine",
-      phone: "0320011122",
-      password: 'password',
+      candidateId: '9ee237c7-1655-46dd-bcae-c055c366b32e',
+      registrationNumber: "2257",
+      lastName: 'Mirana',
+      firstName: 'Seheno',
+      email: "student1@gmail.com",
+      gender: "MALE",
+      phone: "+261340000000",
+      token: 'token',
       classEntity: ClassModel(
-        id: 1,
-        name: 'M1 GB',
+        id: '5afab7e4-877d-426c-a506-07bf9bcdb8ad',
+        group: '',
+        level: 'L2',
+        category: 'GB',
       ),
     );
 
@@ -173,11 +176,32 @@ void main() {
         token: 'token',
       )).thenAnswer((_) async => updatedUser);
 
-      final result = await authenticationRepositoryImpl.updateUser(user: updatedUser);
+      final result =
+          await authenticationRepositoryImpl.updateUser(user: updatedUser);
 
       expect(result, equals(const Right(updatedUser)));
     });
-  });*/
+
+    test('Should return a server with a custom message', () async {
+      when(mockFlutterSecureStorage.read(key: 'token'))
+          .thenAnswer((_) async => 'token');
+      when(mockAuthenticationSource.updateUser(
+        user: updatedUser,
+        token: 'token',
+      )).thenThrow(const BadRequestException(
+          message: 'This student ID already exists.'));
+
+      final result =
+          await authenticationRepositoryImpl.updateUser(user: updatedUser);
+
+      expect(
+        result,
+        equals(
+          const Left(ServerFailure(message: 'This student ID already exists.')),
+        ),
+      );
+    });
+  });
 
   group('Get current user', () {
     test('Should return a valid user entity', () async {
