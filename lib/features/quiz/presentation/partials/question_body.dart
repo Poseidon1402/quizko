@@ -219,7 +219,8 @@ class _QuestionBodyState extends State<QuestionBody> {
   }
 
   void _onFinishButtonTapped(BuildContext context) {
-    context.read<AnswerCubit>().setAnswer(
+    // TODO: CORRECT THIS LATER
+    /*context.read<AnswerCubit>().setAnswer(
       widget.interview.subject.questions[widget.currentIndex].id,
       {'answer_id': _picked},
     );
@@ -235,7 +236,7 @@ class _QuestionBodyState extends State<QuestionBody> {
                     .currentUser
                     .candidateId,
           ),
-        );
+        );*/
   }
 
   void _onBackButtonTapped(BuildContext context) {

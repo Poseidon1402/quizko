@@ -33,8 +33,9 @@ class _MainScreenState extends State<MainScreen> {
 
     context.read<InterviewBloc>().add(
           FetchInterviewsEvent(
-            candidateId: user.candidateId,
-            classId: user.classEntity.id,
+            // TODO: FIX TYPE LATER
+            candidateId: 1,
+            classId: 1,
           ),
         );
     socket_io.Socket socket = socket_io.io('http://10.0.2.2:4000');

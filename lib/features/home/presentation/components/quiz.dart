@@ -144,7 +144,8 @@ class Quiz extends StatelessWidget {
             .candidateId;
     context.read<InterviewBloc>().add(
       FetchInterviewCorrectionEvent(
-        candidateId: candidateId,
+        // TODO: FIX THE LINE BELOW LATER
+        candidateId: 1, // TODO: ERROR ON CANDIDATE ID TYPE
         interviewId: interview.id,
       ),
     );

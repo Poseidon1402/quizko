@@ -224,7 +224,7 @@ class Header extends StatelessWidget {
               .candidateId;
       context.read<InterviewBloc>().add(
         FetchInterviewCorrectionEvent(
-          candidateId: candidateId,
+          candidateId: 1, // TODO: ERROR ON CANDIDATE ID TYPE
           interviewId: interview!.id,
         ),
       );

@@ -40,7 +40,8 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
   final _phoneController = TextEditingController();
   final _classController = TextEditingController();
   String? _gender;
-  String _classId = -1;
+  // TODO: FIX THIS LATER
+  String _classId = '-1';
   final _passwordController = TextEditingController();
 
   @override
@@ -217,18 +218,21 @@ class _SubscriptionFormState extends State<SubscriptionForm> {
 
   void _onSubscribeButtonTapped() {
     if (_formKey.currentState!.validate()) {
+      // TODO: FIX THIS PART
       context.read<AuthenticationBloc>().add(
             SubscribeUserEvent(
               newUser: UserModel(
+
                 registrationNumber:
                     '${_registrationNumberController.text}${_regId != null ? '_$_regId' : ''}',
-                fullName: _fullNameController.text,
+                lastName: '',
                 email: _emailController.text,
                 password: _passwordController.text,
                 phone: _phoneController.text,
                 classEntity: ClassEntity(
                   id: _classId,
-                  name: _classController.text,
+                  level: 'level',
+                  category: '',
                 ),
                 gender: _gender ?? '',
               ),

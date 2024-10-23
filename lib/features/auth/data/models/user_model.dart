@@ -8,7 +8,7 @@ class UserModel extends UserEntity {
   final String? token;
 
   const UserModel({
-    required super.candidateId,
+    super.candidateId = '',
     required super.registrationNumber,
     super.firstName,
     required super.lastName,

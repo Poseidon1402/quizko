@@ -107,7 +107,8 @@ class Quiz extends StatelessWidget {
   }
 
   void _onTapped(BuildContext context) {
-    final candidateId =
+    // TODO: CORRECT THIS LATER
+    /*final candidateId =
         (context.read<AuthenticationBloc>().state as AuthenticatedState)
             .currentUser
             .candidateId;
@@ -117,6 +118,6 @@ class Quiz extends StatelessWidget {
             interviewId: interview.id,
           ),
         );
-    context.push('${Routes.userAnswer}?interview=${interview.id}');
+    context.push('${Routes.userAnswer}?interview=${interview.id}');*/
   }
 }

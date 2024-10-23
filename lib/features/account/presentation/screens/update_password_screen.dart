@@ -116,7 +116,6 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
       final result = await sl<UpdatePassword>().call(
         currentPassword: _currentPasswordController.text,
         password: _passwordController.text,
-        passwordConfirmation: _passwordConfirmationController.text,
       );
 
       result.fold(

@@ -193,7 +193,8 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
   }
 
   void _onPop() {
-    context.read<InterviewBloc>().add(InterviewCompletedEvent(id: widget.interview.id));
+    // TODO: CORRECT THIS LATER
+    /*context.read<InterviewBloc>().add(InterviewCompletedEvent(id: widget.interview.id));
     context.read<QuizBloc>().add(
       QuizEventFinished(
         answers: context.read<AnswerCubit>().state,
@@ -203,7 +204,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
             .currentUser
             .candidateId,
       ),
-    );
+    );*/
   }
 
   void _decrementTimer(timer) {
