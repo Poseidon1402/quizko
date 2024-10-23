@@ -208,8 +208,8 @@ class AuthenticationSourceImpl implements AuthenticationSource {
   Future<UserModel> updateUser(
       {required UserModel user, required String token}) async {
     try {
-      final response = await httpClient.put(
-        Uri.http(ApiConfig.baseUrl, '/api/profile'),
+      final response = await httpClient.patch(
+        Uri.https(ApiConfig.baseUrl, '/api/users/me'),
         body: user.updateJson(),
         headers: {
           HttpHeaders.authorizationHeader: 'Bearer $token',
@@ -217,10 +217,12 @@ class AuthenticationSourceImpl implements AuthenticationSource {
         },
       );
 
-      if (isSuccess(response.statusCode)) {
-        final decodedJson = json.decode(utf8.decode(response.bodyBytes));
+      final decodedJson = json.decode(utf8.decode(response.bodyBytes));
 
-        return UserModel.fromJson(decodedJson['user'], null);
+      if (isSuccess(response.statusCode)) {
+        return UserModel.fromJson(decodedJson, null);
+      } else if(response.statusCode == 409) {
+        throw BadRequestException(message: decodedJson['message']);
       } else {
         throw ServerException();
       }

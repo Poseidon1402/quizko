@@ -231,7 +231,7 @@ void main() {
       expect(result, equals('Updated successfully'));
     });
 
-    test('Should return a success response', () async {
+    test('Should throw invalid data exception', () async {
       when(
         mockHttpClient.patch(
           Uri.https(ApiConfig.baseUrl, '/api/users/password'),
@@ -265,15 +265,15 @@ void main() {
     });
   });
 
-  /*
   group('Update current user', () {
     test('Should return a valid user model', () async {
       when(
-        mockHttpClient.put(
-          Uri.http(ApiConfig.baseUrl, '/api/profile'),
+        mockHttpClient.patch(
+          Uri.https(ApiConfig.baseUrl, '/api/users/me'),
           body: userModel.updateJson(),
           headers: {
             HttpHeaders.authorizationHeader: 'Bearer token',
+            HttpHeaders.contentTypeHeader: 'application/json',
           },
         ),
       ).thenAnswer(
@@ -285,9 +285,40 @@ void main() {
         ),
       );
 
-      final result = await authenticationSource.updateUser(user: userModel, token: 'token');
+      final result = await authenticationSource.updateUser(
+          user: userModel, token: 'token');
 
       expect(result, equals(userModel));
     });
-  });*/
+
+    test('Should throw bad request exception', () async {
+      when(
+        mockHttpClient.patch(
+          Uri.https(ApiConfig.baseUrl, '/api/users/me'),
+          body: userModel.updateJson(),
+          headers: {
+            HttpHeaders.authorizationHeader: 'Bearer token',
+            HttpHeaders.contentTypeHeader: 'application/json',
+          },
+        ),
+      ).thenAnswer(
+        (_) async => http.Response(
+          json.encode({
+            "message": "This student ID already exists.",
+            "error": "Conflict",
+            "statusCode": 409
+          }),
+          409,
+        ),
+      );
+
+      expect(
+        () async => await authenticationSource.updateUser(
+          user: userModel,
+          token: 'token',
+        ),
+        throwsA(isA<BadRequestException>()),
+      );
+    });
+  });
 }
