@@ -216,7 +216,7 @@ class AuthenticationSourceImpl implements AuthenticationSource {
         final decodedJson = json.decode(utf8.decode(response.bodyBytes))
             as Map<String, dynamic>;
 
-        return UserModel.fromJson(decodedJson, null);
+        return UserModel.fromJson(decodedJson['user'], decodedJson['accessToken']);
       } else {
         throw ServerException();
       }

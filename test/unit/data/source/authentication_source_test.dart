@@ -181,7 +181,7 @@ void main() {
     test('Should return a valid user model', () async {
       when(
         mockHttpClient.get(
-          Uri.http(ApiConfig.baseUrl, '/api/users/me'),
+          Uri.https(ApiConfig.baseUrl, '/api/users/me'),
           headers: {
             HttpHeaders.authorizationHeader: 'Bearer token',
           },
