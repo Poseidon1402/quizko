@@ -22,7 +22,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       {required UserModel newUser}) async {
     try {
       final data = await source.subscribeUser(newUser);
-      secureStorage.write(key: 'token', value: data.token);
+      await secureStorage.write(key: 'token', value: data.token);
 
       return Right(data);
     } on BadRequestException catch (e) {

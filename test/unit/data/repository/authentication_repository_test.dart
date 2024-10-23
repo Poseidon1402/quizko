@@ -31,6 +31,7 @@ void main() {
     email: "student1@gmail.com",
     gender: "MALE",
     phone: "+261340000000",
+    token: 'token',
     classEntity: ClassModel(
       id: '5afab7e4-877d-426c-a506-07bf9bcdb8ad',
       group: '',
@@ -101,18 +102,20 @@ void main() {
     });
   });
 
-  /*group('User subscribed successfully', () {
+  group('User subscribed successfully', () {
     const newUser = UserModel(
-      candidateId: 5,
-      registrationNumber: "1111",
-      fullName: "John Doe",
-      email: "johndoe@example.com",
-      gender: "masculine",
-      phone: "0320011122",
-      password: 'password',
+      candidateId: '9ee237c7-1655-46dd-bcae-c055c366b32e',
+      registrationNumber: "2244",
+      lastName: 'Mirana',
+      firstName: 'Seheno',
+      email: "student1@gmail.com",
+      gender: "MALE",
+      phone: "+261340000000",
       classEntity: ClassModel(
-        id: 1,
-        name: 'M1 GB',
+        id: '5afab7e4-877d-426c-a506-07bf9bcdb8ad',
+        group: '',
+        level: 'L2',
+        category: 'GB',
       ),
     );
 
@@ -123,8 +126,9 @@ void main() {
         mockAuthenticationSource.subscribeUser(newUser),
       ).thenAnswer((_) async => user);
 
-      final result =
-          await authenticationRepositoryImpl.subscribeUser(newUser: newUser);
+      final result = await authenticationRepositoryImpl.subscribeUser(
+        newUser: newUser,
+      );
 
       expect(result, equals(const Right(user)));
     });
@@ -132,53 +136,19 @@ void main() {
     test('Should return a server failure with a custom message', () async {
       when(
         mockAuthenticationSource.subscribeUser(newUser),
-      ).thenThrow(const BadRequestException(message: 'Duplicated user'));
+      ).thenThrow(const BadRequestException(message: 'The email address already exists.'));
 
       final result =
           await authenticationRepositoryImpl.subscribeUser(newUser: newUser);
 
       expect(
         result,
-        equals(const Left(ServerFailure(message: 'Duplicated user'))),
+        equals(const Left(ServerFailure(message: 'The email address already exists.'))),
       );
     });
   });
 
-  group('Verify token', () {
-    test('Should return a valid user', () async {
-      when(mockFlutterSecureStorage.read(key: 'token'))
-          .thenAnswer((_) async => 'token');
-      when(mockAuthenticationSource.verifyToken('token'))
-          .thenAnswer((_) async => 'The token is valid');
-      when(mockAuthenticationSource.getCurrentUser('token'))
-          .thenAnswer((_) async => user);
-
-      final result = await authenticationRepositoryImpl.verifyToken();
-
-      expect(result, equals(const Right(user)));
-    });
-
-    test('Should return an access token missing failure', () async {
-      when(mockFlutterSecureStorage.read(key: 'token'))
-          .thenAnswer((_) async => null);
-
-      final result = await authenticationRepositoryImpl.verifyToken();
-
-      expect(result, equals(const Left(AccessTokenMissingFailure())));
-    });
-
-    test('Should return a server failure with custom message', () async {
-      when(mockFlutterSecureStorage.read(key: 'token'))
-          .thenAnswer((_) async => 'token');
-      when(mockAuthenticationSource.verifyToken('token'))
-          .thenThrow(UnauthorizedException());
-
-      final result = await authenticationRepositoryImpl.verifyToken();
-
-      expect(
-          result, equals(const Left(ServerFailure(message: 'Token invalid'))));
-    });
-  });
+  /*
 
   group('Update user', () {
     const updatedUser = UserModel(
